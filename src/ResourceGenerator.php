@@ -61,6 +61,10 @@ class ResourceGenerator
             $this->createBaseClass($yaml)
         );
         file_put_contents(
+            $this->climate->arguments->get('path') . DIRECTORY_SEPARATOR . $yaml['class'] . 'Interface.php',
+            $this->createInterface($yaml)
+        );
+        file_put_contents(
             $this->climate->arguments->get('path') . DIRECTORY_SEPARATOR . 'Async' . DIRECTORY_SEPARATOR . $yaml['class'] . '.php',
             $this->createExtendingClass('Async', $yaml)
         );
@@ -80,7 +84,7 @@ class ResourceGenerator
         $factory = new BuilderFactory;
 
         $class = $factory->class($yaml['class'])
-            ->implement('ResourceInterface')
+            ->implement($yaml['class'] . 'Interface')
             ->makeAbstract();
         $class->addStmt(
             new Node\Stmt\TraitUse([
@@ -98,10 +102,36 @@ class ResourceGenerator
         }
 
         $node = $factory->namespace($yaml['namespace'])
-            ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\ResourceInterface'))
             ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\TransportAwareTrait'))
             ->addStmt($class)
 
+            ->getNode()
+        ;
+
+        $prettyPrinter = new PrettyPrinter\Standard();
+        return $prettyPrinter->prettyPrintFile([
+            $node
+        ]) . PHP_EOL;
+    }
+
+    protected function createInterface(array $yaml)
+    {
+        $factory = new BuilderFactory;
+
+        $class = $factory->interface($yaml['class'] . 'Interface')
+            ->extend('ResourceInterface');
+
+        foreach ($yaml['properties'] as $name => $details) {
+            $type = $details;
+            if (is_array($details)) {
+                $type = $details['type'];
+            }
+            $class->addStmt($this->createMethod($factory, $type, $name, $details));
+        }
+
+        $node = $factory->namespace($yaml['namespace'])
+            ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\ResourceInterface'))
+            ->addStmt($class)
             ->getNode()
         ;
 
