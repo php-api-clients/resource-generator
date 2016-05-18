@@ -1,5 +1,5 @@
 {
-  "name": "wyrihaximus/api-client",
+  "name": "wyrihaximus/api-client-resource-generator",
   "license": "MIT",
   "authors": [
     {
@@ -9,17 +9,11 @@
   ],
   "require": {
     "php": "^7.0",
-    "guzzlehttp/guzzle": "^6.0",
-    "react/promise": "^2.2",
-    "wyrihaximus/react-guzzle-psr7": "^1.0",
-    "ocramius/generated-hydrator": "^2.0",
-    "clue/block-react": "^1.1",
-    "reactivex/rxphp": "^1.2",
-    "react/cache": "^0.4.1",
     "league/climate": "^3.2",
     "nikic/php-parser": "^2.1",
-    "symfony/yaml": "^2.0||^3.0",
-    "doctrine/inflector": "^1.1"
+    "symfony/yaml": "^2.8||^3.0",
+    "doctrine/inflector": "^1.1",
+    "wyrihaximus/api-client": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.2.3",
@@ -29,12 +23,12 @@
   },
   "autoload": {
     "psr-4": {
-      "WyriHaximus\\ApiClient\\": "src/"
+      "WyriHaximus\\ApiClient\\Tools\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "WyriHaximus\\Tests\\ApiClient\\": "tests/"
+      "WyriHaximus\\Tests\\ApiClient\\Tools\\": "tests/"
     }
   },
   "bin": [

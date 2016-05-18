@@ -1,17 +1,17 @@
 # API Client Foundation for PHP 7
 
-[![Linux Build Status](https://appveyor-ci.org/WyriHaximus/php-api-client.svg?branch=master)](https://appveyor-ci.org/WyriHaximus/php-api-client)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/2pw9aha809sm5b36?svg=true)](https://ci.appveyor.com/project/WyriHaximus/php-api-client)
-[![Latest Stable Version](https://poser.pugx.org/WyriHaximus/api-client/v/stable.png)](https://packagist.org/packages/WyriHaximus/api-client)
-[![Total Downloads](https://poser.pugx.org/WyriHaximus/api-client/downloads.png)](https://packagist.org/packages/WyriHaximus/api-client)
-[![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client/?branch=master)
-[![License](https://poser.pugx.org/WyriHaximus/api-client/license.png)](https://packagist.org/packages/wyrihaximus/api-client)
-[![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/php-api-client/badge.svg)](https://appveyor-ci.org/WyriHaximus/php-api-client)
+[![Linux Build Status](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator.svg?branch=master)](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/2pw9aha809sm5b36?svg=true)](https://ci.appveyor.com/project/WyriHaximus/php-api-client-resource-generator)
+[![Latest Stable Version](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/v/stable.png)](https://packagist.org/packages/WyriHaximus/api-client-resource-generator)
+[![Total Downloads](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/downloads.png)](https://packagist.org/packages/WyriHaximus/api-client-resource-generator)
+[![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client-resource-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client-resource-generator/?branch=master)
+[![License](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/license.png)](https://packagist.org/packages/wyrihaximus/api-client-resource-generator)
+[![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/php-api-client-resource-generator/badge.svg)](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator)
 
 
 # Goals
 
-* Foundation for creating synchronous and asynchronous API clients 
+* Tool for easy wireframing of resources for `wyrihaximus/api-client` based API clients
 
 # License
 
