@@ -32,6 +32,6 @@
     }
   },
   "bin": [
-    "bin/api-client-resource-generator"
+    "api-client-resource-generator"
   ]
 }
