@@ -191,7 +191,6 @@ class ResourceGenerator
 
     protected function createExtendingClass(string $type, array $yaml)
     {
-
         $factory = new BuilderFactory;
 
         $class = $factory->class($yaml['class'])
@@ -218,7 +217,7 @@ class ResourceGenerator
                 )
             ));
 
-        $node = $factory->namespace($yaml['namespace'] . '\\' . $type )
+        $node = $factory->namespace($yaml['namespace'] . '\\' . $type)
             ->addStmt($factory->use($yaml['namespace'] . '\\' . $yaml['class'])->as('Base' . $yaml['class']))
             ->addStmt($class)
 
