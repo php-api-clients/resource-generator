@@ -181,6 +181,27 @@ class ResourceGenerator
         $class = $factory->class($yaml['class'])
             ->extend('Base' . $yaml['class']);
 
+        $class->addStmt($factory->method('refresh')
+            ->makePublic()
+            ->setReturnType($yaml['class'])
+            ->addStmt(
+                new Node\Stmt\Return_(
+                    new Node\Expr\MethodCall(
+                        new Node\Expr\Variable('this'),
+                        'wait',
+                        [
+                            new Node\Expr\MethodCall(
+                                new Node\Expr\Variable('this'),
+                                'callAsync',
+                                [
+                                    new Node\Scalar\String_('refresh'),
+                                ]
+                            ),
+                        ]
+                    )
+                )
+            ));
+
         $node = $factory->namespace($yaml['namespace'] . '\\' . $type )
             ->addStmt($factory->use($yaml['namespace'] . '\\' . $yaml['class'])->as('Base' . $yaml['class']))
             ->addStmt($class)
