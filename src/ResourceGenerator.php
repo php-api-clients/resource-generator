@@ -57,19 +57,35 @@ class ResourceGenerator
     {
         $yaml = $this->readYaml($this->climate->arguments->get('definition'));
         file_put_contents(
-            $this->climate->arguments->get('path') . DIRECTORY_SEPARATOR . $yaml['class'] . '.php',
+            $this->climate->arguments->get('path') .
+                DIRECTORY_SEPARATOR .
+                $yaml['class'] .
+                '.php',
             $this->createBaseClass($yaml)
         );
         file_put_contents(
-            $this->climate->arguments->get('path') . DIRECTORY_SEPARATOR . $yaml['class'] . 'Interface.php',
+            $this->climate->arguments->get('path') .
+                DIRECTORY_SEPARATOR .
+                $yaml['class'] .
+                'Interface.php',
             $this->createInterface($yaml)
         );
         file_put_contents(
-            $this->climate->arguments->get('path') . DIRECTORY_SEPARATOR . 'Async' . DIRECTORY_SEPARATOR . $yaml['class'] . '.php',
+            $this->climate->arguments->get('path') .
+                DIRECTORY_SEPARATOR .
+                'Async' .
+                DIRECTORY_SEPARATOR .
+                $yaml['class'] .
+                '.php',
             $this->createExtendingClass('Async', $yaml)
         );
         file_put_contents(
-            $this->climate->arguments->get('path') . DIRECTORY_SEPARATOR . 'Sync' . DIRECTORY_SEPARATOR . $yaml['class'] . '.php',
+            $this->climate->arguments->get('path') .
+                DIRECTORY_SEPARATOR .
+                'Sync' .
+                DIRECTORY_SEPARATOR .
+                $yaml['class'] .
+                '.php',
             $this->createExtendingClass('Sync', $yaml)
         );
     }
