@@ -1,7 +1,7 @@
 # API Client Foundation for PHP 7
 
-[![Linux Build Status](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator.svg?branch=master)](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/2pw9aha809sm5b36?svg=true)](https://ci.appveyor.com/project/WyriHaximus/php-api-client-resource-generator)
+[![Linux Build Status](https://travis-ci.org/WyriHaximus/php-api-client-resource-generator.svg?branch=master)](https://travis-ci.org/WyriHaximus/php-api-client-resource-generator)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/dvcu9l8rm6shy7t3?svg=true)](https://ci.appveyor.com/project/WyriHaximus/php-api-client-resource-generator)
 [![Latest Stable Version](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/v/stable.png)](https://packagist.org/packages/WyriHaximus/api-client-resource-generator)
 [![Total Downloads](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/downloads.png)](https://packagist.org/packages/WyriHaximus/api-client-resource-generator)
 [![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client-resource-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client-resource-generator/?branch=master)
