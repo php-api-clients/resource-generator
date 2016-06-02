@@ -8,10 +8,31 @@
 [![License](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/license.png)](https://packagist.org/packages/wyrihaximus/api-client-resource-generator)
 [![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/php-api-client-resource-generator/badge.svg)](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator)
 
-
 # Goals
 
 * Tool for easy wireframing of resources for `wyrihaximus/api-client` based API clients
+
+# Installation
+
+To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `^`.
+
+```
+composer require wyrihaximus/api-client-resource-generator 
+```
+
+# Usage
+
+Pas a `definition` `YAML` file and a `path` where to write the generated files.
+
+```
+./vendor/bin/api-client-resource-generator [definition] [path]
+```
+
+For example: 
+
+```
+./vendor/bin/api-client-resource-generator ./yaml/project.yaml ./src/Resource
+```
 
 # License
 
