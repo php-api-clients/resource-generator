@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WyriHaximus\ApiClient\Tools;
 
 use Doctrine\Common\Inflector\Inflector;
+use Exception;
 use League\CLImate\CLImate;
 use PhpParser\Builder\Method;
 use PhpParser\Builder\Property;
@@ -56,35 +57,35 @@ class ResourceGenerator
     public function run()
     {
         $yaml = $this->readYaml($this->climate->arguments->get('definition'));
-        file_put_contents(
+        $this->save(
             $this->climate->arguments->get('path') .
-                DIRECTORY_SEPARATOR .
-                $yaml['class'] .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
                 '.php',
             $this->createBaseClass($yaml)
         );
-        file_put_contents(
+        $this->save(
             $this->climate->arguments->get('path') .
-                DIRECTORY_SEPARATOR .
-                $yaml['class'] .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
                 'Interface.php',
             $this->createInterface($yaml)
         );
-        file_put_contents(
+        $this->save(
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
                 'Async' .
-                DIRECTORY_SEPARATOR .
-                $yaml['class'] .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
                 '.php',
             $this->createExtendingClass('Async', $yaml)
         );
-        file_put_contents(
+        $this->save(
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
                 'Sync' .
-                DIRECTORY_SEPARATOR .
-                $yaml['class'] .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
                 '.php',
             $this->createExtendingClass('Sync', $yaml)
         );
@@ -228,5 +229,18 @@ class ResourceGenerator
         return $prettyPrinter->prettyPrintFile([
             $node
         ]) . PHP_EOL;
+    }
+
+    protected function save(string $directory, string $fileName, string $fileContents)
+    {
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        if (!file_exists($directory)) {
+            throw new Exception('Unable to create: ' . $directory);
+        }
+
+        file_put_contents($directory . $fileName, $fileContents);
     }
 }
