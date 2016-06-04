@@ -31,9 +31,9 @@ before_install:
 
 ## Install or update dependencies
 install:
-  - if [ -z "$dependencies" ]; then composer install --prefer-dist; fi;
-  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
-  - if [ "$dependencies" = "highest" ]; then composer update --prefer-dist -n; fi;
+  - if [ -z "$dependencies" ]; then composer install --prefer-dist --profile; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist --profile -n; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update --prefer-dist --profile -n; fi;
   - composer show -i
 
 ## Run the actual test
