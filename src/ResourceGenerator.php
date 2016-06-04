@@ -233,6 +233,10 @@ class ResourceGenerator
 
     protected function save(string $directory, string $fileName, string $fileContents)
     {
+        if (file_exists($directory . $fileName)) {
+            return;
+        }
+
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
         }
