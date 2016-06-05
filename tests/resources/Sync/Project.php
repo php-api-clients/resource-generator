@@ -3,6 +3,7 @@
 namespace Example\Client\Resource\Sync;
 
 use Example\Client\Resource\Project as BaseProject;
+
 class Project extends BaseProject
 {
     public function refresh() : Project

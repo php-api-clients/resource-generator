@@ -3,37 +3,46 @@
 namespace Example\Client\Resource;
 
 use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
+
 abstract class Project implements ProjectInterface
 {
     use TransportAwareTrait;
+
     /**
      * @var int
      */
     protected $id;
+
     /**
      * @var string
      */
     protected $name;
+
     /**
      * @var string
      */
     protected $desription;
+
     /**
      * @var array
      */
     protected $config = array();
+
     /**
      * @var SplObjectStorage
      */
     protected $plugins;
+
     /**
      * @var DateTimeInterface
      */
     protected $created;
+
     /**
      * @var DateTimeInterface
      */
     protected $updated;
+
     /**
      * @return int
      */
@@ -41,6 +50,7 @@ abstract class Project implements ProjectInterface
     {
         return $this->id;
     }
+
     /**
      * @return string
      */
@@ -48,6 +58,7 @@ abstract class Project implements ProjectInterface
     {
         return $this->name;
     }
+
     /**
      * @return string
      */
@@ -55,6 +66,7 @@ abstract class Project implements ProjectInterface
     {
         return $this->desription;
     }
+
     /**
      * @return array
      */
@@ -62,6 +74,7 @@ abstract class Project implements ProjectInterface
     {
         return $this->config;
     }
+
     /**
      * @return SplObjectStorage
      */
@@ -69,6 +82,7 @@ abstract class Project implements ProjectInterface
     {
         return $this->plugins;
     }
+
     /**
      * @return DateTimeInterface
      */
@@ -76,6 +90,7 @@ abstract class Project implements ProjectInterface
     {
         return $this->created;
     }
+
     /**
      * @return DateTimeInterface
      */
