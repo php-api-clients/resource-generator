@@ -21,7 +21,7 @@ abstract class Project implements ProjectInterface
     /**
      * @var string
      */
-    protected $desription;
+    protected $description;
 
     /**
      * @var array
@@ -62,9 +62,9 @@ abstract class Project implements ProjectInterface
     /**
      * @return string
      */
-    public function desription() : string
+    public function description() : string
     {
-        return $this->desription;
+        return $this->description;
     }
 
     /**

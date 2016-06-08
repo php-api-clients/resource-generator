@@ -3,7 +3,7 @@ class: Project
 properties:
   id: int
   name: string
-  desription: string
+  description: string
   config:
     type: array
     default: []

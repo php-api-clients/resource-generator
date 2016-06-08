@@ -19,7 +19,7 @@ interface ProjectInterface extends ResourceInterface
     /**
      * @return string
      */
-    public function desription() : string;
+    public function description() : string;
 
     /**
      * @return array
