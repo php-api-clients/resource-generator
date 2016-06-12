@@ -26,12 +26,14 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . 'yaml' . DIRECTORY_SEPARATOR;
         $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR;
-        $definition = $yamlPath . 'project.yaml';
         $climate = Phake::mock(CLImate::class);
         $climate->arguments = Phake::mock(Manager::class);
-        Phake::when($climate->arguments)->get('definition')->thenReturn($definition);
         Phake::when($climate->arguments)->get('path')->thenReturn($this->temporaryDirectory);
-        (new ResourceGenerator($climate))->run();
+        foreach (['project', 'project-build'] as $yaml) {
+            $definition = $yamlPath . $yaml . '.yaml';
+            Phake::when($climate->arguments)->get('definition')->thenReturn($definition);
+            (new ResourceGenerator($climate))->run();
+        }
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->temporaryDirectory), RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
             if (!is_file($name)) {
