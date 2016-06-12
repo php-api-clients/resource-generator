@@ -12,16 +12,33 @@ use PhpParser\BuilderFactory;
 use PhpParser\PrettyPrinter;
 use PhpParser\Node;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigAwareInterface;
+use Symfony\CS\ConfigInterface;
+use Symfony\CS\FileCacheManager;
+use Symfony\CS\Fixer;
+use Symfony\CS\FixerInterface;
 
 class ResourceGenerator
 {
     protected $climate;
+
+    /**
+     * @var Fixer
+     */
+    protected $fixer;
+
+    /**
+     * @var array
+     */
+    protected $fixers;
 
     public function __construct(CLImate $climate)
     {
         $this->climate = $climate;
 
         $this->setUpArguments();
+        $this->setUpFixers();
     }
 
     protected function setUpArguments()
@@ -54,11 +71,57 @@ class ResourceGenerator
         ]);
     }
 
+    protected function setUpFixers()
+    {
+        $this->fixer = new Fixer();
+        $this->fixer->registerCustomFixers([
+            new Fixer\Symfony\ExtraEmptyLinesFixer(),
+            new Fixer\Symfony\SingleBlankLineBeforeNamespaceFixer(),
+            new Fixer\PSR0\Psr0Fixer(),
+            new Fixer\PSR1\EncodingFixer(),
+            new Fixer\PSR1\ShortTagFixer(),
+            new Fixer\PSR2\BracesFixer(),
+            new Fixer\PSR2\ElseifFixer(),
+            new Fixer\PSR2\EofEndingFixer(),
+            new Fixer\PSR2\FunctionCallSpaceFixer(),
+            new Fixer\PSR2\FunctionDeclarationFixer(),
+            new Fixer\PSR2\IndentationFixer(),
+            new Fixer\PSR2\LineAfterNamespaceFixer(),
+            new Fixer\PSR2\LinefeedFixer(),
+            new Fixer\PSR2\LowercaseConstantsFixer(),
+            new Fixer\PSR2\LowercaseKeywordsFixer(),
+            new Fixer\PSR2\MethodArgumentSpaceFixer(),
+            new Fixer\PSR2\MultipleUseFixer(),
+            new Fixer\PSR2\ParenthesisFixer(),
+            new Fixer\PSR2\PhpClosingTagFixer(),
+            new Fixer\PSR2\SingleLineAfterImportsFixer(),
+            new Fixer\PSR2\TrailingSpacesFixer(),
+            new Fixer\PSR2\VisibilityFixer(),
+            new Fixer\Contrib\NewlineAfterOpenTagFixer(),
+        ]);
+        $config = Config::create()->
+        fixers($this->fixer->getFixers())
+        ;
+        $this->fixer->addConfig($config);
+        $this->fixers = $this->prepareFixers($config);
+    }
+
     public function run()
     {
         $yaml = $this->readYaml($this->climate->arguments->get('definition'));
+
+        $class = explode('\\', $yaml['class']);
+        $namespace = explode('\\', $yaml['namespace']);
+
+        $yaml['class'] = array_pop($class);
+        $yaml['namespace'] = implode('\\', array_merge($namespace, $class));
+
+        $classNamespacePadding = implode(DIRECTORY_SEPARATOR, $class);
+
         $this->save(
             $this->climate->arguments->get('path') .
+                DIRECTORY_SEPARATOR .
+                $classNamespacePadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 '.php',
@@ -66,6 +129,8 @@ class ResourceGenerator
         );
         $this->save(
             $this->climate->arguments->get('path') .
+                DIRECTORY_SEPARATOR .
+                $classNamespacePadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 'Interface.php',
@@ -75,6 +140,8 @@ class ResourceGenerator
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
                 'Async' .
+                DIRECTORY_SEPARATOR .
+                $classNamespacePadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 '.php',
@@ -84,6 +151,8 @@ class ResourceGenerator
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
                 'Sync' .
+                DIRECTORY_SEPARATOR .
+                $classNamespacePadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 '.php',
@@ -233,18 +302,64 @@ class ResourceGenerator
 
     protected function save(string $directory, string $fileName, string $fileContents)
     {
+        $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $fileName);
         if (file_exists($directory . $fileName)) {
             return;
         }
 
-        if (!file_exists($directory)) {
-            mkdir($directory, 0777, true);
+        $path = $directory . $fileName;
+        $pathChunks = explode(DIRECTORY_SEPARATOR, $path);
+        array_pop($pathChunks);
+        $path = implode(DIRECTORY_SEPARATOR, $pathChunks);
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
         }
 
-        if (!file_exists($directory)) {
-            throw new Exception('Unable to create: ' . $directory);
+        if (!file_exists($path)) {
+            throw new Exception('Unable to create: ' . $path);
         }
 
         file_put_contents($directory . $fileName, $fileContents);
+
+        do {
+            usleep(500);
+        } while (!file_exists($directory . $fileName));
+
+        $this->applyPsr2($directory . $fileName);
+    }
+
+    protected function applyPsr2($fileName)
+    {
+        $file = new \SplFileInfo($fileName);
+        $this->fixer->fixFile(
+            $file,
+            $this->fixers,
+            false,
+            false,
+            new FileCacheManager(
+                false,
+                '',
+                $this->fixers
+            )
+        );
+    }
+
+
+    /**
+     * @param ConfigInterface $config
+     *
+     * @return FixerInterface[]
+     */
+    private function prepareFixers(ConfigInterface $config)
+    {
+        $fixers = $config->getFixers();
+
+        foreach ($fixers as $fixer) {
+            if ($fixer instanceof ConfigAwareInterface) {
+                $fixer->setConfig($config);
+            }
+        }
+
+        return $fixers;
     }
 }
