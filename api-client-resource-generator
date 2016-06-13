@@ -4,6 +4,9 @@
 use League\CLImate\CLImate;
 use WyriHaximus\ApiClient\Tools\ResourceGenerator;
 
+/**
+ * Locate and load autoloader
+ */
 foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
     if (file_exists($file)) {
         require $file;
@@ -11,9 +14,15 @@ foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/vendor/autoload.php'
     }
 }
 
+/**
+ * Instance application
+ */
 $climate = new CLImate();
 $resourceGenerator = new ResourceGenerator($climate);
 
+/**
+ * Run application
+ */
 try {
     @$climate->arguments->parse();
     $resourceGenerator->run();
