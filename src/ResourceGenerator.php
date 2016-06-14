@@ -18,6 +18,7 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use WyriHaximus\ApiClient\Resource\ResourceInterface;
 
 class ResourceGenerator
 {
@@ -217,7 +218,7 @@ class ResourceGenerator
         }
 
         $node = $factory->namespace($yaml['namespace'])
-            ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\ResourceInterface'))
+            ->addStmt($factory->use(ResourceInterface::class))
             ->addStmt($class)
             ->getNode()
         ;
