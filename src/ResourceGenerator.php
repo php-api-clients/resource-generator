@@ -98,6 +98,7 @@ class ResourceGenerator
             new Fixer\PSR2\TrailingSpacesFixer(),
             new Fixer\PSR2\VisibilityFixer(),
             new Fixer\Contrib\NewlineAfterOpenTagFixer(),
+            new EmptyLineAboveDocblocksFixer(),
         ]);
         $config = Config::create()->
         fixers($this->fixer->getFixers())
