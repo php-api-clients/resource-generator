@@ -112,18 +112,28 @@ class ResourceGenerator
     {
         $yaml = $this->readYaml($this->climate->arguments->get('definition'));
 
-        $class = explode('\\', $yaml['class']);
+        $namespacePadding = explode('\\', $yaml['class']);
         $namespace = explode('\\', $yaml['namespace']);
 
-        $yaml['class'] = array_pop($class);
-        $yaml['namespace'] = implode('\\', array_merge($namespace, $class));
+        $yaml['class'] = array_pop($namespacePadding);
+        $yaml['namespace'] = implode('\\', array_merge($namespace, $namespacePadding));
 
-        $classNamespacePadding = implode(DIRECTORY_SEPARATOR, $class);
+        $namespacePathPadding = implode(DIRECTORY_SEPARATOR, $namespacePadding);
+        $baseClass = implode(
+            '\\',
+            array_merge(
+                $namespace,
+                $namespacePadding,
+                [
+                    $yaml['class']
+                ]
+            )
+        );
 
         $this->save(
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
-                $classNamespacePadding .
+                $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 '.php',
@@ -132,7 +142,7 @@ class ResourceGenerator
         $this->save(
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
-                $classNamespacePadding .
+                $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 'Interface.php',
@@ -143,22 +153,48 @@ class ResourceGenerator
                 DIRECTORY_SEPARATOR .
                 'Async' .
                 DIRECTORY_SEPARATOR .
-                $classNamespacePadding .
+                $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 '.php',
-            $this->createExtendingClass('Async', $yaml)
+            $this->createExtendingClass(
+                implode(
+                    '\\',
+                    array_merge(
+                        $namespace,
+                        [
+                            'Async',
+                        ],
+                        $namespacePadding
+                    )
+                ),
+                $yaml['class'],
+                $baseClass
+            )
         );
         $this->save(
             $this->climate->arguments->get('path') .
                 DIRECTORY_SEPARATOR .
                 'Sync' .
                 DIRECTORY_SEPARATOR .
-                $classNamespacePadding .
+                $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
             $yaml['class'] .
                 '.php',
-            $this->createExtendingClass('Sync', $yaml)
+            $this->createExtendingClass(
+                implode(
+                    '\\',
+                    array_merge(
+                        $namespace,
+                        [
+                            'Sync',
+                        ],
+                        $namespacePadding
+                    )
+                ),
+                $yaml['class'],
+                $baseClass
+            )
         );
     }
 
@@ -261,16 +297,16 @@ class ResourceGenerator
             );
     }
 
-    protected function createExtendingClass(string $type, array $yaml)
+    protected function createExtendingClass(string $namespace, string $className, string $baseClass)
     {
         $factory = new BuilderFactory;
 
-        $class = $factory->class($yaml['class'])
-            ->extend('Base' . $yaml['class']);
+        $class = $factory->class($className)
+            ->extend('Base' . $className);
 
         $class->addStmt($factory->method('refresh')
             ->makePublic()
-            ->setReturnType($yaml['class'])
+            ->setReturnType($className)
             ->addStmt(
                 new Node\Stmt\Return_(
                     new Node\Expr\MethodCall(
@@ -289,8 +325,8 @@ class ResourceGenerator
                 )
             ));
 
-        $node = $factory->namespace($yaml['namespace'] . '\\' . $type)
-            ->addStmt($factory->use($yaml['namespace'] . '\\' . $yaml['class'])->as('Base' . $yaml['class']))
+        $node = $factory->namespace($namespace)
+            ->addStmt($factory->use($baseClass)->as('Base' . $className))
             ->addStmt($class)
 
             ->getNode()
