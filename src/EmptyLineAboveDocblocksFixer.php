@@ -18,9 +18,8 @@ class EmptyLineAboveDocblocksFixer extends AbstractFixer
             $token = $tokens[$index];
             $previousToken = $tokens[$index - 1];
             $sndPreviousToken = $tokens[$index - 2];
-            if (
-                $sndPreviousToken->getContent() !== '{' &&
-                substr($token->getContent(), 0 , 3) === '/**' &&
+            if ($sndPreviousToken->getContent() !== '{' &&
+                substr($token->getContent(), 0, 3) === '/**' &&
                 $previousToken->getLine() === $token->getLine() - 1
             ) {
                 $previousToken->setContent(PHP_EOL . $previousToken->getContent());
