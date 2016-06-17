@@ -34,6 +34,12 @@ For example:
 ./vendor/bin/api-client-resource-generator ./yaml/project.yaml ./src/Resource
 ```
 
+Generate multiple resources at once: 
+
+```
+./vendor/bin/api-client-resource-generator ./yaml/*.yaml ./src/Resource
+```
+
 # License
 
 The MIT License (MIT)
