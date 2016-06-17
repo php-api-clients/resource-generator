@@ -364,6 +364,8 @@ class ResourceGenerator
         } while (!file_exists($directory . $fileName));
 
         $this->applyPsr2($directory . $fileName);
+
+        $this->climate->to('out')->out($directory . $fileName);
     }
 
     protected function applyPsr2($fileName)
