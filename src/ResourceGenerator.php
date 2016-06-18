@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace WyriHaximus\ApiClient\Tools;
 
+use Aura\Cli\Context;
+use Aura\Cli\Stdio;
 use Doctrine\Common\Inflector\Inflector;
 use Exception;
-use League\CLImate\CLImate;
 use PhpParser\Builder\Method;
 use PhpParser\Builder\Property;
 use PhpParser\BuilderFactory;
@@ -22,7 +23,25 @@ use WyriHaximus\ApiClient\Resource\ResourceInterface;
 
 class ResourceGenerator
 {
-    protected $climate;
+    /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
+     * @var Stdio
+     */
+    protected $stdio;
+
+    /**
+     * @var array
+     */
+    protected $definitions = [];
+
+    /**
+     * @var string
+     */
+    protected $path;
 
     /**
      * @var Fixer
@@ -34,9 +53,10 @@ class ResourceGenerator
      */
     protected $fixers;
 
-    public function __construct(CLImate $climate)
+    public function __construct(Context $context, Stdio $stdio)
     {
-        $this->climate = $climate;
+        $this->context = $context;
+        $this->stdio = $stdio;
 
         $this->setUpArguments();
         $this->setUpFixers();
@@ -44,32 +64,17 @@ class ResourceGenerator
 
     protected function setUpArguments()
     {
-        $this->climate->arguments->add([
-            'definition' => [
-                'description' => 'YAML definition file',
-                'required'    => true,
-            ],
-            'path' => [
-                'description' => 'Path to the resource directory',
-                'required'    => true,
-            ],
-            'sync' => [
-                'prefix'       => 's',
-                'longPrefix'   => 'sync',
-                'defaultValue' => true,
-                'noValue'      => false,
-                'description'  => 'Don\'t generate Sync resource',
-                'castTo'       => 'bool',
-            ],
-            'async' => [
-                'prefix'       => 'as',
-                'longPrefix'   => 'async',
-                'defaultValue' => true,
-                'noValue'      => false,
-                'description'  => 'Don\'t generate Async resource',
-                'castTo'       => 'bool',
-            ],
-        ]);
+        $getOpt = $this->context->getopt(['s', 'a']);
+        $i = 0;
+        do {
+            $i++;
+            $opt = $getOpt->get($i);
+            if ($opt === null) {
+                break;
+            }
+            $this->definitions[] = $opt;
+        } while (true);
+        $this->path = array_pop($this->definitions);
     }
 
     protected function setUpFixers()
@@ -110,7 +115,14 @@ class ResourceGenerator
 
     public function run()
     {
-        $yaml = $this->readYaml($this->climate->arguments->get('definition'));
+        foreach ($this->definitions as $definition) {
+            $this->generateFromDefinition($definition);
+        }
+    }
+
+    public function generateFromDefinition($definition)
+    {
+        $yaml = $this->readYaml($definition);
 
         $namespacePadding = explode('\\', $yaml['class']);
         $namespace = explode('\\', $yaml['namespace']);
@@ -131,7 +143,7 @@ class ResourceGenerator
         );
 
         $this->save(
-            $this->climate->arguments->get('path') .
+            $this->path .
                 DIRECTORY_SEPARATOR .
                 $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
@@ -140,7 +152,7 @@ class ResourceGenerator
             $this->createBaseClass($yaml)
         );
         $this->save(
-            $this->climate->arguments->get('path') .
+            $this->path .
                 DIRECTORY_SEPARATOR .
                 $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
@@ -149,7 +161,7 @@ class ResourceGenerator
             $this->createInterface($yaml)
         );
         $this->save(
-            $this->climate->arguments->get('path') .
+            $this->path .
                 DIRECTORY_SEPARATOR .
                 'Async' .
                 DIRECTORY_SEPARATOR .
@@ -173,7 +185,7 @@ class ResourceGenerator
             )
         );
         $this->save(
-            $this->climate->arguments->get('path') .
+            $this->path .
                 DIRECTORY_SEPARATOR .
                 'Sync' .
                 DIRECTORY_SEPARATOR .
@@ -365,7 +377,7 @@ class ResourceGenerator
 
         $this->applyPsr2($directory . $fileName);
 
-        $this->climate->to('out')->out($directory . $fileName);
+        $this->stdio->outln($directory . $fileName);
     }
 
     protected function applyPsr2($fileName)
