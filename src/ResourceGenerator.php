@@ -64,7 +64,7 @@ class ResourceGenerator
 
     protected function setUpArguments()
     {
-        $getOpt = $this->context->getopt(['s', 'a']);
+        $getOpt = $this->context->getopt([]);
         $i = 0;
         do {
             $i++;

@@ -23,14 +23,14 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
         Phake::when($getopt)->get(2)->thenReturn('project-build.yaml');
         Phake::when($getopt)->get(3)->thenReturn('./');
         Phake::when($getopt)->get(4)->thenReturn(null);
-        Phake::when($context)->getopt(['s', 'a'])->thenReturn($getopt);
+        Phake::when($context)->getopt([])->thenReturn($getopt);
         new ResourceGenerator($context, $stdio);
         Phake::verify($getopt, Phake::never())->get(0);
         Phake::verify($getopt)->get(1);
         Phake::verify($getopt)->get(2);
         Phake::verify($getopt)->get(3);
         Phake::verify($getopt)->get(4);
-        Phake::verify($context)->getopt(['s', 'a']);
+        Phake::verify($context)->getopt([]);
     }
 
     public function testOutput()
@@ -44,7 +44,7 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
         Phake::when($getopt)->get(2)->thenReturn($yamlPath . 'project-build.yaml');
         Phake::when($getopt)->get(3)->thenReturn($this->temporaryDirectory);
         Phake::when($getopt)->get(4)->thenReturn(null);
-        Phake::when($context)->getopt(['s', 'a'])->thenReturn($getopt);
+        Phake::when($context)->getopt([])->thenReturn($getopt);
         (new ResourceGenerator($context, $stdio))->run();
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($resourcesPath), RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
