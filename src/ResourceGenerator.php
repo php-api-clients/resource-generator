@@ -116,7 +116,11 @@ class ResourceGenerator
     public function run()
     {
         foreach ($this->definitions as $definition) {
+            $this->stdio->outln('-----');
+            $this->stdio->outln('- Definition: ' . $definition);
+            $this->stdio->outln('-----');
             $this->generateFromDefinition($definition);
+            $this->stdio->outln('-----');
         }
     }
 
@@ -142,6 +146,7 @@ class ResourceGenerator
             )
         );
 
+        $this->stdio->out('Base class: generating');
         $this->save(
             $this->path .
                 DIRECTORY_SEPARATOR .
@@ -151,6 +156,8 @@ class ResourceGenerator
                 '.php',
             $this->createBaseClass($yaml)
         );
+
+        $this->stdio->out('Interface: generating');
         $this->save(
             $this->path .
                 DIRECTORY_SEPARATOR .
@@ -160,6 +167,8 @@ class ResourceGenerator
                 'Interface.php',
             $this->createInterface($yaml)
         );
+
+        $this->stdio->out('Async class: generating');
         $this->save(
             $this->path .
                 DIRECTORY_SEPARATOR .
@@ -184,6 +193,8 @@ class ResourceGenerator
                 $baseClass
             )
         );
+
+        $this->stdio->out('Sync class: generating');
         $this->save(
             $this->path .
                 DIRECTORY_SEPARATOR .
@@ -354,6 +365,7 @@ class ResourceGenerator
     {
         $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $fileName);
         if (file_exists($directory . $fileName)) {
+            $this->stdio->outln(', exists!');
             return;
         }
 
@@ -369,15 +381,16 @@ class ResourceGenerator
             throw new Exception('Unable to create: ' . $path);
         }
 
+        $this->stdio->out(', writing');
         file_put_contents($directory . $fileName, $fileContents);
 
         do {
             usleep(500);
         } while (!file_exists($directory . $fileName));
 
+        $this->stdio->out(', applying PSR-2');
         $this->applyPsr2($directory . $fileName);
-
-        $this->stdio->outln($directory . $fileName);
+        $this->stdio->outln(', done!');
     }
 
     protected function applyPsr2($fileName)
