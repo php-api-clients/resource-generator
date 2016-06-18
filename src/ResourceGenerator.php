@@ -146,17 +146,6 @@ class ResourceGenerator
             )
         );
 
-        $this->stdio->out('Base class: generating');
-        $this->save(
-            $this->path .
-                DIRECTORY_SEPARATOR .
-                $namespacePathPadding .
-                DIRECTORY_SEPARATOR,
-            $yaml['class'] .
-                '.php',
-            $this->createBaseClass($yaml)
-        );
-
         $this->stdio->out('Interface: generating');
         $this->save(
             $this->path .
@@ -166,6 +155,17 @@ class ResourceGenerator
             $yaml['class'] .
                 'Interface.php',
             $this->createInterface($yaml)
+        );
+
+        $this->stdio->out('Base class: generating');
+        $this->save(
+            $this->path .
+                DIRECTORY_SEPARATOR .
+                $namespacePathPadding .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
+                '.php',
+            $this->createBaseClass($yaml)
         );
 
         $this->stdio->out('Async class: generating');
