@@ -140,7 +140,7 @@ class ResourceGenerator
             throw new \InvalidArgumentException('Path "' . $this->path . '" doesn\'t exist');
         }
 
-        if (is_dir($this->path)) {
+        if (!is_dir($this->path)) {
             throw new \InvalidArgumentException('Path "' . $this->path . '" isn\'t a directory');
         }
 
