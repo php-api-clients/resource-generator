@@ -420,6 +420,9 @@ class ResourceGenerator
         $this->stdio->outln(', done!');
     }
 
+    /**
+     * @param string $fileName
+     */
     protected function applyPsr2($fileName)
     {
         $file = new \SplFileInfo($fileName);
