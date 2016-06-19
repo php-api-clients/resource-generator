@@ -34,6 +34,18 @@ try {
     $cliStdio->errln($message);
     $cliStdio->errln(str_pad(' ', strlen($message)));
 
+    $cliStdio->outln('USAGE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator <definition1> [<definition1>] <path>');
+    $cliStdio->outln('');
+    $cliStdio->outln('SINGLE EXAMPLE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/resource.yaml ./src/Resource/');
+    $cliStdio->outln('');
+    $cliStdio->outln('MULTI EXAMPLE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/resource-a.yaml ./yaml/resource-b.yaml ./src/Resource/');
+    $cliStdio->outln('');
+    $cliStdio->outln('WILDCARD EXAMPLE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/*.yaml ./src/Resource/');
+
     exit(Status::USAGE);
 }
 
