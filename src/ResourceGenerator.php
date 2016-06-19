@@ -137,11 +137,11 @@ class ResourceGenerator
         }
 
         if (!file_exists($this->path)) {
-            throw new \InvalidArgumentException('Path doesn\'t exist');
+            throw new \InvalidArgumentException('Path "' . $this->path . '" doesn\'t exist');
         }
 
         if (is_dir($this->path)) {
-            throw new \InvalidArgumentException('Path isn\'t a directory');
+            throw new \InvalidArgumentException('Path "' . $this->path . '" isn\'t a directory');
         }
 
         foreach ($this->definitions as $definition) {
