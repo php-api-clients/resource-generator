@@ -35,6 +35,8 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testOutput()
     {
+        mkdir($this->temporaryDirectory);
+
         $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . 'yaml' . DIRECTORY_SEPARATOR;
         $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR;
         $context = Phake::mock(Context::class);
