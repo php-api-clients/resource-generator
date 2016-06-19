@@ -35,8 +35,6 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testOutput()
     {
-        mkdir($this->temporaryDirectory);
-
         $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . 'yaml' . DIRECTORY_SEPARATOR;
         $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR;
         $context = Phake::mock(Context::class);
@@ -69,6 +67,7 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->temporaryDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('wyrihaximus-php-api-client-resource-generator-', true) . DIRECTORY_SEPARATOR;
+        mkdir($this->temporaryDirectory);
     }
 
     public function tearDown()
