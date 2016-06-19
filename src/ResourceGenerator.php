@@ -115,12 +115,39 @@ class ResourceGenerator
 
     public function run()
     {
+        $this->checkValidity();
+
         foreach ($this->definitions as $definition) {
             $this->stdio->outln('-----');
             $this->stdio->outln('- Definition: ' . $definition);
             $this->stdio->outln('-----');
             $this->generateFromDefinition($definition);
             $this->stdio->outln('-----');
+        }
+    }
+
+    public function checkValidity()
+    {
+        if ($this->path === null) {
+            throw new \InvalidArgumentException('No path set');
+        }
+
+        if (!file_exists($this->path)) {
+            throw new \InvalidArgumentException('Path doesn\'t exist');
+        }
+
+        if (is_dir($this->path)) {
+            throw new \InvalidArgumentException('Path isn\'t a directory');
+        }
+
+        if (count($this->definitions) < 1) {
+            throw new \InvalidArgumentException('Not enough definitions');
+        }
+
+        foreach ($this->definitions as $definition) {
+            if (!file_exists($definition)) {
+                throw new \InvalidArgumentException('Definition "' . $definition . '" doesn\'t exist');
+            }
         }
     }
 
