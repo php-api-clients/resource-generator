@@ -1,7 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-use League\CLImate\CLImate;
+use Aura\Cli\CliFactory;
+use Aura\Cli\Status;
 use WyriHaximus\ApiClient\Tools\ResourceGenerator;
 
 /**
@@ -17,20 +18,35 @@ foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/vendor/autoload.php'
 /**
  * Instance application
  */
-$climate = new CLImate();
-$resourceGenerator = new ResourceGenerator($climate);
+$cliFactory = new CliFactory();
+$cliContext = $cliFactory->newContext($GLOBALS);
+$cliStdio = $cliFactory->newStdio();
+$resourceGenerator = new ResourceGenerator($cliContext, $cliStdio);
 
 /**
  * Run application
  */
 try {
-    @$climate->arguments->parse();
     $resourceGenerator->run();
 } catch (Exception $e) {
     $message = $e->getMessage();
-    $climate->backgroundRed(str_pad(' ', strlen($message)));
-    $climate->backgroundRed($message);
-    $climate->backgroundRed(str_pad(' ', strlen($message)));
-    $climate->br();
-    $climate->usage();
+    $cliStdio->errln(str_pad(' ', strlen($message)));
+    $cliStdio->errln($message);
+    $cliStdio->errln(str_pad(' ', strlen($message)));
+
+    $cliStdio->outln('USAGE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator <definition1> [<definition1>] <path>');
+    $cliStdio->outln('');
+    $cliStdio->outln('SINGLE EXAMPLE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/resource.yaml ./src/Resource/');
+    $cliStdio->outln('');
+    $cliStdio->outln('MULTI EXAMPLE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/resource-a.yaml ./yaml/resource-b.yaml ./src/Resource/');
+    $cliStdio->outln('');
+    $cliStdio->outln('WILDCARD EXAMPLE');
+    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/*.yaml ./src/Resource/');
+
+    exit(Status::USAGE);
 }
+
+exit(Status::SUCCESS);

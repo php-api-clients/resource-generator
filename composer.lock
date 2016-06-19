@@ -4,9 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dca5b4693f97decc8a2236635a4c77aa",
-    "content-hash": "258d0837e893fc816fb9bbda667132e3",
+    "hash": "5ac0c759ff179eb8f892c58eb5ea68f4",
+    "content-hash": "e0ce6be254f53d77c8f4d225e70b73a7",
     "packages": [
+        {
+            "name": "aura/cli",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auraphp/Aura.Cli.git",
+                "reference": "b550cd79beff793ec5feeea248ccd4ba537c8603"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/auraphp/Aura.Cli/zipball/b550cd79beff793ec5feeea248ccd4ba537c8603",
+                "reference": "b550cd79beff793ec5feeea248ccd4ba537c8603",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "aura/di": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "aura": {
+                    "type": "library",
+                    "config": {
+                        "common": "Aura\\Cli\\_Config\\Common"
+                    }
+                },
+                "branch-alias": {
+                    "dev-develop-2": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aura\\Cli\\": "src/",
+                    "Aura\\Cli\\_Config\\": "config/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Aura.Cli Contributors",
+                    "homepage": "https://github.com/auraphp/Aura.Cli/contributors"
+                }
+            ],
+            "description": "Provides the equivalent of request (Context) and response (Stdio) classes for a command line environment, including Getopt support.",
+            "homepage": "https://github.com/auraphp/Aura.Cli",
+            "keywords": [
+                "cli",
+                "command",
+                "command line",
+                "getopt",
+                "options",
+                "stdio"
+            ],
+            "time": "2015-03-27 17:23:08"
+        },
         {
             "name": "clue/block-react",
             "version": "v1.1.0",
@@ -392,57 +452,6 @@
                 "uri"
             ],
             "time": "2016-04-13 19:56:01"
-        },
-        {
-            "name": "league/climate",
-            "version": "3.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/climate.git",
-                "reference": "b103fc8faa3780c802cc507d5f0ff534ecc94fb5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/climate/zipball/b103fc8faa3780c802cc507d5f0ff534ecc94fb5",
-                "reference": "b103fc8faa3780c802cc507d5f0ff534ecc94fb5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "seld/cli-prompt": "~1.0"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "~1.4",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~4.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\CLImate\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joe Tannenbaum",
-                    "email": "hey@joe.codes",
-                    "homepage": "http://joe.codes/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP's best friend for the terminal. CLImate allows you to easily output colored text, special formats, and more.",
-            "keywords": [
-                "cli",
-                "colors",
-                "command",
-                "php",
-                "terminal"
-            ],
-            "time": "2016-04-04 20:24:59"
         },
         {
             "name": "nikic/php-parser",
@@ -1159,54 +1168,6 @@
                 "diff"
             ],
             "time": "2015-12-08 07:14:41"
-        },
-        {
-            "name": "seld/cli-prompt",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/cli-prompt.git",
-                "reference": "8cbe10923cae5bcd7c5a713f6703fc4727c8c1b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/cli-prompt/zipball/8cbe10923cae5bcd7c5a713f6703fc4727c8c1b4",
-                "reference": "8cbe10923cae5bcd7c5a713f6703fc4727c8c1b4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Seld\\CliPrompt\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be"
-                }
-            ],
-            "description": "Allows you to prompt for user input on the command line, and optionally hide the characters they type",
-            "keywords": [
-                "cli",
-                "console",
-                "hidden",
-                "input",
-                "prompt"
-            ],
-            "time": "2016-04-18 09:31:41"
         },
         {
             "name": "symfony/console",

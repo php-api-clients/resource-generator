@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace WyriHaximus\Tests\ApiClient\Transport;
 
-use League\CLImate\Argument\Manager;
-use League\CLImate\CLImate;
+use Aura\Cli\Context;
+use Aura\Cli\Stdio;
 use Phake;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -16,32 +16,45 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $climate = Phake::mock(CLImate::class);
-        $climate->arguments = Phake::mock(Manager::class);
-        new ResourceGenerator($climate);
-        Phake::verify($climate->arguments)->add($this->isType('array'));
+        $context = Phake::mock(Context::class);
+        $stdio = Phake::mock(Stdio::class);
+        $getopt = Phake::mock(Context\Getopt::class);
+        Phake::when($getopt)->get(1)->thenReturn('project.yaml');
+        Phake::when($getopt)->get(2)->thenReturn('project-build.yaml');
+        Phake::when($getopt)->get(3)->thenReturn('./');
+        Phake::when($getopt)->get(4)->thenReturn(null);
+        Phake::when($context)->getopt([])->thenReturn($getopt);
+        new ResourceGenerator($context, $stdio);
+        Phake::verify($getopt, Phake::never())->get(0);
+        Phake::verify($getopt)->get(1);
+        Phake::verify($getopt)->get(2);
+        Phake::verify($getopt)->get(3);
+        Phake::verify($getopt)->get(4);
+        Phake::verify($context)->getopt([]);
     }
 
     public function testOutput()
     {
         $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . 'yaml' . DIRECTORY_SEPARATOR;
         $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR;
-        $climate = Phake::mock(CLImate::class);
-        $climate->arguments = Phake::mock(Manager::class);
-        Phake::when($climate->arguments)->get('path')->thenReturn($this->temporaryDirectory);
-        foreach (['project', 'project-build'] as $yaml) {
-            $definition = $yamlPath . $yaml . '.yaml';
-            Phake::when($climate->arguments)->get('definition')->thenReturn($definition);
-            (new ResourceGenerator($climate))->run();
-        }
-        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->temporaryDirectory), RecursiveIteratorIterator::SELF_FIRST);
+        $context = Phake::mock(Context::class);
+        $stdio = Phake::mock(Stdio::class);
+        $getopt = Phake::mock(Context\Getopt::class);
+        Phake::when($getopt)->get(1)->thenReturn($yamlPath . 'project.yaml');
+        Phake::when($getopt)->get(2)->thenReturn($yamlPath . 'project-build.yaml');
+        Phake::when($getopt)->get(3)->thenReturn($this->temporaryDirectory);
+        Phake::when($getopt)->get(4)->thenReturn(null);
+        Phake::when($context)->getopt([])->thenReturn($getopt);
+        (new ResourceGenerator($context, $stdio))->run();
+        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($resourcesPath), RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
             if (!is_file($name)) {
                 continue;
             }
 
-            $objectPath = substr($name, strlen($this->temporaryDirectory));
+            $objectPath = substr($name, strlen($resourcesPath));
 
+            $this->assertFileExists($this->temporaryDirectory . $objectPath);
             $this->assertSame(
                 file_get_contents($resourcesPath . $objectPath),
                 file_get_contents($this->temporaryDirectory . $objectPath),
@@ -54,6 +67,7 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->temporaryDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('wyrihaximus-php-api-client-resource-generator-', true) . DIRECTORY_SEPARATOR;
+        mkdir($this->temporaryDirectory);
     }
 
     public function tearDown()
