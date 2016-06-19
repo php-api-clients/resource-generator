@@ -128,6 +128,10 @@ class ResourceGenerator
 
     public function checkValidity()
     {
+        if (count($this->definitions) < 1) {
+            throw new \InvalidArgumentException('Not enough arguments');
+        }
+
         if ($this->path === null) {
             throw new \InvalidArgumentException('No path set');
         }
@@ -138,10 +142,6 @@ class ResourceGenerator
 
         if (is_dir($this->path)) {
             throw new \InvalidArgumentException('Path isn\'t a directory');
-        }
-
-        if (count($this->definitions) < 1) {
-            throw new \InvalidArgumentException('Not enough definitions');
         }
 
         foreach ($this->definitions as $definition) {
