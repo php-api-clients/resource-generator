@@ -12,6 +12,9 @@ use WyriHaximus\ApiClient\Tools\ResourceGenerator;
 
 class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var string
+     */
     protected $temporaryDirectory;
 
     public function testConstruct()
@@ -76,7 +79,7 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->rmdir($this->temporaryDirectory);
     }
 
-    protected function rmdir($dir)
+    protected function rmdir(string $dir)
     {
         if (!file_exists($dir)) {
             return;
