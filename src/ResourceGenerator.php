@@ -151,7 +151,7 @@ class ResourceGenerator
         }
     }
 
-    public function generateFromDefinition($definition)
+    public function generateFromDefinition(string $definition)
     {
         $yaml = $this->readYaml($definition);
 
@@ -253,7 +253,7 @@ class ResourceGenerator
         return Yaml::parse(file_get_contents($filename));
     }
 
-    protected function createBaseClass(array $yaml)
+    protected function createBaseClass(array $yaml): string
     {
         $factory = new BuilderFactory;
 
@@ -288,7 +288,7 @@ class ResourceGenerator
         ]) . PHP_EOL;
     }
 
-    protected function createInterface(array $yaml)
+    protected function createInterface(array $yaml): string
     {
         $factory = new BuilderFactory;
 
@@ -347,7 +347,7 @@ class ResourceGenerator
             );
     }
 
-    protected function createExtendingClass(string $namespace, string $className, string $baseClass)
+    protected function createExtendingClass(string $namespace, string $className, string $baseClass): string
     {
         $factory = new BuilderFactory;
 
@@ -445,7 +445,7 @@ class ResourceGenerator
      *
      * @return FixerInterface[]
      */
-    private function prepareFixers(ConfigInterface $config)
+    private function prepareFixers(ConfigInterface $config): array
     {
         $fixers = $config->getFixers();
 
