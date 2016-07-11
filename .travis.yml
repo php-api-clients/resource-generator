@@ -29,7 +29,6 @@ matrix:
       env: dependencies=highest
   allow_failures:
     - php: hhvm
-    - php: nightly
 
 ## Update composer and configure authentication token
 before_install:
