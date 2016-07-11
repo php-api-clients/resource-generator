@@ -442,7 +442,7 @@ class ResourceGenerator
             $fileName,
             str_replace(
                 '<?php',
-                "<?php\ndeclare(strict_types=1);",
+                '<?php' . PHP_EOL . 'declare(strict_types=1);'',
                 file_get_contents(
                     $fileName
                 )
