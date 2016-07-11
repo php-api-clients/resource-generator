@@ -58,8 +58,8 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
             $objectPath = substr($name, strlen($resourcesPath));
 
             $this->assertFileExists($this->temporaryDirectory . $objectPath);
-            $this->assertSame(
-                file_get_contents($resourcesPath . $objectPath),
+            $this->assertTrue(
+                file_get_contents($resourcesPath . $objectPath) == 
                 file_get_contents($this->temporaryDirectory . $objectPath),
                 $objectPath
             );
