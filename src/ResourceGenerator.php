@@ -437,6 +437,17 @@ class ResourceGenerator
                 $this->fixers
             )
         );
+
+        file_put_contents(
+            $fileName,
+            str_replace(
+                '<?php',
+                "<?php\r\ndeclare(strict_types=1);",
+                file_get_contents(
+                    $fileName
+                )
+            )
+        );
     }
 
 
