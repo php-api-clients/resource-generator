@@ -7,18 +7,15 @@ use Aura\Cli\Context;
 use Aura\Cli\Stdio;
 use Doctrine\Common\Inflector\Inflector;
 use Exception;
+use PhpCsFixer\Config;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Fixer;
 use PhpParser\Builder\Method;
 use PhpParser\Builder\Property;
 use PhpParser\BuilderFactory;
 use PhpParser\PrettyPrinter;
 use PhpParser\Node;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\CS\Config\Config;
-use Symfony\CS\ConfigAwareInterface;
-use Symfony\CS\ConfigInterface;
-use Symfony\CS\FileCacheManager;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerInterface;
 use WyriHaximus\ApiClient\Resource\ResourceInterface;
 
 class ResourceGenerator
@@ -79,32 +76,32 @@ class ResourceGenerator
 
     protected function setUpFixers()
     {
-        $this->fixer = new Fixer();
+        $this->fixer = FixerFactory::create();
         $this->fixer->registerCustomFixers([
-            new Fixer\Symfony\ExtraEmptyLinesFixer(),
-            new Fixer\Symfony\SingleBlankLineBeforeNamespaceFixer(),
-            new Fixer\PSR0\Psr0Fixer(),
-            new Fixer\PSR1\EncodingFixer(),
-            new Fixer\PSR1\ShortTagFixer(),
-            new Fixer\PSR2\BracesFixer(),
-            new Fixer\PSR2\ElseifFixer(),
-            new Fixer\PSR2\EofEndingFixer(),
-            new Fixer\PSR2\FunctionCallSpaceFixer(),
-            new Fixer\PSR2\FunctionDeclarationFixer(),
-            new Fixer\PSR2\IndentationFixer(),
-            new Fixer\PSR2\LineAfterNamespaceFixer(),
-            new Fixer\PSR2\LinefeedFixer(),
-            new Fixer\PSR2\LowercaseConstantsFixer(),
-            new Fixer\PSR2\LowercaseKeywordsFixer(),
-            new Fixer\PSR2\MethodArgumentSpaceFixer(),
-            new Fixer\PSR2\MultipleUseFixer(),
-            new Fixer\PSR2\ParenthesisFixer(),
-            new Fixer\PSR2\PhpClosingTagFixer(),
-            new Fixer\PSR2\SingleLineAfterImportsFixer(),
-            new Fixer\PSR2\TrailingSpacesFixer(),
-            new Fixer\PSR2\VisibilityFixer(),
-            new Fixer\Contrib\NewlineAfterOpenTagFixer(),
-            new EmptyLineAboveDocblocksFixer(),
+            //new ExtraEmptyLinesFixer(),
+            //new SingleBlankLineBeforeNamespaceFixer(),
+            new Fixer\Basic\Psr0Fixer(),
+            new Fixer\Basic\EncodingFixer(),
+            //new ShortTagFixer(),
+            new Fixer\Basic\BracesFixer(),
+            new Fixer\ControlStructure\ElseifFixer(),
+            //new EofEndingFixer(),
+            //new FunctionCallSpaceFixer(),
+            new Fixer\FunctionNotation\FunctionDeclarationFixer(),
+            new Fixer\Whitespace\NoTabIndentationFixer(),
+            new Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(),
+            //new LinefeedFixer(),
+            new Fixer\Casing\LowercaseConstantsFixer(),
+            new Fixer\Casing\LowercaseKeywordsFixer(),
+            new Fixer\FunctionNotation\MethodArgumentSpaceFixer(),
+            //new MultipleUseFixer(),
+            new Fixer\Whitespace\NoSpacesInsideParenthesisFixer(),
+            //new PhpClosingTagFixer(),
+            new Fixer\Import\SingleLineAfterImportsFixer(),
+            //new TrailingSpacesFixer(),
+            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+            //new NewlineAfterOpenTagFixer(),
+            //new EmptyLineAboveDocblocksFixer(),
         ]);
         $config = Config::create()->
         fixers($this->fixer->getFixers())
