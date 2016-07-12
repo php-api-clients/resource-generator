@@ -13,7 +13,7 @@
     "symfony/yaml": "^2.8||^3.0",
     "doctrine/inflector": "^1.1",
     "wyrihaximus/api-client": "dev-master",
-    "friendsofphp/php-cs-fixer": "^1.11",
+    "friendsofphp/php-cs-fixer": "dev-master#7a6f1a4af13158299a59536b351774af9b3bd0ab",
     "aura/cli": "^2.1"
   },
   "require-dev": {
