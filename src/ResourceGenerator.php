@@ -441,7 +441,7 @@ class ResourceGenerator
         file_put_contents(
             $fileName,
             str_replace(
-                '<?php ',
+                '<?php',
                 '<?php declare(strict_types=1);',
                 file_get_contents(
                     $fileName
