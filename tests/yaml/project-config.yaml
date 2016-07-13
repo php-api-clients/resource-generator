@@ -1,0 +1,7 @@
+namespace: Example\Client\Resource
+class: Project\Config
+properties:
+  a: string
+  b: string
+  c: string
+  d: string
