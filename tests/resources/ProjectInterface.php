@@ -22,9 +22,14 @@ interface ProjectInterface extends ResourceInterface
     public function description() : string;
 
     /**
-     * @return array
+     * @return Project\Build
      */
-    public function config() : array;
+    public function build() : Project\Build;
+
+    /**
+     * @return Project\Config
+     */
+    public function config() : Project\Config;
 
     /**
      * @return SplObjectStorage

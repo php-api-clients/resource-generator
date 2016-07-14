@@ -2,8 +2,12 @@
 
 namespace Example\Client\Resource;
 
+use WyriHaximus\ApiClient\Annotations\Nested;
 use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
 
+/**
+ * @Nested(build="Project\Build", config="Project\Config")
+ */
 abstract class Project implements ProjectInterface
 {
     use TransportAwareTrait;
@@ -24,9 +28,14 @@ abstract class Project implements ProjectInterface
     protected $description;
 
     /**
-     * @var array
+     * @var Project\Build
      */
-    protected $config = array();
+    protected $build;
+
+    /**
+     * @var Project\Config
+     */
+    protected $config;
 
     /**
      * @var SplObjectStorage
@@ -68,9 +77,17 @@ abstract class Project implements ProjectInterface
     }
 
     /**
-     * @return array
+     * @return Project\Build
      */
-    public function config() : array
+    public function build() : Project\Build
+    {
+        return $this->build;
+    }
+
+    /**
+     * @return Project\Config
+     */
+    public function config() : Project\Config
     {
         return $this->config;
     }
