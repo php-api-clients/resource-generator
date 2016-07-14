@@ -2,7 +2,6 @@
 
 namespace Example\Client\Resource\Project;
 
-use WyriHaximus\ApiClient\Annotations\Nested;
 use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
 
 abstract class Config implements ConfigInterface
