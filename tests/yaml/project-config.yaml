@@ -4,4 +4,6 @@ properties:
   a: string
   b: string
   c: string
-  d: string
+  d:
+    type: string
+    default: 'abcd'

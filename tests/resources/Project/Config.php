@@ -26,7 +26,7 @@ abstract class Config implements ConfigInterface
     /**
      * @var string
      */
-    protected $d;
+    protected $d = 'abcd';
 
     /**
      * @return string
