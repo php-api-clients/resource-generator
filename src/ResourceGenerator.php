@@ -19,6 +19,7 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use WyriHaximus\ApiClient\Annotations\Nested;
 use WyriHaximus\ApiClient\Resource\ResourceInterface;
 
 class ResourceGenerator
@@ -260,6 +261,16 @@ class ResourceGenerator
         $class = $factory->class($yaml['class'])
             ->implement($yaml['class'] . 'Interface')
             ->makeAbstract();
+
+        if (isset($yaml['nested'])) {
+            $nestedResources = [];
+            foreach ($yaml['nested'] as $key => $resource) {
+                $nestedResources[] = $key . '="' . $resource . '"';
+            }
+            $docBlock = "/**\r\n * @Nested(" . implode(', ', $nestedResources) . ")\r\n */";
+            $class->setDocComment($docBlock);
+        }
+
         $class->addStmt(
             new Node\Stmt\TraitUse([
                 new Node\Name('TransportAwareTrait')
@@ -275,12 +286,18 @@ class ResourceGenerator
             $class->addStmt($this->createMethod($factory, $type, $name, $details));
         }
 
-        $node = $factory->namespace($yaml['namespace'])
+        $stmt = $factory->namespace($yaml['namespace']);
+        if (isset($yaml['nested'])) {
+            $stmt = $stmt->addStmt(
+                $factory->use(Nested::class)
+            );
+        }
+        $stmt
             ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\TransportAwareTrait'))
             ->addStmt($class)
-
-            ->getNode()
         ;
+
+        $node = $stmt->getNode();
 
         $prettyPrinter = new PrettyPrinter\Standard();
         return $prettyPrinter->prettyPrintFile([
