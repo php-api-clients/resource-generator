@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f0cdec6febf0c980f6d5467f5246e615",
-    "content-hash": "ac0f699541b95ecf333ab71329f73552",
+    "hash": "5ac0c759ff179eb8f892c58eb5ea68f4",
+    "content-hash": "e0ce6be254f53d77c8f4d225e70b73a7",
     "packages": [
         {
             "name": "aura/cli",
@@ -1717,16 +1717,16 @@
         },
         {
             "name": "wyrihaximus/api-client",
-            "version": "dev-feature-annotations-for-nested-resources",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-api-client.git",
-                "reference": "ad655df70608e328b1be11659abf6e2d4d26c661"
+                "reference": "f788ea1475493ce4f21dd9784a8b779b45963e2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-api-client/zipball/ad655df70608e328b1be11659abf6e2d4d26c661",
-                "reference": "ad655df70608e328b1be11659abf6e2d4d26c661",
+                "url": "https://api.github.com/repos/WyriHaximus/php-api-client/zipball/f788ea1475493ce4f21dd9784a8b779b45963e2c",
+                "reference": "f788ea1475493ce4f21dd9784a8b779b45963e2c",
                 "shasum": ""
             },
             "require": {
@@ -1769,7 +1769,7 @@
                     "email": "ceesjank@gmail.com"
                 }
             ],
-            "time": "2016-07-13 06:03:56"
+            "time": "2016-07-15 19:31:57"
         },
         {
             "name": "wyrihaximus/react-guzzle-http-client",
