@@ -1,12 +1,14 @@
 namespace: Example\Client\Resource
 class: Project
+nested:
+  build: Project\Build
+  config: Project\Config
 properties:
   id: int
   name: string
   description: string
-  config:
-    type: array
-    default: []
+  build: Project\Build
+  config: Project\Config
   plugins: SplObjectStorage
   created: DateTimeInterface
   updated: DateTimeInterface

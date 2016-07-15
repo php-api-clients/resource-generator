@@ -45,8 +45,9 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
         $getopt = Phake::mock(Context\Getopt::class);
         Phake::when($getopt)->get(1)->thenReturn($yamlPath . 'project.yaml');
         Phake::when($getopt)->get(2)->thenReturn($yamlPath . 'project-build.yaml');
-        Phake::when($getopt)->get(3)->thenReturn($this->temporaryDirectory);
-        Phake::when($getopt)->get(4)->thenReturn(null);
+        Phake::when($getopt)->get(3)->thenReturn($yamlPath . 'project-config.yaml');
+        Phake::when($getopt)->get(4)->thenReturn($this->temporaryDirectory);
+        Phake::when($getopt)->get(5)->thenReturn(null);
         Phake::when($context)->getopt([])->thenReturn($getopt);
         (new ResourceGenerator($context, $stdio))->run();
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($resourcesPath), RecursiveIteratorIterator::SELF_FIRST);
