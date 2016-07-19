@@ -22,9 +22,14 @@ interface ProjectInterface extends ResourceInterface
     public function description() : string;
 
     /**
+     * @return array
+     */
+    public function builds() : array;
+
+    /**
      * @return Project\Build
      */
-    public function build() : Project\Build;
+    public function latestBuild() : Project\Build;
 
     /**
      * @return Project\Config

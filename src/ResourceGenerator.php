@@ -19,6 +19,7 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
+use WyriHaximus\ApiClient\Annotations\Collection;
 use WyriHaximus\ApiClient\Annotations\Nested;
 use WyriHaximus\ApiClient\Resource\ResourceInterface;
 
@@ -262,13 +263,26 @@ class ResourceGenerator
             ->implement($yaml['class'] . 'Interface')
             ->makeAbstract();
 
+        $docBlock = [];
+
+        if (isset($yaml['collection'])) {
+            $nestedResources = [];
+            foreach ($yaml['collection'] as $key => $resource) {
+                $nestedResources[] = $key . '="' . $resource . '"';
+            }
+            $docBlock[] = '@Collection(' . implode(', ', $nestedResources) . ')';
+        }
+
         if (isset($yaml['nested'])) {
             $nestedResources = [];
             foreach ($yaml['nested'] as $key => $resource) {
                 $nestedResources[] = $key . '="' . $resource . '"';
             }
-            $docBlock = "/**\r\n * @Nested(" . implode(', ', $nestedResources) . ")\r\n */";
-            $class->setDocComment($docBlock);
+            $docBlock[] = '@Nested(' . implode(', ', $nestedResources) . ')';
+        }
+
+        if (count($docBlock) > 0) {
+            $class->setDocComment("/**\r\n * " . implode("\r\n * ", $docBlock) . "\r\n */");
         }
 
         $class->addStmt(
@@ -287,6 +301,11 @@ class ResourceGenerator
         }
 
         $stmt = $factory->namespace($yaml['namespace']);
+        if (isset($yaml['collection'])) {
+            $stmt = $stmt->addStmt(
+                $factory->use(Collection::class)
+            );
+        }
         if (isset($yaml['nested'])) {
             $stmt = $stmt->addStmt(
                 $factory->use(Nested::class)
