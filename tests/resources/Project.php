@@ -2,11 +2,13 @@
 
 namespace Example\Client\Resource;
 
+use WyriHaximus\ApiClient\Annotations\Collection;
 use WyriHaximus\ApiClient\Annotations\Nested;
 use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
 
 /**
- * @Nested(build="Project\Build", config="Project\Config")
+ * @Collection(builds="Project\Build")
+ * @Nested(latestBuild="Project\Build", config="Project\Config")
  */
 abstract class Project implements ProjectInterface
 {
@@ -28,9 +30,14 @@ abstract class Project implements ProjectInterface
     protected $description;
 
     /**
+     * @var array
+     */
+    protected $builds;
+
+    /**
      * @var Project\Build
      */
-    protected $build;
+    protected $latestBuild;
 
     /**
      * @var Project\Config
@@ -77,11 +84,19 @@ abstract class Project implements ProjectInterface
     }
 
     /**
+     * @return array
+     */
+    public function builds() : array
+    {
+        return $this->builds;
+    }
+
+    /**
      * @return Project\Build
      */
-    public function build() : Project\Build
+    public function latestBuild() : Project\Build
     {
-        return $this->build;
+        return $this->latestBuild;
     }
 
     /**
