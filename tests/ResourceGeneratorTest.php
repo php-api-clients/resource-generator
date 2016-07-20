@@ -82,7 +82,7 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
                 );
             }
 
-            $this->assertEquals(
+            $this->assertSame(
                 $expected,
                 $actual,
                 $objectPath
