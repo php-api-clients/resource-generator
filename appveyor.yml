@@ -38,7 +38,7 @@ install:
     - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
-    - appveyor-retry DownloadFile https://getcomposer.org/composer.phar
+    - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\php-api-client-resource-generator
     - IF %dependencies%==lowest composer update --prefer-lowest --no-progress --profile -n
     - IF %dependencies%==current composer install --no-progress --profile
