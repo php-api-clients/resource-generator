@@ -59,9 +59,32 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
             $objectPath = substr($name, strlen($resourcesPath));
 
             $this->assertFileExists($this->temporaryDirectory . $objectPath);
+
+            $expected = file_get_contents($resourcesPath . $objectPath);
+            $actual = file_get_contents($this->temporaryDirectory . $objectPath);
+
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $expected = str_replace(
+                    [
+                        "\r",
+                        "\n",
+                    ],
+                    '',
+                    $expected
+                );
+                $actual = str_replace(
+                    [
+                        "\r",
+                        "\n",
+                    ],
+                    '',
+                    $actual
+                );
+            }
+
             $this->assertEquals(
-                file_get_contents($resourcesPath . $objectPath),
-                file_get_contents($this->temporaryDirectory . $objectPath),
+                $expected,
+                $actual,
                 $objectPath
             );
         }
