@@ -2,8 +2,12 @@
 
 namespace Example\Client\Resource\Project;
 
+use WyriHaximus\ApiClient\Annotations\Rename;
 use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
 
+/**
+ * @Rename(basic_rate="basic.rate")
+ */
 abstract class Build implements BuildInterface
 {
     use TransportAwareTrait;
@@ -42,6 +46,11 @@ abstract class Build implements BuildInterface
      * @var DateTimeInterface
      */
     protected $updated;
+
+    /**
+     * @var int
+     */
+    protected $basic_rate;
 
     /**
      * @return int
@@ -97,5 +106,13 @@ abstract class Build implements BuildInterface
     public function updated() : DateTimeInterface
     {
         return $this->updated;
+    }
+
+    /**
+     * @return int
+     */
+    public function basicRate() : int
+    {
+        return $this->basic_rate;
     }
 }

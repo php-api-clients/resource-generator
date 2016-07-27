@@ -40,4 +40,9 @@ interface BuildInterface extends ResourceInterface
      * @return DateTimeInterface
      */
     public function updated() : DateTimeInterface;
+
+    /**
+     * @return int
+     */
+    public function basicRate() : int;
 }

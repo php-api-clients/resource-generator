@@ -1,5 +1,7 @@
 namespace: Example\Client\Resource
 class: Project\Build
+rename:
+  basic.rate: basic_rate
 properties:
   id: int
   name: string
@@ -10,3 +12,4 @@ properties:
   plugins: SplObjectStorage
   created: DateTimeInterface
   updated: DateTimeInterface
+  basic.rate: int
