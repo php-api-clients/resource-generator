@@ -21,6 +21,7 @@ use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 use WyriHaximus\ApiClient\Annotations\Collection;
 use WyriHaximus\ApiClient\Annotations\Nested;
+use WyriHaximus\ApiClient\Annotations\Rename;
 use WyriHaximus\ApiClient\Resource\ResourceInterface;
 
 class ResourceGenerator
@@ -175,6 +176,15 @@ class ResourceGenerator
             )
         );
 
+
+        if (isset($yaml['rename'])) {
+            foreach ($yaml['rename'] as $key => $resource) {
+                $yaml['properties'][$resource] = $yaml['properties'][$key];
+                unset($yaml['properties'][$key]);
+            }
+        }
+
+
         $this->stdio->out('Interface: generating');
         $this->save(
             $this->path .
@@ -281,6 +291,14 @@ class ResourceGenerator
             $docBlock[] = '@Nested(' . implode(', ', $nestedResources) . ')';
         }
 
+        if (isset($yaml['rename'])) {
+            $nestedResources = [];
+            foreach ($yaml['rename'] as $key => $resource) {
+                $nestedResources[] = $resource . '="' . $key . '"';
+            }
+            $docBlock[] = '@Rename(' . implode(', ', $nestedResources) . ')';
+        }
+
         if (count($docBlock) > 0) {
             $class->setDocComment("/**\r\n * " . implode("\r\n * ", $docBlock) . "\r\n */");
         }
@@ -309,6 +327,11 @@ class ResourceGenerator
         if (isset($yaml['nested'])) {
             $stmt = $stmt->addStmt(
                 $factory->use(Nested::class)
+            );
+        }
+        if (isset($yaml['rename'])) {
+            $stmt = $stmt->addStmt(
+                $factory->use(Rename::class)
             );
         }
         $stmt
