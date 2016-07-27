@@ -2,7 +2,7 @@
 
 namespace Example\Client\Resource\Project;
 
-use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
+use ApiClients\Foundation\Resource\TransportAwareTrait;
 
 abstract class Config implements ConfigInterface
 {

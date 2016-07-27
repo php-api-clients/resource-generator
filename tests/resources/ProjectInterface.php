@@ -2,7 +2,7 @@
 
 namespace Example\Client\Resource;
 
-use WyriHaximus\ApiClient\Resource\ResourceInterface;
+use ApiClients\Foundation\Resource\ResourceInterface;
 
 interface ProjectInterface extends ResourceInterface
 {

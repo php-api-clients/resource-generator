@@ -1,6 +1,6 @@
 <?php
 
-namespace WyriHaximus\ApiClient\Tools;
+namespace ApiClients\Tools\ResourceGenerator;
 
 use Symfony\CS\AbstractFixer;
 use Symfony\CS\Tokenizer\Tokens;

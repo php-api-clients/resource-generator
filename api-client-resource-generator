@@ -3,7 +3,7 @@
 
 use Aura\Cli\CliFactory;
 use Aura\Cli\Status;
-use WyriHaximus\ApiClient\Tools\ResourceGenerator;
+use ApiClients\Tools\ResourceGenerator\ResourceGenerator;
 
 /**
  * Locate and load autoloader

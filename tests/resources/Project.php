@@ -2,9 +2,9 @@
 
 namespace Example\Client\Resource;
 
-use WyriHaximus\ApiClient\Annotations\Collection;
-use WyriHaximus\ApiClient\Annotations\Nested;
-use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
+use ApiClients\Foundation\Annotations\Collection;
+use ApiClients\Foundation\Annotations\Nested;
+use ApiClients\Foundation\Resource\TransportAwareTrait;
 
 /**
  * @Collection(builds="Project\Build")

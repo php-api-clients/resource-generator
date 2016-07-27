@@ -8,7 +8,7 @@ use Aura\Cli\Stdio;
 use Phake;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use WyriHaximus\ApiClient\Tools\ResourceGenerator;
+use ApiClients\Tools\ResourceGenerator\ResourceGenerator;
 
 class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
 {

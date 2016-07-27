@@ -2,7 +2,7 @@
 
 namespace Example\Client\Resource\Project;
 
-use WyriHaximus\ApiClient\Resource\ResourceInterface;
+use ApiClients\Foundation\Resource\ResourceInterface;
 
 interface ConfigInterface extends ResourceInterface
 {

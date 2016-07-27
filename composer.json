@@ -12,7 +12,7 @@
     "nikic/php-parser": "^2.1",
     "symfony/yaml": "^2.8||^3.0",
     "doctrine/inflector": "^1.1",
-    "wyrihaximus/api-client": "dev-master",
+    "api-clients/foundation": "dev-master",
     "friendsofphp/php-cs-fixer": "^1.11",
     "aura/cli": "^2.1"
   },
@@ -24,12 +24,12 @@
   },
   "autoload": {
     "psr-4": {
-      "WyriHaximus\\ApiClient\\Tools\\": "src/"
+      "ApiClients\\Tools\\ResourceGenerator\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "WyriHaximus\\Tests\\ApiClient\\Tools\\": "tests/"
+      "ApiClients\\Tests\\Tools\\": "tests/"
     }
   },
   "bin": [

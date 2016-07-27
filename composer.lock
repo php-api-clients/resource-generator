@@ -4,9 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2b4b612321a14ac30c280dd0a0d02c4f",
-    "content-hash": "56a8f32c42a97fb77b91c83d925765b9",
+    "hash": "603dff525557edab17b73eb57eaa2556",
+    "content-hash": "d9ae5bfc2d148aab165799ccb0771b80",
     "packages": [
+        {
+            "name": "api-clients/foundation",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-api-clients/foundation.git",
+                "reference": "163d7c34b0c3c657d5e5b964985323c7331ac6fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-api-clients/foundation/zipball/163d7c34b0c3c657d5e5b964985323c7331ac6fa",
+                "reference": "163d7c34b0c3c657d5e5b964985323c7331ac6fa",
+                "shasum": ""
+            },
+            "require": {
+                "clue/block-react": "^1.1",
+                "doctrine/annotations": "^1.2",
+                "guzzlehttp/guzzle": "^6.0",
+                "ocramius/generated-hydrator": "^2.0",
+                "php": "^7.0",
+                "react/cache": "^0.4.1",
+                "react/promise": "^2.2",
+                "reactivex/rxphp": "^1.2",
+                "wyrihaximus/react-guzzle-psr7": "^1.0",
+                "wyrihaximus/ticking-promise": "^1.6"
+            },
+            "require-dev": {
+                "phake/phake": "^2.3",
+                "phpunit/phpunit": "^5.2.3",
+                "squizlabs/php_codesniffer": "^2.6",
+                "vectorface/dunit": "~2.0"
+            },
+            "suggest": {
+                "api-clients/resource-generator": "Easy wireframing of resources"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ApiClients\\Foundation\\": "src/"
+                },
+                "files": [
+                    "src/bootstrap.php",
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com"
+                }
+            ],
+            "time": "2016-07-27 20:12:03"
+        },
         {
             "name": "aura/cli",
             "version": "2.1.1",
@@ -1720,63 +1777,6 @@
             "time": "2016-06-29 05:41:56"
         },
         {
-            "name": "wyrihaximus/api-client",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/WyriHaximus/php-api-client.git",
-                "reference": "ae5fa78147ad3c4694bfc5193dac7b001889b0c7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-api-client/zipball/ae5fa78147ad3c4694bfc5193dac7b001889b0c7",
-                "reference": "ae5fa78147ad3c4694bfc5193dac7b001889b0c7",
-                "shasum": ""
-            },
-            "require": {
-                "clue/block-react": "^1.1",
-                "doctrine/annotations": "^1.2",
-                "guzzlehttp/guzzle": "^6.0",
-                "ocramius/generated-hydrator": "^2.0",
-                "php": "^7.0",
-                "react/cache": "^0.4.1",
-                "react/promise": "^2.2",
-                "reactivex/rxphp": "^1.2",
-                "wyrihaximus/react-guzzle-psr7": "^1.0",
-                "wyrihaximus/ticking-promise": "^1.6"
-            },
-            "require-dev": {
-                "phake/phake": "^2.3",
-                "phpunit/phpunit": "^5.2.3",
-                "squizlabs/php_codesniffer": "^2.6",
-                "vectorface/dunit": "~2.0"
-            },
-            "suggest": {
-                "wyrihaximus/api-client-resource-generator": "Easy wireframing of resources"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "WyriHaximus\\ApiClient\\": "src/"
-                },
-                "files": [
-                    "src/bootstrap.php",
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "ceesjank@gmail.com"
-                }
-            ],
-            "time": "2016-07-26 06:07:23"
-        },
-        {
             "name": "wyrihaximus/react-guzzle-http-client",
             "version": "3.0.2",
             "source": {
@@ -3411,7 +3411,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "wyrihaximus/api-client": 20
+        "api-clients/foundation": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

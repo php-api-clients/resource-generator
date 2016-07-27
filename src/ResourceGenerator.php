@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WyriHaximus\ApiClient\Tools;
+namespace ApiClients\Tools\ResourceGenerator;
 
 use Aura\Cli\Context;
 use Aura\Cli\Stdio;
@@ -19,10 +19,10 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
-use WyriHaximus\ApiClient\Annotations\Collection;
-use WyriHaximus\ApiClient\Annotations\Nested;
-use WyriHaximus\ApiClient\Annotations\Rename;
-use WyriHaximus\ApiClient\Resource\ResourceInterface;
+use ApiClients\Foundation\Annotations\Collection;
+use ApiClients\Foundation\Annotations\Nested;
+use ApiClients\Foundation\Annotations\Rename;
+use ApiClients\Foundation\Resource\ResourceInterface;
 
 class ResourceGenerator
 {
@@ -335,7 +335,7 @@ class ResourceGenerator
             );
         }
         $stmt
-            ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\TransportAwareTrait'))
+            ->addStmt($factory->use('ApiClients\Foundation\Resource\TransportAwareTrait'))
             ->addStmt($class)
         ;
 

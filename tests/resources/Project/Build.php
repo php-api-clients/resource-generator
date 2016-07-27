@@ -2,8 +2,8 @@
 
 namespace Example\Client\Resource\Project;
 
-use WyriHaximus\ApiClient\Annotations\Rename;
-use WyriHaximus\ApiClient\Resource\TransportAwareTrait;
+use ApiClients\Foundation\Annotations\Rename;
+use ApiClients\Foundation\Resource\TransportAwareTrait;
 
 /**
  * @Rename(basic_rate="basic.rate")
