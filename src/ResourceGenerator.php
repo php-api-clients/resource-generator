@@ -426,8 +426,13 @@ class ResourceGenerator
         return $property;
     }
 
-    protected function createMethod(BuilderFactory $factory, string $type, string $name, $details, string $wrappingClass = null): Method
-    {
+    protected function createMethod(
+        BuilderFactory $factory,
+        string $type,
+        string $name,
+        $details,
+        string $wrappingClass = null
+    ): Method {
         $property = new Node\Expr\PropertyFetch(
             new Node\Expr\Variable('this'),
             $name
