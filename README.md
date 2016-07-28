@@ -1,12 +1,12 @@
 # API Client Foundation for PHP 7
 
-[![Linux Build Status](https://travis-ci.org/WyriHaximus/php-api-client-resource-generator.svg?branch=master)](https://travis-ci.org/WyriHaximus/php-api-client-resource-generator)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/dvcu9l8rm6shy7t3?svg=true)](https://ci.appveyor.com/project/WyriHaximus/php-api-client-resource-generator)
-[![Latest Stable Version](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/v/stable.png)](https://packagist.org/packages/WyriHaximus/api-client-resource-generator)
-[![Total Downloads](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/downloads.png)](https://packagist.org/packages/WyriHaximus/api-client-resource-generator)
-[![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client-resource-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/php-api-client-resource-generator/?branch=master)
-[![License](https://poser.pugx.org/WyriHaximus/api-client-resource-generator/license.png)](https://packagist.org/packages/wyrihaximus/api-client-resource-generator)
-[![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/php-api-client-resource-generator/badge.svg)](https://appveyor-ci.org/WyriHaximus/php-api-client-resource-generator)
+[![Linux Build Status](https://travis-ci.org/php-api-clients/resource-generator.svg?branch=master)](https://travis-ci.org/php-api-clients/resource-generator)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/dvcu9l8rm6shy7t3?svg=true)](https://ci.appveyor.com/project/php-api-clients/resource-generator)
+[![Latest Stable Version](https://poser.pugx.org/api-clients/resource-generator/v/stable.png)](https://packagist.org/packages/api-clients/resource-generator)
+[![Total Downloads](https://poser.pugx.org/api-clients/resource-generator/downloads.png)](https://packagist.org/packages/api-clients/resource-generator)
+[![Code Coverage](https://scrutinizer-ci.com/g/php-api-clients/resource-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/php-api-clients/resource-generator/?branch=master)
+[![License](https://poser.pugx.org/api-clients/resource-generator/license.png)](https://packagist.org/packages/api-clients/resource-generator)
+[![PHP 7 ready](http://php7ready.timesplinter.ch/php-api-clients/resource-generator/badge.svg)](https://appveyor-ci.org/php-api-clients/resource-generator)
 
 # Goals
 
@@ -17,7 +17,7 @@
 To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `^`.
 
 ```
-composer require wyrihaximus/api-client-resource-generator 
+composer require api-clients/resource-generator 
 ```
 
 # Usage
