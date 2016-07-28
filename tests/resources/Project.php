@@ -5,6 +5,9 @@ namespace Example\Client\Resource;
 use ApiClients\Foundation\Annotations\Collection;
 use ApiClients\Foundation\Annotations\Nested;
 use ApiClients\Foundation\Resource\TransportAwareTrait;
+use DateTime;
+use DateTimeInterface;
+use SplObjectStorage;
 
 /**
  * @Collection(builds="Project\Build")
@@ -120,7 +123,7 @@ abstract class Project implements ProjectInterface
      */
     public function created() : DateTimeInterface
     {
-        return $this->created;
+        return new DateTime($this->created);
     }
 
     /**
@@ -128,6 +131,6 @@ abstract class Project implements ProjectInterface
      */
     public function updated() : DateTimeInterface
     {
-        return $this->updated;
+        return new DateTime($this->updated);
     }
 }

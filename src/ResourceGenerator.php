@@ -314,32 +314,70 @@ class ResourceGenerator
             if (is_array($details)) {
                 $type = $details['type'];
             }
+
+            $wrappingClass = null;
+            if (isset($yaml['wrap']) && isset($yaml['wrap'][$name])) {
+                $wrappingClass = $yaml['wrap'][$name];
+            }
+
             $class->addStmt($this->createProperty($factory, $type, $name, $details));
-            $class->addStmt($this->createMethod($factory, $type, $name, $details));
+            $class->addStmt($this->createMethod($factory, $type, $name, $details, $wrappingClass));
         }
 
         $stmt = $factory->namespace($yaml['namespace']);
+
+        $addUses = [];
         if (isset($yaml['collection'])) {
-            $stmt = $stmt->addStmt(
-                $factory->use(Collection::class)
-            );
+            $addUses[Collection::class] = true;
         }
         if (isset($yaml['nested'])) {
-            $stmt = $stmt->addStmt(
-                $factory->use(Nested::class)
-            );
+            $addUses[Nested::class] = true;
         }
         if (isset($yaml['rename'])) {
-            $stmt = $stmt->addStmt(
-                $factory->use(Rename::class)
-            );
+            $addUses[Rename::class] = true;
         }
-        $stmt
-            ->addStmt($factory->use('ApiClients\Foundation\Resource\TransportAwareTrait'))
-            ->addStmt($class)
-        ;
 
-        $node = $stmt->getNode();
+        $addUses['ApiClients\Foundation\Resource\TransportAwareTrait'] = true;
+
+        if (isset($yaml['wrap'])) {
+            foreach ($yaml['wrap'] as $name => $wrappingClass) {
+                if (!class_exists($wrappingClass) && !interface_exists($wrappingClass)) {
+                    continue;
+                }
+
+                if (isset($addUses[$wrappingClass])) {
+                    continue;
+                }
+
+                $addUses[$wrappingClass] = true;
+            }
+        }
+        foreach ($yaml['properties'] as $name => $details) {
+            $type = $details;
+            if (is_array($details)) {
+                $type = $details['type'];
+            }
+
+            if (!class_exists($type) && !interface_exists($type)) {
+                continue;
+            }
+
+            if (isset($addUses[$type])) {
+                continue;
+            }
+
+            $addUses[$type] = true;
+        }
+
+        ksort($addUses);
+
+        foreach ($addUses as $useClass => $bool) {
+            $stmt = $stmt
+                ->addStmt($factory->use($useClass))
+            ;
+        }
+
+        $node = $stmt->addStmt($class)->getNode();
 
         $prettyPrinter = new PrettyPrinter\Standard();
         return $prettyPrinter->prettyPrintFile([
@@ -388,8 +426,24 @@ class ResourceGenerator
         return $property;
     }
 
-    protected function createMethod(BuilderFactory $factory, string $type, string $name, $details): Method
+    protected function createMethod(BuilderFactory $factory, string $type, string $name, $details, string $wrappingClass = null): Method
     {
+        $property = new Node\Expr\PropertyFetch(
+            new Node\Expr\Variable('this'),
+            $name
+        );
+
+        $returnValue = $property;
+
+        if ($wrappingClass !== null) {
+            $returnValue = new Node\Expr\New_(
+                new Node\Name($wrappingClass),
+                [
+                    $property,
+                ]
+            );
+        }
+
         return $factory->method(Inflector::camelize($name))
             ->makePublic()
             ->setReturnType($type)
@@ -398,10 +452,7 @@ class ResourceGenerator
                               */')
             ->addStmt(
                 new Node\Stmt\Return_(
-                    new Node\Expr\PropertyFetch(
-                        new Node\Expr\Variable('this'),
-                        $name
-                    )
+                    $returnValue
                 )
             );
     }
