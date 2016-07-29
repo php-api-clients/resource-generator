@@ -315,12 +315,14 @@ class ResourceGenerator
                 $type = $details['type'];
             }
 
+            $class->addStmt($this->createProperty($factory, $type, $name, $details));
+
             $wrappingClass = null;
             if (isset($yaml['wrap']) && isset($yaml['wrap'][$name])) {
                 $wrappingClass = $yaml['wrap'][$name];
+                $class->addStmt($this->createProperty($factory, $wrappingClass, $name . '_wrapped', $details));
             }
 
-            $class->addStmt($this->createProperty($factory, $type, $name, $details));
             $class->addStmt($this->createMethod($factory, $type, $name, $details, $wrappingClass));
         }
 
@@ -433,19 +435,56 @@ class ResourceGenerator
         $details,
         string $wrappingClass = null
     ): Method {
-        $property = new Node\Expr\PropertyFetch(
-            new Node\Expr\Variable('this'),
-            $name
-        );
-
-        $returnValue = $property;
+        $stmts = [
+            new Node\Stmt\Return_(
+                new Node\Expr\PropertyFetch(
+                    new Node\Expr\Variable('this'),
+                    $name
+                )
+            )
+        ];
 
         if ($wrappingClass !== null) {
-            $returnValue = new Node\Expr\New_(
-                new Node\Name($wrappingClass),
+            $stmts = [];
+            $stmts[] = new Node\Stmt\If_(
+                new Node\Expr\Instanceof_(
+                    new Node\Expr\PropertyFetch(
+                        new Node\Expr\Variable('this'),
+                        $name . '_wrapped'
+                    ),
+                    new Node\Name($wrappingClass)
+                ),
                 [
-                    $property,
+                    'stmts' => [
+                        new Node\Stmt\Return_(
+                            new Node\Expr\PropertyFetch(
+                                new Node\Expr\Variable('this'),
+                                $name . '_wrapped'
+                            )
+                        ),
+                    ],
                 ]
+            );
+            $stmts[] = new Node\Expr\Assign(
+                new Node\Expr\PropertyFetch(
+                    new Node\Expr\Variable('this'),
+                    $name . '_wrapped'
+                ),
+                new Node\Expr\New_(
+                    new Node\Name($wrappingClass),
+                    [
+                        new Node\Expr\PropertyFetch(
+                            new Node\Expr\Variable('this'),
+                            $name
+                        ),
+                    ]
+                )
+            );
+            $stmts[] = new Node\Stmt\Return_(
+                new Node\Expr\PropertyFetch(
+                    new Node\Expr\Variable('this'),
+                    $name . '_wrapped'
+                )
             );
         }
 
@@ -455,11 +494,7 @@ class ResourceGenerator
             ->setDocComment('/**
                               * @return ' . $type . '
                               */')
-            ->addStmt(
-                new Node\Stmt\Return_(
-                    $returnValue
-                )
-            );
+            ->addStmts($stmts);
     }
 
     protected function createExtendingClass(string $namespace, string $className, string $baseClass): string
