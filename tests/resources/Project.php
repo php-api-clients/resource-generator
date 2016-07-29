@@ -58,9 +58,19 @@ abstract class Project implements ProjectInterface
     protected $created;
 
     /**
+     * @var DateTime
+     */
+    protected $created_wrapped;
+
+    /**
      * @var DateTimeInterface
      */
     protected $updated;
+
+    /**
+     * @var DateTime
+     */
+    protected $updated_wrapped;
 
     /**
      * @return int
@@ -123,7 +133,12 @@ abstract class Project implements ProjectInterface
      */
     public function created() : DateTimeInterface
     {
-        return new DateTime($this->created);
+        if ($this->created_wrapped instanceof DateTime) {
+            return $this->created_wrapped;
+        }
+
+        $this->created_wrapped = new DateTime($this->created);
+        return $this->created_wrapped;
     }
 
     /**
@@ -131,6 +146,11 @@ abstract class Project implements ProjectInterface
      */
     public function updated() : DateTimeInterface
     {
-        return new DateTime($this->updated);
+        if ($this->updated_wrapped instanceof DateTime) {
+            return $this->updated_wrapped;
+        }
+
+        $this->updated_wrapped = new DateTime($this->updated);
+        return $this->updated_wrapped;
     }
 }
