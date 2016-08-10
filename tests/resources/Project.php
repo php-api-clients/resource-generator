@@ -2,8 +2,8 @@
 
 namespace Example\Client\Resource;
 
-use ApiClients\Foundation\Annotations\Collection;
-use ApiClients\Foundation\Annotations\Nested;
+use ApiClients\Foundation\Hydrator\Annotations\Collection;
+use ApiClients\Foundation\Hydrator\Annotations\Nested;
 use ApiClients\Foundation\Resource\TransportAwareTrait;
 use DateTime;
 use DateTimeInterface;

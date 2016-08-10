@@ -19,9 +19,9 @@ use Symfony\CS\ConfigInterface;
 use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
-use ApiClients\Foundation\Annotations\Collection;
-use ApiClients\Foundation\Annotations\Nested;
-use ApiClients\Foundation\Annotations\Rename;
+use ApiClients\Foundation\Hydrator\Annotations\Collection;
+use ApiClients\Foundation\Hydrator\Annotations\Nested;
+use ApiClients\Foundation\Hydrator\Annotations\Rename;
 use ApiClients\Foundation\Resource\ResourceInterface;
 
 class ResourceGenerator
