@@ -605,8 +605,12 @@ class ResourceGenerator
         ]) . PHP_EOL;
     }
 
-    protected function createExtendingTest(string $namespace, string $className, string $baseClass, string $baseClassFQCN): string
-    {
+    protected function createExtendingTest(
+        string $namespace,
+        string $className,
+        string $baseClass,
+        string $baseClassFQCN
+    ): string {
         $factory = new BuilderFactory;
 
         $apiSettingsGuess = str_replace('\\Tests', '', $namespace);
