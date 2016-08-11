@@ -17,6 +17,7 @@
     "api-clients/foundation": "dev-master",
     "api-clients/hydrator": "dev-master",
     "api-clients/resource": "dev-master",
+    "api-clients/resource-test-utilities": "dev-master",
     "friendsofphp/php-cs-fixer": "^1.11",
     "aura/cli": "^2.1"
   },
