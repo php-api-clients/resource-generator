@@ -14,6 +14,9 @@ unit: init
 dunit: init
 	./vendor/bin/dunit
 
+generate-test-resources: init
+	./api-client-resource-generator ./tests/yaml/* ./tests/resources-src/ ./tests/resources-tests
+
 travis-unit: init
 	./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml
 
