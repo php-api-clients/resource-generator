@@ -2,9 +2,12 @@
 
 namespace Example\Client\Resource;
 
-use ApiClients\Foundation\Annotations\Collection;
-use ApiClients\Foundation\Annotations\Nested;
+use ApiClients\Foundation\Hydrator\Annotations\Collection;
+use ApiClients\Foundation\Hydrator\Annotations\Nested;
 use ApiClients\Foundation\Resource\TransportAwareTrait;
+use DateTime;
+use DateTimeInterface;
+use SplObjectStorage;
 
 /**
  * @Collection(builds="Project\Build")
@@ -55,9 +58,19 @@ abstract class Project implements ProjectInterface
     protected $created;
 
     /**
+     * @var DateTime
+     */
+    protected $created_wrapped;
+
+    /**
      * @var DateTimeInterface
      */
     protected $updated;
+
+    /**
+     * @var DateTime
+     */
+    protected $updated_wrapped;
 
     /**
      * @return int
@@ -120,7 +133,11 @@ abstract class Project implements ProjectInterface
      */
     public function created() : DateTimeInterface
     {
-        return $this->created;
+        if ($this->created_wrapped instanceof DateTime) {
+            return $this->created_wrapped;
+        }
+        $this->created_wrapped = new DateTime($this->created);
+        return $this->created_wrapped;
     }
 
     /**
@@ -128,6 +145,10 @@ abstract class Project implements ProjectInterface
      */
     public function updated() : DateTimeInterface
     {
-        return $this->updated;
+        if ($this->updated_wrapped instanceof DateTime) {
+            return $this->updated_wrapped;
+        }
+        $this->updated_wrapped = new DateTime($this->updated);
+        return $this->updated_wrapped;
     }
 }

@@ -1,6 +1,8 @@
 {
   "name": "api-clients/resource-generator",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "Cees-Jan Kiewiet",
@@ -13,6 +15,8 @@
     "symfony/yaml": "^2.8||^3.0",
     "doctrine/inflector": "^1.1",
     "api-clients/foundation": "dev-master",
+    "api-clients/hydrator": "dev-master",
+    "api-clients/resource": "dev-master",
     "friendsofphp/php-cs-fixer": "^1.11",
     "aura/cli": "^2.1"
   },

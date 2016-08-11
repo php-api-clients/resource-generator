@@ -2,8 +2,10 @@
 
 namespace Example\Client\Resource\Project;
 
-use ApiClients\Foundation\Annotations\Rename;
+use ApiClients\Foundation\Hydrator\Annotations\Rename;
 use ApiClients\Foundation\Resource\TransportAwareTrait;
+use DateTimeInterface;
+use SplObjectStorage;
 
 /**
  * @Rename(basic_rate="basic.rate")

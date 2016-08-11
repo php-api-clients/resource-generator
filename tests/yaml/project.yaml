@@ -5,6 +5,9 @@ collection:
 nested:
   latestBuild: Project\Build
   config: Project\Config
+wrap:
+  created: DateTime
+  updated: DateTime
 properties:
   id: int
   name: string
