@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ApiClients\Tools\ResourceGenerator;
 
+use ApiClients\Tools\ResourceTestUtilities\AbstractResourceTest;
 use Aura\Cli\Context;
 use Aura\Cli\Stdio;
 use Doctrine\Common\Inflector\Inflector;
@@ -44,7 +45,12 @@ class ResourceGenerator
     /**
      * @var string
      */
-    protected $path;
+    protected $pathSrc;
+
+    /**
+     * @var string
+     */
+    protected $pathTests;
 
     /**
      * @var Fixer
@@ -77,7 +83,13 @@ class ResourceGenerator
             }
             $this->definitions[] = $opt;
         } while (true);
-        $this->path = array_pop($this->definitions);
+
+        if (count($this->definitions) < 3) {
+            throw new \InvalidArgumentException('Not enough arguments');
+        }
+
+        $this->pathTests = array_pop($this->definitions);
+        $this->pathSrc = array_pop($this->definitions);
     }
 
     protected function setUpFixers()
@@ -135,16 +147,16 @@ class ResourceGenerator
             throw new \InvalidArgumentException('Not enough arguments');
         }
 
-        if ($this->path === null) {
-            throw new \InvalidArgumentException('No path set');
+        if ($this->pathSrc === null) {
+            throw new \InvalidArgumentException('No pathSrc set');
         }
 
-        if (!file_exists($this->path)) {
-            throw new \InvalidArgumentException('Path "' . $this->path . '" doesn\'t exist');
+        if (!file_exists($this->pathSrc)) {
+            throw new \InvalidArgumentException('Path "' . $this->pathSrc . '" doesn\'t exist');
         }
 
-        if (!is_dir($this->path)) {
-            throw new \InvalidArgumentException('Path "' . $this->path . '" isn\'t a directory');
+        if (!is_dir($this->pathSrc)) {
+            throw new \InvalidArgumentException('Path "' . $this->pathSrc . '" isn\'t a directory');
         }
 
         foreach ($this->definitions as $definition) {
@@ -160,9 +172,11 @@ class ResourceGenerator
 
         $namespacePadding = explode('\\', $yaml['class']);
         $namespace = explode('\\', $yaml['namespace']);
+        $namespaceTests = explode('\\', $yaml['namespace_test']);
 
         $yaml['class'] = array_pop($namespacePadding);
         $yaml['namespace'] = implode('\\', array_merge($namespace, $namespacePadding));
+        $yaml['namespace_test'] = implode('\\', array_merge($namespaceTests, $namespacePadding));
 
         $namespacePathPadding = implode(DIRECTORY_SEPARATOR, $namespacePadding);
         $baseClass = implode(
@@ -178,16 +192,16 @@ class ResourceGenerator
 
 
         if (isset($yaml['rename'])) {
-            foreach ($yaml['rename'] as $key => $resource) {
-                $yaml['properties'][$resource] = $yaml['properties'][$key];
-                unset($yaml['properties'][$key]);
+            foreach ($yaml['rename'] as $from => $to) {
+                $yaml['properties'][$to] = $yaml['properties'][$from];
+                unset($yaml['properties'][$from]);
             }
         }
 
 
         $this->stdio->out('Interface: generating');
         $this->save(
-            $this->path .
+            $this->pathSrc .
                 DIRECTORY_SEPARATOR .
                 $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
@@ -198,7 +212,7 @@ class ResourceGenerator
 
         $this->stdio->out('Base class: generating');
         $this->save(
-            $this->path .
+            $this->pathSrc .
                 DIRECTORY_SEPARATOR .
                 $namespacePathPadding .
                 DIRECTORY_SEPARATOR,
@@ -209,7 +223,7 @@ class ResourceGenerator
 
         $this->stdio->out('Async class: generating');
         $this->save(
-            $this->path .
+            $this->pathSrc .
                 DIRECTORY_SEPARATOR .
                 'Async' .
                 DIRECTORY_SEPARATOR .
@@ -233,9 +247,36 @@ class ResourceGenerator
             )
         );
 
+        $this->stdio->out('Sync test: generating');
+        $this->save(
+            $this->pathTests .
+                DIRECTORY_SEPARATOR .
+                'Async' .
+                DIRECTORY_SEPARATOR .
+                $namespacePathPadding .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
+                'Test.php',
+            $this->createExtendingTest(
+                implode(
+                    '\\',
+                    array_merge(
+                        $namespaceTests,
+                        [
+                            'Async',
+                        ],
+                        $namespacePadding
+                    )
+                ),
+                $yaml['class'] . 'Test',
+                $yaml['class'],
+                $baseClass
+            )
+        );
+
         $this->stdio->out('Sync class: generating');
         $this->save(
-            $this->path .
+            $this->pathSrc .
                 DIRECTORY_SEPARATOR .
                 'Sync' .
                 DIRECTORY_SEPARATOR .
@@ -254,6 +295,33 @@ class ResourceGenerator
                         $namespacePadding
                     )
                 ),
+                $yaml['class'],
+                $baseClass
+            )
+        );
+
+        $this->stdio->out('Sync test: generating');
+        $this->save(
+            $this->pathTests .
+                DIRECTORY_SEPARATOR .
+                'Sync' .
+                DIRECTORY_SEPARATOR .
+                $namespacePathPadding .
+                DIRECTORY_SEPARATOR,
+            $yaml['class'] .
+                'Test.php',
+            $this->createExtendingTest(
+                implode(
+                    '\\',
+                    array_merge(
+                        $namespaceTests,
+                        [
+                            'Sync',
+                        ],
+                        $namespacePadding
+                    )
+                ),
+                $yaml['class'] . 'Test',
                 $yaml['class'],
                 $baseClass
             )
@@ -293,8 +361,8 @@ class ResourceGenerator
 
         if (isset($yaml['rename'])) {
             $nestedResources = [];
-            foreach ($yaml['rename'] as $key => $resource) {
-                $nestedResources[] = $resource . '="' . $key . '"';
+            foreach ($yaml['rename'] as $from => $to) {
+                $nestedResources[] = $to . '="' . $from . '"';
             }
             $docBlock[] = '@Rename(' . implode(', ', $nestedResources) . ')';
         }
@@ -527,6 +595,58 @@ class ResourceGenerator
 
         $node = $factory->namespace($namespace)
             ->addStmt($factory->use($baseClass)->as('Base' . $className))
+            ->addStmt($class)
+            ->getNode()
+        ;
+
+        $prettyPrinter = new PrettyPrinter\Standard();
+        return $prettyPrinter->prettyPrintFile([
+            $node
+        ]) . PHP_EOL;
+    }
+
+    protected function createExtendingTest(string $namespace, string $className, string $baseClass, string $baseClassFQCN): string
+    {
+        $factory = new BuilderFactory;
+
+        $apiSettingsGuess = str_replace('\\Tests', '', $namespace);
+        $apiSettingsGuess = explode('\\', $apiSettingsGuess);
+        array_pop($apiSettingsGuess);
+        array_pop($apiSettingsGuess);
+        $apiSettingsGuess[] = 'ApiSettings';
+        $apiSettingsGuess = implode('\\', $apiSettingsGuess);
+
+        $class = $factory->class($className)
+            ->extend('AbstractResourceTest');
+
+        $class->addStmt($factory->method('getClass')
+            ->makePublic()
+            ->setReturnType('string')
+            ->addStmt(
+                new Node\Stmt\Return_(
+                    new Node\Expr\ClassConstFetch(
+                        new Node\Name($baseClass),
+                        'class'
+                    )
+                )
+            ));
+
+        $class->addStmt($factory->method('getNamespace')
+            ->makePublic()
+            ->setReturnType('string')
+            ->addStmt(
+                new Node\Stmt\Return_(
+                    new Node\Expr\ClassConstFetch(
+                        new Node\Name('Apisettings'),
+                        'NAMESPACE'
+                    )
+                )
+            ));
+
+        $node = $factory->namespace($namespace)
+            ->addStmt($factory->use(AbstractResourceTest::class)->as('AbstractResourceTest'))
+            ->addStmt($factory->use($apiSettingsGuess)->as('ApiSettings'))
+            ->addStmt($factory->use($baseClassFQCN)->as($baseClass))
             ->addStmt($class)
 
             ->getNode()

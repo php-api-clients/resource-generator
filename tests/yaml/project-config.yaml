@@ -1,4 +1,5 @@
 namespace: Example\Client\Resource
+namespace_test: Example\Tests\Client\Resource
 class: Project\Config
 properties:
   a: string

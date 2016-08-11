@@ -39,54 +39,62 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
     public function testOutput()
     {
         $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . 'yaml' . DIRECTORY_SEPARATOR;
-        $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR;
+        $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources-src' . DIRECTORY_SEPARATOR;
+        $resourcesPathTests = __DIR__ . DIRECTORY_SEPARATOR . 'resources-tests' . DIRECTORY_SEPARATOR;
         $context = Phake::mock(Context::class);
         $stdio = Phake::mock(Stdio::class);
         $getopt = Phake::mock(Context\Getopt::class);
         Phake::when($getopt)->get(1)->thenReturn($yamlPath . 'project.yaml');
         Phake::when($getopt)->get(2)->thenReturn($yamlPath . 'project-build.yaml');
         Phake::when($getopt)->get(3)->thenReturn($yamlPath . 'project-config.yaml');
-        Phake::when($getopt)->get(4)->thenReturn($this->temporaryDirectory);
-        Phake::when($getopt)->get(5)->thenReturn(null);
+        Phake::when($getopt)->get(4)->thenReturn($this->temporaryDirectory . 'src' . DIRECTORY_SEPARATOR);
+        Phake::when($getopt)->get(5)->thenReturn($this->temporaryDirectory . 'tests' . DIRECTORY_SEPARATOR);
+        Phake::when($getopt)->get(6)->thenReturn(null);
         Phake::when($context)->getopt([])->thenReturn($getopt);
         (new ResourceGenerator($context, $stdio))->run();
-        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($resourcesPath), RecursiveIteratorIterator::SELF_FIRST);
-        foreach ($objects as $name => $object) {
-            if (!is_file($name)) {
-                continue;
-            }
 
-            $objectPath = substr($name, strlen($resourcesPath));
+        foreach ([
+             $resourcesPath => $this->temporaryDirectory . 'src' . DIRECTORY_SEPARATOR,
+             $resourcesPathTests => $this->temporaryDirectory . 'tests' . DIRECTORY_SEPARATOR,
+         ] as $from => $to) {
+            $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($from), RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($objects as $name => $object) {
+                if (!is_file($name)) {
+                    continue;
+                }
 
-            $this->assertFileExists($this->temporaryDirectory . $objectPath);
+                $objectPath = substr($name, strlen($from));
 
-            $expected = file_get_contents($resourcesPath . $objectPath);
-            $actual = file_get_contents($this->temporaryDirectory . $objectPath);
+                $this->assertFileExists($to . $objectPath);
 
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $expected = str_replace(
-                    [
-                        "\r",
-                        "\n",
-                    ],
-                    '',
-                    $expected
+                $expected = file_get_contents($from . $objectPath);
+                $actual = file_get_contents($to . $objectPath);
+
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $expected = str_replace(
+                        [
+                            "\r",
+                            "\n",
+                        ],
+                        '',
+                        $expected
+                    );
+                    $actual = str_replace(
+                        [
+                            "\r",
+                            "\n",
+                        ],
+                        '',
+                        $actual
+                    );
+                }
+
+                $this->assertSame(
+                    $expected,
+                    $actual,
+                    $objectPath
                 );
-                $actual = str_replace(
-                    [
-                        "\r",
-                        "\n",
-                    ],
-                    '',
-                    $actual
-                );
             }
-
-            $this->assertSame(
-                $expected,
-                $actual,
-                $objectPath
-            );
         }
     }
 
@@ -95,6 +103,8 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->temporaryDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('wyrihaximus-php-api-client-resource-generator-', true) . DIRECTORY_SEPARATOR;
         mkdir($this->temporaryDirectory);
+        mkdir($this->temporaryDirectory . 'src');
+        mkdir($this->temporaryDirectory . 'tests');
     }
 
     public function tearDown()
