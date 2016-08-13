@@ -9,6 +9,9 @@ nested:
 wrap:
   created: DateTime
   updated: DateTime
+method:
+  created: createdAt
+  updated: updatedAt
 properties:
   id: int
   name: string

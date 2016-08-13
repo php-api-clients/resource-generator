@@ -391,7 +391,11 @@ class ResourceGenerator
                 $class->addStmt($this->createProperty($factory, $wrappingClass, $name . '_wrapped', $details));
             }
 
-            $class->addStmt($this->createMethod($factory, $type, $name, $details, $wrappingClass));
+            $methodName = Inflector::camelize($name);
+            if (isset($yaml['method'][$name])) {
+                $methodName = $yaml['method'][$name];
+            }
+            $class->addStmt($this->createMethod($factory, $type, $name, $methodName, $details, $wrappingClass));
         }
 
         $stmt = $factory->namespace($yaml['namespace']);
@@ -467,7 +471,11 @@ class ResourceGenerator
             if (is_array($details)) {
                 $type = $details['type'];
             }
-            $class->addStmt($this->createMethod($factory, $type, $name, $details));
+            $methodName = Inflector::camelize($name);
+            if (isset($yaml['method'][$name])) {
+                $methodName = $yaml['method'][$name];
+            }
+            $class->addStmt($this->createMethod($factory, $type, $name, $methodName, $details));
         }
 
         $node = $factory->namespace($yaml['namespace'])
@@ -500,6 +508,7 @@ class ResourceGenerator
         BuilderFactory $factory,
         string $type,
         string $name,
+        string $methodName,
         $details,
         string $wrappingClass = null
     ): Method {
@@ -556,7 +565,7 @@ class ResourceGenerator
             );
         }
 
-        return $factory->method(Inflector::camelize($name))
+        return $factory->method($methodName)
             ->makePublic()
             ->setReturnType($type)
             ->setDocComment('/**

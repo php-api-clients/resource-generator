@@ -131,7 +131,7 @@ abstract class Project implements ProjectInterface
     /**
      * @return DateTimeInterface
      */
-    public function created() : DateTimeInterface
+    public function createdAt() : DateTimeInterface
     {
         if ($this->created_wrapped instanceof DateTime) {
             return $this->created_wrapped;
@@ -143,7 +143,7 @@ abstract class Project implements ProjectInterface
     /**
      * @return DateTimeInterface
      */
-    public function updated() : DateTimeInterface
+    public function updatedAt() : DateTimeInterface
     {
         if ($this->updated_wrapped instanceof DateTime) {
             return $this->updated_wrapped;

@@ -44,10 +44,10 @@ interface ProjectInterface extends ResourceInterface
     /**
      * @return DateTimeInterface
      */
-    public function created() : DateTimeInterface;
+    public function createdAt() : DateTimeInterface;
 
     /**
      * @return DateTimeInterface
      */
-    public function updated() : DateTimeInterface;
+    public function updatedAt() : DateTimeInterface;
 }
