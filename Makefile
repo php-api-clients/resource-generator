@@ -1,6 +1,6 @@
-all: cs dunit unit
+all: cs unit
 travis: cs travis-unit
-contrib: cs dunit unit
+contrib: cs unit
 
 init:
 	if [ ! -d vendor ]; then composer install; fi;
@@ -10,9 +10,6 @@ cs: init
 
 unit: init
 	./vendor/bin/phpunit --coverage-text --coverage-html covHtml
-
-dunit: init
-	./vendor/bin/dunit
 
 generate-test-resources: init
 	./api-client-resource-generator ./tests/yaml/* ./tests/resources-src/ ./tests/resources-tests
