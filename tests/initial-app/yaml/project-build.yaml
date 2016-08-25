@@ -1,0 +1,21 @@
+class: Project\Build
+properties:
+  id: int
+  name: string
+  description: string
+  config:
+    type: array
+    default: []
+  plugins: SplObjectStorage
+  created:
+    method: createdAt
+    type: DateTimeInterface
+    wrap: DateTimeImmutable
+  updated:
+    method: updatedAt
+    type: DateTimeInterface
+    wrap: DateTimeImmutable
+  basic.rate:
+    type: int
+    annotations:
+      rename: basic_rate

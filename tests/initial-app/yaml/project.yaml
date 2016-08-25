@@ -1,17 +1,9 @@
-namespace: Example\Client\Resource
-namespace_test: Example\Tests\Client\Resource
 class: Project
 collection:
   builds: Project\Build
 nested:
   latestBuild: Project\Build
   config: Project\Config
-wrap:
-  created: DateTime
-  updated: DateTime
-method:
-  created: createdAt
-  updated: updatedAt
 properties:
   id: int
   name: string
@@ -20,5 +12,11 @@ properties:
   latestBuild: Project\Build
   config: Project\Config
   plugins: SplObjectStorage
-  created: DateTimeInterface
-  updated: DateTimeInterface
+  created:
+    method: createdAt
+    type: DateTimeInterface
+    wrap: DateTimeImmutable
+  updated:
+    method: updatedAt
+    type: DateTimeInterface
+    wrap: DateTimeImmutable

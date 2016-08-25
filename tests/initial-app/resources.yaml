@@ -1,0 +1,7 @@
+yaml_location: yaml
+src:
+  path: src/Resources
+  namespace: Example\Client\Resource
+tests:
+  path: tests/Resources
+  namespace: Example\Tests\Client\Resource
