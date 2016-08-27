@@ -2,6 +2,9 @@
 
 namespace ApiClients\Tools\ResourceGenerator;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -11,4 +14,26 @@ use Symfony\Component\Yaml\Yaml;
 function readYaml(string $filename): array
 {
     return Yaml::parse(file_get_contents($filename));
+}
+
+/**
+ * @param string $dir
+ * @return array
+ */
+function readYamlDir(string $dir): array
+{
+    $files = [];
+    $directory = new RecursiveDirectoryIterator($dir);
+    $directory = new RecursiveIteratorIterator($directory);
+    foreach ($directory as $file) {
+        /** @var SplFileInfo $file */
+        $file = $file;
+
+        if (!is_file($file->getPathname())) {
+            continue;
+        }
+
+        $files[$file->getPathname()] = readYaml($file->getPathname());
+    }
+    return $files;
 }
