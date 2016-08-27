@@ -26,9 +26,6 @@ function readYamlDir(string $dir): array
     $directory = new RecursiveDirectoryIterator($dir);
     $directory = new RecursiveIteratorIterator($directory);
     foreach ($directory as $file) {
-        /** @var SplFileInfo $file */
-        $file = $file;
-
         if (!is_file($file->getPathname())) {
             continue;
         }
