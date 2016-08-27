@@ -33,7 +33,7 @@ try {
     $configuration += readYaml(__DIR__ . DIRECTORY_SEPARATOR . 'generator-settings.yml');
     $configuration += readYaml($argv[1]);
 
-    (new ResourceGenerator($configuration, $cliStdio))->run();
+    (new ResourceGenerator($configuration))->run();
 } catch (Exception $e) {
     $message = $e->getMessage();
     echo str_pad(' ', strlen($message)), PHP_EOL;
