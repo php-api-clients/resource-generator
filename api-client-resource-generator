@@ -1,9 +1,8 @@
 #!/usr/bin/env php
-<?php
+<?php declare(strict_types=1);
 
-use Aura\Cli\CliFactory;
-use Aura\Cli\Status;
 use ApiClients\Tools\ResourceGenerator\ResourceGenerator;
+use function ApiClients\Tools\ResourceGenerator\readYaml;
 
 /**
  * Locate and load autoloader
@@ -16,37 +15,38 @@ foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/vendor/autoload.php'
 }
 
 /**
- * Instance application
- */
-$cliFactory = new CliFactory();
-$cliContext = $cliFactory->newContext($GLOBALS);
-$cliStdio = $cliFactory->newStdio();
-$resourceGenerator = new ResourceGenerator($cliContext, $cliStdio);
-
-/**
  * Run application
  */
 try {
-    $resourceGenerator->run();
+    if (!isset($argv[1])) {
+        throw new Exception('Missing configuration file');
+    }
+
+    if (!file_exists($argv[1])) {
+        throw new Exception('Passed configuration file doesn\'t exist');
+    }
+
+    /**
+     * Instance application
+     */
+    $configuration = [];
+    $configuration += readYaml(__DIR__ . DIRECTORY_SEPARATOR . 'generator-settings.yml');
+    $configuration += readYaml($argv[1]);
+
+    (new ResourceGenerator($configuration, $cliStdio))->run();
 } catch (Exception $e) {
     $message = $e->getMessage();
-    $cliStdio->errln(str_pad(' ', strlen($message)));
-    $cliStdio->errln($message);
-    $cliStdio->errln(str_pad(' ', strlen($message)));
+    echo str_pad(' ', strlen($message)), PHP_EOL;
+    echo $message, PHP_EOL;
+    echo str_pad(' ', strlen($message)), PHP_EOL;
 
-    $cliStdio->outln('USAGE');
-    $cliStdio->outln("\t" . 'api-client-resource-generator <definition1> [<definition1>] <src pathSrc> <test pathSrc>');
-    $cliStdio->outln('');
-    $cliStdio->outln('SINGLE EXAMPLE');
-    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/resource.yaml ./src/Resource/ ./tests/Resource/');
-    $cliStdio->outln('');
-    $cliStdio->outln('MULTI EXAMPLE');
-    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/resource-a.yaml ./yaml/resource-b.yaml ./src/Resource/ ./tests/Resource/');
-    $cliStdio->outln('');
-    $cliStdio->outln('WILDCARD EXAMPLE');
-    $cliStdio->outln("\t" . 'api-client-resource-generator ./yaml/*.yaml ./src/Resource/ ./tests/Resource/');
+    echo 'USAGE', PHP_EOL;
+    echo "\t" . 'api-client-resource-generator <configuration>', PHP_EOL;
+    echo PHP_EOL;
+    echo 'EXAMPLE', PHP_EOL;
+    echo "\t" . 'api-client-resource-generator ./resources.yaml', PHP_EOL;
 
-    exit(Status::USAGE);
+    exit(64);
 }
 
 exit(Status::SUCCESS);
