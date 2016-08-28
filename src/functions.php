@@ -34,3 +34,19 @@ function readYamlDir(string $dir): array
     }
     return $files;
 }
+
+/**
+ * @param string $line
+ */
+function out(string $line)
+{
+    echo $line;
+}
+
+/**
+ * @param string $line
+ */
+function outln(string $line)
+{
+    echo $line, PHP_EOL;
+}
