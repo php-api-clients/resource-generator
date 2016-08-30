@@ -8,7 +8,7 @@ use Doctrine\Common\Inflector\Inflector;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
 
-class InterfaceGenerator implements FileGeneratorInterface
+final class InterfaceGenerator implements FileGeneratorInterface
 {
     /**
      * @var array
