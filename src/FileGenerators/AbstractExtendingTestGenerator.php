@@ -48,7 +48,7 @@ abstract class AbstractExtendingTestGenerator implements FileGeneratorInterface
         $namespace = $this->yaml['tests']['namespace'] . '\\' . static::NAMESPACE;
         if (count($classChunks) > 0) {
             $namespace .= '\\' . implode('\\', $classChunks);
-            $namespace .= str_replace('\\\\', '\\', $namespace);
+            $namespace = str_replace('\\\\', '\\', $namespace);
         }
         $baseClassFQCN = $this->yaml['src']['namespace'] . '\\' . $this->yaml['class'];
 

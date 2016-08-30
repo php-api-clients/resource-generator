@@ -41,9 +41,18 @@ final class InterfaceGenerator implements FileGeneratorInterface
      */
     public function generate(): Node
     {
+        $classChunks = explode('\\', $this->yaml['class']);
+        $baseClass = array_pop($classChunks);
+        $className = $baseClass . 'Interface';
+        $namespace = $this->yaml['src']['namespace'];
+        if (count($classChunks) > 0) {
+            $namespace .= '\\' . implode('\\', $classChunks);
+            $namespace = str_replace('\\\\', '\\', $namespace);
+        }
+
         $factory = new BuilderFactory();
 
-        $class = $factory->interface($this->yaml['class'] . 'Interface')
+        $class = $factory->interface($className)
             ->extend('ResourceInterface');
 
         foreach ($this->yaml['properties'] as $name => $details) {
@@ -64,7 +73,7 @@ final class InterfaceGenerator implements FileGeneratorInterface
             );
         }
 
-        return $factory->namespace($this->yaml['src']['namespace'])
+        return $factory->namespace($namespace)
             ->addStmt($factory->use(ResourceInterface::class))
             ->addStmt($class)
             ->getNode()
