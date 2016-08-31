@@ -1,4 +1,5 @@
 yaml_location: yaml
+api_settings: Example\Client\ApiSettings
 src:
   path: src/Resources
   namespace: Example\Client\Resource
