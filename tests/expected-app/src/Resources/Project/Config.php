@@ -2,12 +2,10 @@
 
 namespace Example\Client\Resource\Project;
 
-use ApiClients\Foundation\Resource\TransportAwareTrait;
+use ApiClients\Foundation\Resource\AbstractResource;
 
-abstract class Config implements ConfigInterface
+abstract class Config extends AbstractResource implements ConfigInterface
 {
-    use TransportAwareTrait;
-
     /**
      * @var string
      */

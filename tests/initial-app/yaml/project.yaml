@@ -1,16 +1,20 @@
 class: Project
-collection:
-  builds: Project\Build
-nested:
-  latestBuild: Project\Build
-  config: Project\Config
 properties:
   id: int
   name: string
   description: string
-  builds: array
-  latestBuild: Project\Build
-  config: Project\Config
+  builds:
+    type: array
+    annotations:
+      collection: Project\Build
+  latestBuild:
+    type: Project\Build
+    annotations:
+      nested: Project\Build
+  config:
+    type: Project\Config
+    annotations:
+      nested: Project\Config
   plugins: SplObjectStorage
   created:
     method: createdAt

@@ -8,6 +8,10 @@ use Example\Client\Resource\Project;
 
 class ProjectTest extends AbstractResourceTest
 {
+    public function getSyncAsync() : string
+    {
+        return 'Sync';
+    }
     public function getClass() : string
     {
         return Project::class;

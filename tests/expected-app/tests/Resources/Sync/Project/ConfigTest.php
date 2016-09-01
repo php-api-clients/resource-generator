@@ -1,13 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace Example\Tests\Client\Resource\Async\Project;
+namespace Example\Tests\Client\Resource\Sync\Project;
 
 use ApiClients\Tools\ResourceTestUtilities\AbstractResourceTest;
-use Example\Client\Resource\ApiSettings;
+use Example\Client\ApiSettings;
 use Example\Client\Resource\Project\Config;
 
 class ConfigTest extends AbstractResourceTest
 {
+    public function getSyncAsync() : string
+    {
+        return 'Sync';
+    }
     public function getClass() : string
     {
         return Config::class;

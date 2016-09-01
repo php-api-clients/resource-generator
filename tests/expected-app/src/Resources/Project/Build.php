@@ -1,22 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace Example\Client\Resource;
+namespace Example\Client\Resource\Project;
 
-use ApiClients\Foundation\Hydrator\Annotations\Collection;
-use ApiClients\Foundation\Hydrator\Annotations\Nested;
-use ApiClients\Foundation\Resource\TransportAwareTrait;
-use DateTime;
+use ApiClients\Foundation\Hydrator\Annotations\Rename;
+use ApiClients\Foundation\Resource\AbstractResource;
+use DateTimeImmutable;
 use DateTimeInterface;
 use SplObjectStorage;
 
 /**
- * @Collection(builds="Project\Build")
- * @Nested(latestBuild="Project\Build", config="Project\Config")
+ * @Rename(basic_rate="basic.rate")
  */
-abstract class Project implements ProjectInterface
+abstract class Build extends AbstractResource implements BuildInterface
 {
-    use TransportAwareTrait;
-
     /**
      * @var int
      */
@@ -35,17 +31,7 @@ abstract class Project implements ProjectInterface
     /**
      * @var array
      */
-    protected $builds;
-
-    /**
-     * @var Project\Build
-     */
-    protected $latestBuild;
-
-    /**
-     * @var Project\Config
-     */
-    protected $config;
+    protected $config = array();
 
     /**
      * @var SplObjectStorage
@@ -58,7 +44,7 @@ abstract class Project implements ProjectInterface
     protected $created;
 
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
     protected $created_wrapped;
 
@@ -68,9 +54,14 @@ abstract class Project implements ProjectInterface
     protected $updated;
 
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
     protected $updated_wrapped;
+
+    /**
+     * @var int
+     */
+    protected $basic_rate;
 
     /**
      * @return int
@@ -99,23 +90,7 @@ abstract class Project implements ProjectInterface
     /**
      * @return array
      */
-    public function builds() : array
-    {
-        return $this->builds;
-    }
-
-    /**
-     * @return Project\Build
-     */
-    public function latestBuild() : Project\Build
-    {
-        return $this->latestBuild;
-    }
-
-    /**
-     * @return Project\Config
-     */
-    public function config() : Project\Config
+    public function config() : array
     {
         return $this->config;
     }
@@ -133,10 +108,10 @@ abstract class Project implements ProjectInterface
      */
     public function createdAt() : DateTimeInterface
     {
-        if ($this->created_wrapped instanceof DateTime) {
+        if ($this->created_wrapped instanceof DateTimeImmutable) {
             return $this->created_wrapped;
         }
-        $this->created_wrapped = new DateTime($this->created);
+        $this->created_wrapped = new DateTimeImmutable($this->created);
         return $this->created_wrapped;
     }
 
@@ -145,10 +120,18 @@ abstract class Project implements ProjectInterface
      */
     public function updatedAt() : DateTimeInterface
     {
-        if ($this->updated_wrapped instanceof DateTime) {
+        if ($this->updated_wrapped instanceof DateTimeImmutable) {
             return $this->updated_wrapped;
         }
-        $this->updated_wrapped = new DateTime($this->updated);
+        $this->updated_wrapped = new DateTimeImmutable($this->updated);
         return $this->updated_wrapped;
+    }
+
+    /**
+     * @return int
+     */
+    public function basicRate() : int
+    {
+        return $this->basic_rate;
     }
 }
