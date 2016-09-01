@@ -61,8 +61,8 @@ final class InterfaceGenerator implements FileGeneratorInterface
                 $type = $details['type'];
             }
             $methodName = Inflector::camelize($name);
-            if (isset($this->yaml['method'][$name])) {
-                $methodName = $this->yaml['method'][$name];
+            if (isset($details['method'])) {
+                $methodName = $details['method'];
             }
             $class->addStmt($factory->method($methodName)
                 ->makePublic()
