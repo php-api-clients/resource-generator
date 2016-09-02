@@ -120,7 +120,10 @@ class ResourceGenerator
                     continue;
                 }
 
-                if (!is_subclass_of($this->configuration['annotation_handlers'][$annotation], AnnotationHandlerInterface::class)) {
+                if (!is_subclass_of(
+                    $this->configuration['annotation_handlers'][$annotation],
+                    AnnotationHandlerInterface::class
+                )) {
                     continue;
                 }
 

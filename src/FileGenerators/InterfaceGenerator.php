@@ -64,12 +64,13 @@ final class InterfaceGenerator implements FileGeneratorInterface
             if (isset($details['method'])) {
                 $methodName = $details['method'];
             }
-            $class->addStmt($factory->method($methodName)
-                ->makePublic()
-                ->setReturnType($type)
-                ->setDocComment(
-                    "/**\r\n * @return " . $type . "\r\n */"
-                )
+            $class->addStmt(
+                $factory->method($methodName)
+                    ->makePublic()
+                    ->setReturnType($type)
+                    ->setDocComment(
+                        "/**\r\n * @return " . $type . "\r\n */"
+                    )
             );
         }
 
