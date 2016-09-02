@@ -2,11 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
-use ApiClients\Foundation\Hydrator\Annotations\Collection;
-use ApiClients\Foundation\Hydrator\Annotations\Nested;
-use ApiClients\Foundation\Hydrator\Annotations\Rename;
 use ApiClients\Foundation\Resource\AbstractResource;
-use ApiClients\Foundation\Resource\ResourceInterface;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;
 use PhpParser\Builder\Method;
@@ -111,6 +107,9 @@ final class BaseClassGenerator implements FileGeneratorInterface
         return $stmt->addStmt($class)->getNode();
     }
 
+    /**
+     * @param \PhpParser\Builder\Class_ $class
+     */
     protected function processProperty($class, $stmt, $name, $details)
     {
         if (is_string($details)) {
