@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace WyriHaximus\Tests\ApiClient\Transport;
 
-use Aura\Cli\Context;
-use Aura\Cli\Stdio;
 use Phake;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ApiClients\Tools\ResourceGenerator\ResourceGenerator;
+use function ApiClients\Tools\ResourceGenerator\readYaml;
+use function ApiClients\Tools\ResourceGenerator\readYamlDir;
 
 class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,41 +17,19 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     protected $temporaryDirectory;
 
-    public function testConstruct()
+    public function testResourceGenerator()
     {
-        $context = Phake::mock(Context::class);
-        $stdio = Phake::mock(Stdio::class);
-        $getopt = Phake::mock(Context\Getopt::class);
-        Phake::when($getopt)->get(1)->thenReturn('project.yaml');
-        Phake::when($getopt)->get(2)->thenReturn('project-build.yaml');
-        Phake::when($getopt)->get(3)->thenReturn('./');
-        Phake::when($getopt)->get(4)->thenReturn(null);
-        Phake::when($context)->getopt([])->thenReturn($getopt);
-        new ResourceGenerator($context, $stdio);
-        Phake::verify($getopt, Phake::never())->get(0);
-        Phake::verify($getopt)->get(1);
-        Phake::verify($getopt)->get(2);
-        Phake::verify($getopt)->get(3);
-        Phake::verify($getopt)->get(4);
-        Phake::verify($context)->getopt([]);
-    }
+        $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
+        $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'expected-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
+        $resourcesPathTests = __DIR__ . DIRECTORY_SEPARATOR . 'expected-app' . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR;
 
-    public function testOutput()
-    {
-        $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . 'yaml' . DIRECTORY_SEPARATOR;
-        $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'resources-src' . DIRECTORY_SEPARATOR;
-        $resourcesPathTests = __DIR__ . DIRECTORY_SEPARATOR . 'resources-tests' . DIRECTORY_SEPARATOR;
-        $context = Phake::mock(Context::class);
-        $stdio = Phake::mock(Stdio::class);
-        $getopt = Phake::mock(Context\Getopt::class);
-        Phake::when($getopt)->get(1)->thenReturn($yamlPath . 'project.yaml');
-        Phake::when($getopt)->get(2)->thenReturn($yamlPath . 'project-build.yaml');
-        Phake::when($getopt)->get(3)->thenReturn($yamlPath . 'project-config.yaml');
-        Phake::when($getopt)->get(4)->thenReturn($this->temporaryDirectory . 'src' . DIRECTORY_SEPARATOR);
-        Phake::when($getopt)->get(5)->thenReturn($this->temporaryDirectory . 'tests' . DIRECTORY_SEPARATOR);
-        Phake::when($getopt)->get(6)->thenReturn(null);
-        Phake::when($context)->getopt([])->thenReturn($getopt);
-        (new ResourceGenerator($context, $stdio))->run();
+        $configuration = [];
+        $configuration += readYaml(__DIR__ . DIRECTORY_SEPARATOR . '../generator-settings.yml');
+        $configuration += readYaml(__DIR__ . DIRECTORY_SEPARATOR . 'initial-app/resources.yml');
+        $configuration['files'] = readYamlDir(__DIR__ . DIRECTORY_SEPARATOR . 'initial-app' . DIRECTORY_SEPARATOR . $configuration['yaml_location']);
+        $configuration['root'] = $this->temporaryDirectory;
+
+        (new ResourceGenerator($configuration, function () {}))->run();
 
         foreach ([
              $resourcesPath => $this->temporaryDirectory . 'src' . DIRECTORY_SEPARATOR,
@@ -110,7 +88,7 @@ class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         parent::tearDown();
-        $this->rmdir($this->temporaryDirectory);
+        //$this->rmdir($this->temporaryDirectory);
     }
 
     protected function rmdir(string $dir)

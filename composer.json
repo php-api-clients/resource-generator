@@ -18,8 +18,7 @@
     "api-clients/hydrator": "dev-master",
     "api-clients/resource": "dev-master",
     "api-clients/resource-test-utilities": "dev-master",
-    "friendsofphp/php-cs-fixer": "1.11.*",
-    "aura/cli": "^2.1"
+    "friendsofphp/php-cs-fixer": "1.11.8"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.2.3",
@@ -29,7 +28,8 @@
   "autoload": {
     "psr-4": {
       "ApiClients\\Tools\\ResourceGenerator\\": "src/"
-    }
+    },
+    "files": ["src/functions_include.php"]
   },
   "autoload-dev": {
     "psr-4": {

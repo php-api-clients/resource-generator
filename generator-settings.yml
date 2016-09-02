@@ -1,0 +1,11 @@
+file_generators:
+  interface: ApiClients\Tools\ResourceGenerator\FileGenerators\InterfaceGenerator
+  base-class: ApiClients\Tools\ResourceGenerator\FileGenerators\BaseClassGenerator
+  async-class: ApiClients\Tools\ResourceGenerator\FileGenerators\AsyncClassGenerator
+  async-test: ApiClients\Tools\ResourceGenerator\FileGenerators\AsyncTestGenerator
+  sync-class: ApiClients\Tools\ResourceGenerator\FileGenerators\SyncClassGenerator
+  sync-test: ApiClients\Tools\ResourceGenerator\FileGenerators\SyncTestGenerator
+annotation_handlers:
+  collection: ApiClients\Tools\ResourceGenerator\AnnotationHandler\Collection
+  nested: ApiClients\Tools\ResourceGenerator\AnnotationHandler\Nested
+  rename: ApiClients\Tools\ResourceGenerator\AnnotationHandler\Rename

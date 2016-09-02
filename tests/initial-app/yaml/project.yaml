@@ -1,0 +1,26 @@
+class: Project
+properties:
+  id: int
+  name: string
+  description: string
+  builds:
+    type: array
+    annotations:
+      collection: Project\Build
+  latestBuild:
+    type: Project\Build
+    annotations:
+      nested: Project\Build
+  config:
+    type: Project\Config
+    annotations:
+      nested: Project\Config
+  plugins: SplObjectStorage
+  created:
+    method: createdAt
+    type: DateTimeInterface
+    wrap: DateTimeImmutable
+  updated:
+    method: updatedAt
+    type: DateTimeInterface
+    wrap: DateTimeImmutable
