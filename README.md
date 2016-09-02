@@ -22,22 +22,16 @@ composer require api-clients/resource-generator
 
 # Usage
 
-Pas a `definition` `YAML` file, and a `pathSrc` where to write the generated files and a `pathTests` for the generated tests.
+Pas a `definition` `YAML` file.
 
 ```
-./vendor/bin/api-client-resource-generator [definition] [pathSrc] [pathTests]
+./vendor/bin/api-client-resource-generator [definition]
 ```
 
 For example: 
 
 ```
-./vendor/bin/api-client-resource-generator ./yaml/project.yaml ./src/Resource ./tests/Resource
-```
-
-Generate multiple resources at once: 
-
-```
-./vendor/bin/api-client-resource-generator ./yaml/*.yaml ./src/Resource ./tests/Resource
+./vendor/bin/api-client-resource-generator ./yaml/project.yml
 ```
 
 # License
