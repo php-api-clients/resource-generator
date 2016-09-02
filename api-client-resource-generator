@@ -3,6 +3,7 @@
 
 use ApiClients\Tools\ResourceGenerator\ResourceGenerator;
 use function ApiClients\Tools\ResourceGenerator\readYaml;
+use function ApiClients\Tools\ResourceGenerator\readYamlDir;
 
 /**
  * Locate and load autoloader
@@ -32,6 +33,8 @@ try {
     $configuration = [];
     $configuration += readYaml(__DIR__ . DIRECTORY_SEPARATOR . 'generator-settings.yml');
     $configuration += readYaml($argv[1]);
+    $configuration['root'] = dirname($argv[1]) . DIRECTORY_SEPARATOR;
+    $configuration['files'] = readYamlDir($configuration['root'] . $configuration['yaml_location']);
 
     (new ResourceGenerator($configuration))->run();
 } catch (Exception $e) {
