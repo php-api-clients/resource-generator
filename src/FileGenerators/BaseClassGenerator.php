@@ -108,6 +108,9 @@ final class BaseClassGenerator implements FileGeneratorInterface
         return $stmt->addStmt($class)->getNode();
     }
 
+    /**
+     * @param \PhpParser\Builder\Class_ $class
+     */
     protected function processProperty($class, $stmt, $name, $details)
     {
         if (is_string($details)) {

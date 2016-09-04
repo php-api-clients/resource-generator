@@ -8,7 +8,6 @@ use PhpParser\Node;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigAwareInterface;
 use Symfony\CS\ConfigInterface;
-use Symfony\CS\FileCacheManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 
