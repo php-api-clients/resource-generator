@@ -7,6 +7,7 @@ use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
+use function ApiClients\Tools\ResourceGenerator\exists;
 
 final class InterfaceGenerator implements FileGeneratorInterface
 {
@@ -14,6 +15,13 @@ final class InterfaceGenerator implements FileGeneratorInterface
      * @var array
      */
     protected $yaml;
+
+    /**
+     * @var array
+     */
+    protected $uses = [
+        ResourceInterface::class => true,
+    ];
 
     /**
      * InterfaceGenerator constructor.
@@ -60,8 +68,13 @@ final class InterfaceGenerator implements FileGeneratorInterface
             if (is_array($details)) {
                 $type = $details['type'];
             }
+
+            if (exists($type)) {
+                $this->uses[$type] = true;
+            }
+
             $methodName = Inflector::camelize($name);
-            if (isset($details['method'])) {
+            if (is_array($details) && isset($details['method'])) {
                 $methodName = $details['method'];
             }
             $class->addStmt(
@@ -74,9 +87,16 @@ final class InterfaceGenerator implements FileGeneratorInterface
             );
         }
 
-        return $factory->namespace($namespace)
-            ->addStmt($factory->use(ResourceInterface::class))
-            ->addStmt($class)
+        $stmt = $factory->namespace($namespace);
+
+        ksort($this->uses);
+        foreach ($this->uses as $useClass => $bool) {
+            $stmt = $stmt
+                ->addStmt($factory->use($useClass))
+            ;
+        }
+
+        return $stmt->addStmt($class)
             ->getNode()
         ;
     }
