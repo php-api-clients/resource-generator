@@ -3,6 +3,8 @@
 namespace Example\Client\Resource;
 
 use ApiClients\Foundation\Resource\ResourceInterface;
+use DateTimeInterface;
+use SplObjectStorage;
 
 interface ProjectInterface extends ResourceInterface
 {
