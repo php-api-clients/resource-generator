@@ -50,3 +50,20 @@ function outln(string $line)
 {
     echo $line, PHP_EOL;
 }
+
+/**
+ * @param string $ic
+ * @return bool
+ */
+function exists(string $ic): bool
+{
+    if (class_exists($ic)) {
+        return true;
+    }
+
+    if (interface_exists($ic)) {
+        return true;
+    }
+
+    return false;
+}

@@ -9,6 +9,7 @@ use PhpParser\Builder\Method;
 use PhpParser\Builder\Property;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
+use function ApiClients\Tools\ResourceGenerator\exists;
 
 final class BaseClassGenerator implements FileGeneratorInterface
 {
@@ -113,7 +114,7 @@ final class BaseClassGenerator implements FileGeneratorInterface
     protected function processProperty($class, $stmt, $name, $details)
     {
         if (is_string($details)) {
-            if ($this->exists($details)) {
+            if (exists($details)) {
                 $this->uses[$details] = true;
             }
 
@@ -123,10 +124,10 @@ final class BaseClassGenerator implements FileGeneratorInterface
             return $stmt;
         }
 
-        if ($this->exists($details['type'])) {
+        if (exists($details['type'])) {
             $this->uses[$details['type']] = true;
         }
-        if (isset($details['wrap']) && $this->exists($details['wrap'])) {
+        if (isset($details['wrap']) && exists($details['wrap'])) {
             $this->uses[$details['wrap']] = true;
         }
 
@@ -223,18 +224,5 @@ final class BaseClassGenerator implements FileGeneratorInterface
                               * @return ' . $type . '
                               */')
             ->addStmts($stmts);
-    }
-
-    protected function exists(string $ic): bool
-    {
-        if (class_exists($ic)) {
-            return true;
-        }
-
-        if (interface_exists($ic)) {
-            return true;
-        }
-
-        return false;
     }
 }
