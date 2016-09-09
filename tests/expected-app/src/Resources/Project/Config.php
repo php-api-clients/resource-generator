@@ -2,8 +2,12 @@
 
 namespace Example\Client\Resource\Project;
 
+use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
 use ApiClients\Foundation\Resource\AbstractResource;
 
+/**
+ * @EmptyResource("Project\EmptyConfig")
+ */
 abstract class Config extends AbstractResource implements ConfigInterface
 {
     /**

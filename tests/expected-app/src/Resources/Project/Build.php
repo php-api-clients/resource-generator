@@ -2,6 +2,7 @@
 
 namespace Example\Client\Resource\Project;
 
+use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
 use ApiClients\Foundation\Hydrator\Annotations\Rename;
 use ApiClients\Foundation\Resource\AbstractResource;
 use DateTimeImmutable;
@@ -10,6 +11,7 @@ use SplObjectStorage;
 
 /**
  * @Rename(basic_rate="basic.rate")
+ * @EmptyResource("Project\EmptyBuild")
  */
 abstract class Build extends AbstractResource implements BuildInterface
 {
