@@ -2,6 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
+use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
 use ApiClients\Foundation\Resource\AbstractResource;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;
@@ -33,6 +34,7 @@ final class BaseClassGenerator implements FileGeneratorInterface
      */
     protected $uses = [
         AbstractResource::class => true,
+        EmptyResource::class => true,
     ];
 
     /**
@@ -100,6 +102,9 @@ final class BaseClassGenerator implements FileGeneratorInterface
                 $this->docBlock[] = '@' . $annotation . '(' . implode(', ', $nestedResources) . ')';
             }
         }
+
+        $namespacePrefix = ltrim(implode('\\', $classChunks) . '\\', '\\');
+        $this->docBlock[] = '@EmptyResource("' . $namespacePrefix . 'Empty' . $className . '")';
 
         if (count($this->docBlock) > 0) {
             $class->setDocComment("/**\r\n * " . implode("\r\n * ", $this->docBlock) . "\r\n */");
