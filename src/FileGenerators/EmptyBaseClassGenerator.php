@@ -2,8 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
-use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
-use ApiClients\Foundation\Resource\AbstractResource;
+use ApiClients\Foundation\Resource\EmptyResourceInterface;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;
 use PhpParser\Builder\Method;
@@ -12,7 +11,7 @@ use PhpParser\BuilderFactory;
 use PhpParser\Node;
 use function ApiClients\Tools\ResourceGenerator\exists;
 
-final class BaseClassGenerator implements FileGeneratorInterface
+final class EmptyBaseClassGenerator implements FileGeneratorInterface
 {
     /**
      * @var array
@@ -33,8 +32,7 @@ final class BaseClassGenerator implements FileGeneratorInterface
      * @var array
      */
     protected $uses = [
-        AbstractResource::class => true,
-        EmptyResource::class => true,
+        EmptyResourceInterface::class => true,
     ];
 
     /**
@@ -44,9 +42,6 @@ final class BaseClassGenerator implements FileGeneratorInterface
     public function __construct(array $yaml)
     {
         $this->yaml = $yaml;
-        if (isset($this->yaml['uses']) && is_array($this->yaml['uses'])) {
-            $this->uses += $this->yaml['uses'];
-        }
         $this->factory = new BuilderFactory();
     }
 
@@ -55,9 +50,21 @@ final class BaseClassGenerator implements FileGeneratorInterface
      */
     public function getFilename(): string
     {
+        $classChunks = explode('\\', $this->yaml['class']);
+        $className = array_pop($classChunks);
+        $className = 'Empty' . $className;
+        $namespace = '';
+        if (count($classChunks) > 0) {
+            $namespace .= '\\' . implode('\\', $classChunks);
+            $namespace = str_replace('\\\\', '\\', $namespace);
+        }
         return $this->yaml['src']['path'] .
             DIRECTORY_SEPARATOR .
-            str_replace('\\', DIRECTORY_SEPARATOR, $this->yaml['class']) .
+            str_replace(
+                '\\',
+                DIRECTORY_SEPARATOR,
+                $namespace . '\\' . $className
+            ) .
             '.php'
         ;
     }
@@ -75,9 +82,9 @@ final class BaseClassGenerator implements FileGeneratorInterface
             $namespace = str_replace('\\\\', '\\', $namespace);
         }
 
-        $class = $this->factory->class($className)
+        $class = $this->factory->class('Empty' . $className)
             ->implement($className . 'Interface')
-            ->extend('AbstractResource')
+            ->implement('EmptyResourceInterface')
             ->makeAbstract();
 
         $stmt = $this->factory->namespace($namespace);
@@ -90,24 +97,6 @@ final class BaseClassGenerator implements FileGeneratorInterface
             $stmt = $stmt
                 ->addStmt($this->factory->use($useClass))
             ;
-        }
-
-        if (isset($this->yaml['annotations'])) {
-            ksort($this->yaml['annotations']);
-            foreach ($this->yaml['annotations'] as $annotation => $details) {
-                $nestedResources = [];
-                foreach ($details as $key => $value) {
-                    $nestedResources[] = $key . '="' . $value . '"';
-                }
-                $this->docBlock[] = '@' . $annotation . '(' . implode(', ', $nestedResources) . ')';
-            }
-        }
-
-        $namespacePrefix = ltrim(implode('\\', $classChunks) . '\\', '\\');
-        $this->docBlock[] = '@EmptyResource("' . $namespacePrefix . 'Empty' . $className . '")';
-
-        if (count($this->docBlock) > 0) {
-            $class->setDocComment("/**\r\n * " . implode("\r\n * ", $this->docBlock) . "\r\n */");
         }
 
         return $stmt->addStmt($class)->getNode();
@@ -123,22 +112,14 @@ final class BaseClassGenerator implements FileGeneratorInterface
                 $this->uses[$details] = true;
             }
 
-            $class->addStmt($this->createProperty($details, $name, $details));
             $methodName = Inflector::camelize($name);
             $class->addStmt($this->createMethod($details, $name, $methodName, $details));
+
             return $stmt;
         }
 
         if (exists($details['type'])) {
             $this->uses[$details['type']] = true;
-        }
-        if (isset($details['wrap']) && exists($details['wrap'])) {
-            $this->uses[$details['wrap']] = true;
-        }
-
-        $class->addStmt($this->createProperty($details['type'], $name, $details));
-        if (isset($details['wrap'])) {
-            $class->addStmt($this->createProperty($details['wrap'], $name . '_wrapped', $details));
         }
 
         $methodName = Inflector::camelize($name);
@@ -171,56 +152,11 @@ final class BaseClassGenerator implements FileGeneratorInterface
     ): Method {
         $stmts = [
             new Node\Stmt\Return_(
-                new Node\Expr\PropertyFetch(
-                    new Node\Expr\Variable('this'),
-                    $name
+                new Node\Expr\ConstFetch(
+                    new Node\Name('null')
                 )
             )
         ];
-
-        if (isset($details['wrap'])) {
-            $stmts = [];
-            $stmts[] = new Node\Stmt\If_(
-                new Node\Expr\Instanceof_(
-                    new Node\Expr\PropertyFetch(
-                        new Node\Expr\Variable('this'),
-                        $name . '_wrapped'
-                    ),
-                    new Node\Name($details['wrap'])
-                ),
-                [
-                    'stmts' => [
-                        new Node\Stmt\Return_(
-                            new Node\Expr\PropertyFetch(
-                                new Node\Expr\Variable('this'),
-                                $name . '_wrapped'
-                            )
-                        ),
-                    ],
-                ]
-            );
-            $stmts[] = new Node\Expr\Assign(
-                new Node\Expr\PropertyFetch(
-                    new Node\Expr\Variable('this'),
-                    $name . '_wrapped'
-                ),
-                new Node\Expr\New_(
-                    new Node\Name($details['wrap']),
-                    [
-                        new Node\Expr\PropertyFetch(
-                            new Node\Expr\Variable('this'),
-                            $name
-                        ),
-                    ]
-                )
-            );
-            $stmts[] = new Node\Stmt\Return_(
-                new Node\Expr\PropertyFetch(
-                    new Node\Expr\Variable('this'),
-                    $name . '_wrapped'
-                )
-            );
-        }
 
         return $this->factory->method($methodName)
             ->makePublic()

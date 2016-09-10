@@ -3,6 +3,7 @@
 namespace Example\Client\Resource;
 
 use ApiClients\Foundation\Hydrator\Annotations\Collection;
+use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
 use ApiClients\Foundation\Hydrator\Annotations\Nested;
 use ApiClients\Foundation\Resource\AbstractResource;
 use DateTimeImmutable;
@@ -12,6 +13,7 @@ use SplObjectStorage;
 /**
  * @Collection(builds="Project\Build")
  * @Nested(latestBuild="Project\Build", config="Project\Config")
+ * @EmptyResource("EmptyProject")
  */
 abstract class Project extends AbstractResource implements ProjectInterface
 {
