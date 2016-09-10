@@ -42,9 +42,6 @@ final class EmptyBaseClassGenerator implements FileGeneratorInterface
     public function __construct(array $yaml)
     {
         $this->yaml = $yaml;
-        if (isset($this->yaml['uses']) && is_array($this->yaml['uses'])) {
-            //$this->uses += $this->yaml['uses'];
-        }
         $this->factory = new BuilderFactory();
     }
 
