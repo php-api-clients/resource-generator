@@ -2,8 +2,8 @@
 
 namespace Example\Client\Resource\Async;
 
-use Example\Client\Resource\EmptyProject as BaseProject;
+use Example\Client\Resource\EmptyProject as BaseEmptyProject;
 
-class EmptyProject extends BaseProject
+class EmptyProject extends BaseEmptyProject
 {
 }
