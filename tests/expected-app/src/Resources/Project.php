@@ -11,8 +11,13 @@ use DateTimeInterface;
 use SplObjectStorage;
 
 /**
- * @Collection(builds="Project\Build")
- * @Nested(latestBuild="Project\Build", config="Project\Config")
+ * @Collection(
+ *     builds="Project\Build"
+ * )
+ * @Nested(
+ *     latestBuild="Project\Build",
+ *     config="Project\Config"
+ * )
  * @EmptyResource("EmptyProject")
  */
 abstract class Project extends AbstractResource implements ProjectInterface
