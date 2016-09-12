@@ -10,7 +10,9 @@ use DateTimeInterface;
 use SplObjectStorage;
 
 /**
- * @Rename(basic_rate="basic.rate")
+ * @Rename(
+ *     basic_rate="basic.rate"
+ * )
  * @EmptyResource("Project\EmptyBuild")
  */
 abstract class Build extends AbstractResource implements BuildInterface
