@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "58a4c5851940533e17bc515b9488eff1",
-    "content-hash": "43217cfcd07611e1169ad9a9c8b6bf0c",
+    "hash": "a5b6ca488ad8f858f9347c2d902699ba",
+    "content-hash": "956f085bc8415dc92a2576569e2819b4",
     "packages": [
         {
             "name": "api-clients/command-bus",
@@ -154,12 +154,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-api-clients/hydrator.git",
-                "reference": "0825431382fc316ac9cd4b33ddeb5e9409015fb6"
+                "reference": "ab5faefe538cbe699ecf0922c31da33fb31baa04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-api-clients/hydrator/zipball/0825431382fc316ac9cd4b33ddeb5e9409015fb6",
-                "reference": "0825431382fc316ac9cd4b33ddeb5e9409015fb6",
+                "url": "https://api.github.com/repos/php-api-clients/hydrator/zipball/ab5faefe538cbe699ecf0922c31da33fb31baa04",
+                "reference": "ab5faefe538cbe699ecf0922c31da33fb31baa04",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 }
             ],
             "description": "Hydrator wrapping ocramius/generated-hydrator specifically for api clients",
-            "time": "2016-11-28 18:24:05"
+            "time": "2016-11-29 08:24:27"
         },
         {
             "name": "api-clients/middleware",
@@ -4637,7 +4637,8 @@
         "api-clients/foundation": 20,
         "api-clients/hydrator": 20,
         "api-clients/resource": 20,
-        "api-clients/resource-test-utilities": 20
+        "api-clients/resource-test-utilities": 20,
+        "api-clients/test-utilities": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
