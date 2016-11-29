@@ -36,6 +36,9 @@
       "ApiClients\\Tests\\Tools\\": "tests/"
     }
   },
+  "config": {
+    "sort-packages": true
+  },
   "bin": [
     "api-client-resource-generator"
   ]
