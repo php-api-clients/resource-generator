@@ -99,7 +99,12 @@ final class BaseClassGenerator implements FileGeneratorInterface
                 foreach ($details as $key => $value) {
                     $nestedResources[] = $key . '="' . $value . '"';
                 }
-                $this->docBlock[] = '@' . $annotation . '(' . implode(', ', $nestedResources) . ')';
+                $this->docBlock[] = '@' .
+                    $annotation .
+                    "(\r\n *     " .
+                    implode(",\r\n *     ", $nestedResources) .
+                    "\r\n * )"
+                ;
             }
         }
 
