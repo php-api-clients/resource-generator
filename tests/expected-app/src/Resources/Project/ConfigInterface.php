@@ -6,6 +6,8 @@ use ApiClients\Foundation\Resource\ResourceInterface;
 
 interface ConfigInterface extends ResourceInterface
 {
+    const HYDRATE_CLASS = 'Project\\Config';
+
     /**
      * @return string
      */

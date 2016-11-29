@@ -8,6 +8,8 @@ use SplObjectStorage;
 
 interface ProjectInterface extends ResourceInterface
 {
+    const HYDRATE_CLASS = 'Project';
+
     /**
      * @return int
      */

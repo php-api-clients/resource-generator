@@ -63,6 +63,19 @@ final class InterfaceGenerator implements FileGeneratorInterface
         $class = $factory->interface($className)
             ->extend('ResourceInterface');
 
+        $class->addStmt(
+            new Node\Stmt\ClassConst(
+                [
+                    new Node\Const_(
+                        'HYDRATE_CLASS',
+                        new Node\Scalar\String_(
+                            $this->yaml['class']
+                        )
+                    )
+                ]
+            )
+        );
+
         foreach ($this->yaml['properties'] as $name => $details) {
             $type = $details;
             if (is_array($details)) {
