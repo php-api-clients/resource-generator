@@ -46,7 +46,7 @@ final class SyncClassGenerator extends AbstractExtendingClassGenerator implement
                                     new Node\Expr\New_(
                                         new Node\Name('BuildAsyncFromSyncCommand'),
                                         [
-                                            new Node\Scalar\String_($this->yaml['class']), // 👼 An angel for Michael https://twitter.com/michaelcullumuk/status/803599400685760512
+                                            new Node\Scalar\String_($this->yaml['class']),
                                             new Node\Expr\Variable('this'),
                                         ]
                                     ),
