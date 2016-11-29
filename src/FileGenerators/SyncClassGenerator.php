@@ -43,45 +43,10 @@ final class SyncClassGenerator extends AbstractExtendingClassGenerator implement
                         'wait',
                         [
                             new Node\Expr\MethodCall(
-                                new Node\Expr\MethodCall(
-                                    new Node\Expr\Variable('this'),
-                                    'handleCommand',
-                                    [
-                                        new Node\Expr\New_(
-                                            new Node\Name('BuildAsyncFromSyncCommand'),
-                                            [
-                                                new Node\Expr\ClassConstFetch(
-                                                    new Node\Name('self'),
-                                                    'HYDRATE_CLASS'
-                                                ),
-                                                new Node\Expr\Variable('this'),
-                                            ]
-                                        ),
-                                    ]
-                                ),
+                                $this->callCommandBus(),
                                 'then',
                                 [
-                                    new Node\Expr\Closure(
-                                        [
-                                            'params' => [
-                                                new Node\Param(
-                                                    Inflector::camelize($className),
-                                                    null,
-                                                    $interfaceName
-                                                )
-                                            ],
-                                            'stmts' => [
-                                                new Node\Stmt\Return_(
-                                                    new Node\Expr\MethodCall(
-                                                        new Node\Expr\Variable(
-                                                            Inflector::camelize($className)
-                                                        ),
-                                                        'refresh'
-                                                    )
-                                                )
-                                            ],
-                                        ]
-                                    )
+                                   $this->createRefreshClosure($className, $interfaceName),
                                 ]
                             ),
                         ]
@@ -96,5 +61,55 @@ final class SyncClassGenerator extends AbstractExtendingClassGenerator implement
             ->addStmt($class)
             ->getNode()
             ;
+    }
+
+    protected function callCommandBus(): Node\Expr\MethodCall
+    {
+        return new Node\Expr\MethodCall(
+            new Node\Expr\Variable('this'),
+            'handleCommand',
+            [
+                $this->createCommand(),
+            ]
+        );
+    }
+
+    protected function createCommand(): Node\Expr\New_
+    {
+        return new Node\Expr\New_(
+            new Node\Name('BuildAsyncFromSyncCommand'),
+            [
+                new Node\Expr\ClassConstFetch(
+                    new Node\Name('self'),
+                    'HYDRATE_CLASS'
+                ),
+                new Node\Expr\Variable('this'),
+            ]
+        );
+    }
+
+    protected function createRefreshClosure(string $className, string $interfaceName): Node\Expr\Closure
+    {
+        return new Node\Expr\Closure(
+            [
+                'params' => [
+                    new Node\Param(
+                        Inflector::camelize($className),
+                        null,
+                        $interfaceName
+                    )
+                ],
+                'stmts' => [
+                    new Node\Stmt\Return_(
+                        new Node\Expr\MethodCall(
+                            new Node\Expr\Variable(
+                                Inflector::camelize($className)
+                            ),
+                            'refresh'
+                        )
+                    )
+                ],
+            ]
+        );
     }
 }
