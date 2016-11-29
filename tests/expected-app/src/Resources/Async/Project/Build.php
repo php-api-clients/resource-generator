@@ -8,6 +8,6 @@ class Build extends BaseBuild
 {
     public function refresh() : Build
     {
-        return $this->wait($this->callAsync('refresh'));
+        throw new \Exception('TODO: create refresh method!');
     }
 }

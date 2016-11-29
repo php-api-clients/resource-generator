@@ -8,6 +8,6 @@ class Project extends BaseProject
 {
     public function refresh() : Project
     {
-        return $this->wait($this->callAsync('refresh'));
+        throw new \Exception('TODO: create refresh method!');
     }
 }

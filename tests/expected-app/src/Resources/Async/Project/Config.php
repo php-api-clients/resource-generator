@@ -8,6 +8,6 @@ class Config extends BaseConfig
 {
     public function refresh() : Config
     {
-        return $this->wait($this->callAsync('refresh'));
+        throw new \Exception('TODO: create refresh method!');
     }
 }
