@@ -22,7 +22,7 @@ composer require api-clients/resource-generator
 
 # Usage
 
-Pas a `definition` `YAML` file.
+Pas a `definition` [`YAML`](#YAML) file.
 
 ```
 ./vendor/bin/api-client-resource-generator [definition]
@@ -32,6 +32,49 @@ For example:
 
 ```
 ./vendor/bin/api-client-resource-generator ./yaml/project.yml
+```
+
+# YAML
+
+The [`YAML`](https://en.wikipedia.org/wiki/YAML) format allows for quick and easy generation of resources, empty resources, and resource tests. The spec consists out of two or more files. 
+
+## `resource.yaml`
+
+First there is the `resource.yml` file with the meta data regarding all resources:
+
+```YAML
+yaml_location: yaml                        # The location where the YAML files for the Resources are 
+api_settings: Example\Client\ApiSettings   # API Settings file location
+src:                                       # SRC 
+  path: src/Resources                      # Path where the resources should be placed
+  namespace: Example\Client\Resource       # The namespace for the resources
+tests:                                     # TESTS
+  path: tests/Resources                    # Path where the resources tests should be placed
+  namespace: Example\Tests\Client\Resource # The namespace for the tests
+```
+
+## `yaml/project.yaml`
+
+The following `YAML` is an example resource file:
+
+```YAML
+class: Project                             # Resource classname
+properties:                                # The resource's properties
+  id: int                                  # Simple id field with type int
+  name: string                             # Any scalar types or classes work
+  plugins: SplObjectStorage                #
+  builds:                                  # But differet types `special` properties are supported.
+    type: array                            # For example the collection expects the type to be an array
+    annotations:                           # and it uses an annotation name `collection` to     
+      collection: Project\Build            # transform all items in the array to the specified resource.
+  latestBuild:                             # Another supported annotation is `nested`, `nested` allows you to
+    type: Project\Build                    # turn a properties that would otherwise be an array into a
+    annotations:                           # resource. With it's own properties and methods
+      nested: Project\Build                #
+  updated:                                 # Normally all methods are generated to their camelCase property name
+    method: updatedAt                      # but with `method` you can specify a custom method
+    type: DateTimeInterface                # When for example dealing with time, you can specify to return an interface
+    wrap: DateTimeImmutable                # while wrapping the value in a concrete class
 ```
 
 # License
