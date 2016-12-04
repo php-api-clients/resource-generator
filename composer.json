@@ -17,12 +17,12 @@
     "doctrine/inflector": "^1.1",
     "api-clients/foundation": "dev-master",
     "api-clients/hydrator": "dev-master",
-    "api-clients/resource": "dev-master",
+    "api-clients/resource": "^1.0",
     "api-clients/resource-test-utilities": "dev-master",
     "friendsofphp/php-cs-fixer": "1.11.8"
   },
   "require-dev": {
-    "api-clients/test-utilities": "dev-master"
+    "api-clients/test-utilities": "^1.0"
   },
   "autoload": {
     "psr-4": {
