@@ -1,5 +1,6 @@
 {
   "name": "api-clients/resource-generator",
+  "description": "Resource from YAML generation tool",
   "license": "MIT",
   "minimum-stability": "dev",
   "prefer-stable": true,
