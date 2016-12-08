@@ -17,12 +17,12 @@
     "doctrine/inflector": "^1.1",
     "api-clients/foundation": "dev-master",
     "api-clients/hydrator": "dev-master",
-    "api-clients/resource": "^1.0",
+    "api-clients/resource": "^2.0",
     "api-clients/resource-test-utilities": "dev-master",
     "friendsofphp/php-cs-fixer": "1.11.8"
   },
   "require-dev": {
-    "api-clients/test-utilities": "^1.0"
+    "api-clients/test-utilities": "^2.0"
   },
   "autoload": {
     "psr-4": {
@@ -55,10 +55,6 @@
       "@ensure-installed",
       "phpunit --colors=always -c phpunit.xml.dist --coverage-text --coverage-html covHtml --coverage-clover ./build/logs/clover.xml"
     ],
-    "mutation": [
-      "@ensure-installed",
-      "if [ `php -m | grep xdebug | wc -l` -gt 0 ]; then humbug --ansi --incremental; fi"
-    ],
     "lint-php": [
       "@ensure-installed",
       "parallel-lint --exclude vendor ."
@@ -66,14 +62,12 @@
     "qa-all": [
       "@lint-php",
       "@cs",
-      "@unit",
-      "@mutation"
+      "@unit"
     ],
     "qa-all-coverage": [
       "@lint-php",
       "@cs",
-      "@unit-coverage",
-      "@mutation"
+      "@unit-coverage"
     ],
     "qa-windows": [
       "@lint-php",
