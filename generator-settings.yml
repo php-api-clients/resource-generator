@@ -5,9 +5,11 @@ file_generators:
   async-class: ApiClients\Tools\ResourceGenerator\FileGenerators\AsyncClassGenerator
   async-empty-class: ApiClients\Tools\ResourceGenerator\FileGenerators\AsyncEmptyClassGenerator
   async-test: ApiClients\Tools\ResourceGenerator\FileGenerators\AsyncTestGenerator
+  async-empty-test: ApiClients\Tools\ResourceGenerator\FileGenerators\AsyncEmptyTestGenerator
   sync-class: ApiClients\Tools\ResourceGenerator\FileGenerators\SyncClassGenerator
   sync-empty-class: ApiClients\Tools\ResourceGenerator\FileGenerators\SyncEmptyClassGenerator
   sync-test: ApiClients\Tools\ResourceGenerator\FileGenerators\SyncTestGenerator
+  sync-empty-test: ApiClients\Tools\ResourceGenerator\FileGenerators\SyncEmptyTestGenerator
 annotation_handlers:
   collection: ApiClients\Tools\ResourceGenerator\AnnotationHandler\Collection
   nested: ApiClients\Tools\ResourceGenerator\AnnotationHandler\Nested
