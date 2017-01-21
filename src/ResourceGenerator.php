@@ -228,7 +228,7 @@ class ResourceGenerator
         $fileName = $this->configuration['root'] . $fileName;
 
         $file = new \SplFileInfo($fileName);
-        $new = file_get_contents($file->getRealpath());
+        $new = file_get_contents($file->getRealPath());
 
         foreach ($this->fixers as $fixer) {
             if (!$fixer->supports($file)) {
