@@ -248,7 +248,6 @@ class ResourceGenerator
         );
     }
 
-
     /**
      * @param ConfigInterface $config
      *
