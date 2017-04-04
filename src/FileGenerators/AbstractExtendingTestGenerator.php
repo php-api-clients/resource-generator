@@ -86,7 +86,7 @@ abstract class AbstractExtendingTestGenerator implements FileGeneratorInterface
             ->addStmt(
                 new Node\Stmt\Return_(
                     new Node\Expr\ClassConstFetch(
-                        new Node\Name('Apisettings'),
+                        new Node\Name('ApiSettings'),
                         'NAMESPACE'
                     )
                 )
