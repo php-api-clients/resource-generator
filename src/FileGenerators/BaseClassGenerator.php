@@ -124,18 +124,24 @@ final class BaseClassGenerator implements FileGeneratorInterface
     protected function processProperty($class, $stmt, $name, $details)
     {
         if (is_string($details)) {
-            if (exists($details)) {
-                $this->uses[$details] = true;
+            $types = explode('|', $details);
+            foreach ($types as $type) {
+                if (exists($type)) {
+                    $this->uses[$type] = true;
+                }
             }
 
             $class->addStmt($this->createProperty($details, $name, $details));
             $methodName = Inflector::camelize($name);
-            $class->addStmt($this->createMethod($details, $name, $methodName, $details));
+            $class->addStmt($this->createMethod($types, $name, $methodName, $details));
             return $stmt;
         }
 
-        if (exists($details['type'])) {
-            $this->uses[$details['type']] = true;
+        $types = explode('|', $details['type']);
+        foreach ($types as $type) {
+            if (exists($type)) {
+                $this->uses[$type] = true;
+            }
         }
         if (isset($details['wrap']) && exists($details['wrap'])) {
             $this->uses[$details['wrap']] = true;
@@ -150,7 +156,7 @@ final class BaseClassGenerator implements FileGeneratorInterface
         if (isset($details['method'])) {
             $methodName = $details['method'];
         }
-        $class->addStmt($this->createMethod($details['type'], $name, $methodName, $details));
+        $class->addStmt($this->createMethod($types, $name, $methodName, $details));
 
         return $stmt;
     }
@@ -169,7 +175,7 @@ final class BaseClassGenerator implements FileGeneratorInterface
     }
 
     protected function createMethod(
-        string $type,
+        array $types,
         string $name,
         string $methodName,
         $details
@@ -227,12 +233,15 @@ final class BaseClassGenerator implements FileGeneratorInterface
             );
         }
 
-        return $this->factory->method($methodName)
+        $method = $this->factory->method($methodName)
             ->makePublic()
-            ->setReturnType($type)
             ->setDocComment('/**
-                              * @return ' . $type . '
+                              * @return ' . implode('|',$types) . '
                               */')
             ->addStmts($stmts);
+        if (count($types) === 1) {
+            $method = $method->setReturnType($types[0]);
+        }
+        return $method;
     }
 }

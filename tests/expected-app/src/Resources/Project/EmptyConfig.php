@@ -3,6 +3,7 @@
 namespace Example\Client\Resource\Project;
 
 use ApiClients\Foundation\Resource\EmptyResourceInterface;
+use DateTimeZone;
 
 abstract class EmptyConfig implements ConfigInterface, EmptyResourceInterface
 {
@@ -34,6 +35,22 @@ abstract class EmptyConfig implements ConfigInterface, EmptyResourceInterface
      * @return string
      */
     public function d() : string
+    {
+        return null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function e()
+    {
+        return null;
+    }
+
+    /**
+     * @return string|DateTimeZone
+     */
+    public function f()
     {
         return null;
     }

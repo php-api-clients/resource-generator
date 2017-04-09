@@ -77,27 +77,32 @@ final class InterfaceGenerator implements FileGeneratorInterface
         );
 
         foreach ($this->yaml['properties'] as $name => $details) {
-            $type = $details;
             if (is_array($details)) {
-                $type = $details['type'];
+                $types = $details['type'];
+            } else {
+                $types = $details;
             }
 
-            if (exists($type)) {
-                $this->uses[$type] = true;
+            $types = explode('|', $types);
+            foreach ($types as $type) {
+                if (exists($type)) {
+                    $this->uses[$type] = true;
+                }
             }
 
             $methodName = Inflector::camelize($name);
             if (is_array($details) && isset($details['method'])) {
                 $methodName = $details['method'];
             }
-            $class->addStmt(
-                $factory->method($methodName)
-                    ->makePublic()
-                    ->setReturnType($type)
-                    ->setDocComment(
-                        "/**\r\n * @return " . $type . "\r\n */"
-                    )
-            );
+            $method = $factory->method($methodName)
+                ->makePublic()
+                ->setDocComment(
+                    "/**\r\n * @return " . implode('|', $types) . "\r\n */"
+                );
+            if (count($types) === 1) {
+                $method = $method->setReturnType($types[0]);
+            }
+            $class->addStmt($method);
         }
 
         $stmt = $factory->namespace($namespace);
