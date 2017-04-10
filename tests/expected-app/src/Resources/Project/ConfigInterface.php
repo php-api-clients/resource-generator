@@ -3,6 +3,7 @@
 namespace Example\Client\Resource\Project;
 
 use ApiClients\Foundation\Resource\ResourceInterface;
+use DateTimeZone;
 
 interface ConfigInterface extends ResourceInterface
 {
@@ -27,4 +28,14 @@ interface ConfigInterface extends ResourceInterface
      * @return string
      */
     public function d() : string;
+
+    /**
+     * @return string|null
+     */
+    public function e();
+
+    /**
+     * @return string|DateTimeZone
+     */
+    public function f();
 }

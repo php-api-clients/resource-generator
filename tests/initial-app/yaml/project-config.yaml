@@ -6,3 +6,5 @@ properties:
   d:
     type: string
     default: 'abcd'
+  e: string|null
+  f: string|DateTimeZone
