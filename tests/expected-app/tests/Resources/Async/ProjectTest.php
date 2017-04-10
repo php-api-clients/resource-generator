@@ -18,6 +18,6 @@ class ProjectTest extends AbstractResourceTest
     }
     public function getNamespace() : string
     {
-        return Apisettings::NAMESPACE;
+        return ApiSettings::NAMESPACE;
     }
 }
