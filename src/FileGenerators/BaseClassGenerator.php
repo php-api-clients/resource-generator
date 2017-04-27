@@ -236,7 +236,7 @@ final class BaseClassGenerator implements FileGeneratorInterface
         $method = $this->factory->method($methodName)
             ->makePublic()
             ->setDocComment('/**
-                              * @return ' . implode('|',$types) . '
+                              * @return ' . implode('|', $types) . '
                               */')
             ->addStmts($stmts);
         if (count($types) === 1) {
