@@ -4,6 +4,7 @@ namespace Example\Client\Resource\Project;
 
 use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
 use ApiClients\Foundation\Resource\AbstractResource;
+use DateTimeZone;
 
 /**
  * @EmptyResource("Project\EmptyConfig")
@@ -29,6 +30,16 @@ abstract class Config extends AbstractResource implements ConfigInterface
      * @var string
      */
     protected $d = 'abcd';
+
+    /**
+     * @var string|null
+     */
+    protected $e;
+
+    /**
+     * @var string|DateTimeZone
+     */
+    protected $f;
 
     /**
      * @return string
@@ -60,5 +71,21 @@ abstract class Config extends AbstractResource implements ConfigInterface
     public function d() : string
     {
         return $this->d;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function e()
+    {
+        return $this->e;
+    }
+
+    /**
+     * @return string|DateTimeZone
+     */
+    public function f()
+    {
+        return $this->f;
     }
 }
