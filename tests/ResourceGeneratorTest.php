@@ -19,7 +19,6 @@ class ResourceGeneratorTest extends TestCase
 
     public function testResourceGenerator()
     {
-        $yamlPath = __DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
         $resourcesPath = __DIR__ . DIRECTORY_SEPARATOR . 'expected-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
         $resourcesPathTests = __DIR__ . DIRECTORY_SEPARATOR . 'expected-app' . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR;
 
