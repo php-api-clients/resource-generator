@@ -1,16 +1,16 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\Tests\ApiClient\Transport;
 
 use Phake;
+use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ApiClients\Tools\ResourceGenerator\ResourceGenerator;
 use function ApiClients\Tools\ResourceGenerator\readYaml;
 use function ApiClients\Tools\ResourceGenerator\readYamlDir;
 
-class ResourceGeneratorTest extends \PHPUnit_Framework_TestCase
+class ResourceGeneratorTest extends TestCase
 {
     /**
      * @var string
