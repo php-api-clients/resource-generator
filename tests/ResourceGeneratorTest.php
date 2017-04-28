@@ -87,7 +87,7 @@ class ResourceGeneratorTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-        //$this->rmdir($this->temporaryDirectory);
+        $this->rmdir($this->temporaryDirectory);
     }
 
     protected function rmdir(string $dir)
