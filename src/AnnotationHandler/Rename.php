@@ -2,7 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\AnnotationHandler;
 
-use ApiClients\Foundation\Hydrator\Annotations\Rename as RenameAnnotation;
+use ApiClients\Foundation\Hydrator\Annotation\Rename as RenameAnnotation;
 use ApiClients\Tools\ResourceGenerator\AnnotationHandlerInterface;
 
 class Rename implements AnnotationHandlerInterface

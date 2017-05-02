@@ -2,7 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
-use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
+use ApiClients\Foundation\Hydrator\Annotation\EmptyResource;
 use ApiClients\Foundation\Resource\AbstractResource;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;

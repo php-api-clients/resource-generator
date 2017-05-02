@@ -2,8 +2,8 @@
 
 namespace Example\Client\Resource\Project;
 
-use ApiClients\Foundation\Hydrator\Annotations\EmptyResource;
-use ApiClients\Foundation\Hydrator\Annotations\Rename;
+use ApiClients\Foundation\Hydrator\Annotation\EmptyResource;
+use ApiClients\Foundation\Hydrator\Annotation\Rename;
 use ApiClients\Foundation\Resource\AbstractResource;
 use DateTimeImmutable;
 use DateTimeInterface;

@@ -2,7 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\AnnotationHandler;
 
-use ApiClients\Foundation\Hydrator\Annotations\Nested as NestedAnnotation;
+use ApiClients\Foundation\Hydrator\Annotation\Nested as NestedAnnotation;
 use ApiClients\Tools\ResourceGenerator\AnnotationHandlerInterface;
 
 class Nested implements AnnotationHandlerInterface

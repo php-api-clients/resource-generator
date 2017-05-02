@@ -2,7 +2,7 @@
 
 namespace ApiClients\Tools\ResourceGenerator\AnnotationHandler;
 
-use ApiClients\Foundation\Hydrator\Annotations\Collection as CollectionAnnotation;
+use ApiClients\Foundation\Hydrator\Annotation\Collection as CollectionAnnotation;
 use ApiClients\Tools\ResourceGenerator\AnnotationHandlerInterface;
 
 class Collection implements AnnotationHandlerInterface
