@@ -1,0 +1,8 @@
+yaml_location: tests/initial-app/yaml
+api_settings: Example\Client\ApiSettings
+src:
+  path: t/src/Resources
+  namespace: Example\Client\Resource
+tests:
+  path: t/tests/Resources
+  namespace: Example\Tests\Client\Resource

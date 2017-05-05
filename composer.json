@@ -1,6 +1,9 @@
 {
-  "name": "wyrihaximus/api-client-resource-generator",
+  "name": "api-clients/resource-generator",
+  "description": "Resource from YAML generation tool",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "Cees-Jan Kiewiet",
@@ -12,27 +15,79 @@
     "nikic/php-parser": "^2.1",
     "symfony/yaml": "^2.8||^3.0",
     "doctrine/inflector": "^1.1",
-    "wyrihaximus/api-client": "dev-master",
-    "friendsofphp/php-cs-fixer": "dev-master#7a6f1a4af13158299a59536b351774af9b3bd0ab",
-    "aura/cli": "^2.1"
+    "api-clients/foundation": "dev-master",
+    "api-clients/hydrator": "^1.0",
+    "api-clients/resource": "^3.0",
+    "api-clients/resource-test-utilities": "dev-master",
+    "friendsofphp/php-cs-fixer": "1.11.8"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.2.3",
-    "squizlabs/php_codesniffer": "^2.6",
-    "vectorface/dunit": "~2.0",
-    "phake/phake": "^2.3"
+    "api-clients/test-utilities": "^3.0.1"
   },
   "autoload": {
     "psr-4": {
-      "WyriHaximus\\ApiClient\\Tools\\": "src/"
-    }
+      "ApiClients\\Tools\\ResourceGenerator\\": "src/"
+    },
+    "files": ["src/functions_include.php"]
   },
   "autoload-dev": {
     "psr-4": {
-      "WyriHaximus\\Tests\\ApiClient\\Tools\\": "tests/"
+      "ApiClients\\Tests\\Tools\\": "tests/"
     }
+  },
+  "config": {
+    "sort-packages": true
   },
   "bin": [
     "api-client-resource-generator"
-  ]
+  ],
+  "scripts": {
+    "ensure-installed": "composer install --ansi -n -q",
+    "cs": [
+      "@ensure-installed",
+      "phpcs --standard=PSR2 src/"
+    ],
+    "unit": [
+      "@ensure-installed",
+      "phpunit --colors=always -c phpunit.xml.dist"
+    ],
+    "unit-coverage": [
+      "@ensure-installed",
+      "phpunit --colors=always -c phpunit.xml.dist --coverage-text --coverage-html covHtml --coverage-clover ./build/logs/clover.xml"
+    ],
+    "lint-php": [
+      "@ensure-installed",
+      "parallel-lint --exclude vendor ."
+    ],
+    "qa-all": [
+      "@lint-php",
+      "@cs",
+      "@unit"
+    ],
+    "qa-all-coverage": [
+      "@lint-php",
+      "@cs",
+      "@unit-coverage"
+    ],
+    "qa-windows": [
+      "@lint-php",
+      "@cs",
+      "@unit"
+    ],
+    "qa-ci": [
+      "@qa-all"
+    ],
+    "qa-ci-coverage": [
+      "@qa-all-coverage"
+    ],
+    "qa-ci-windows": [
+      "@qa-windows"
+    ],
+    "qa-contrib": [
+      "@qa-all"
+    ],
+    "ci-coverage": [
+      "if [ -f ./build/logs/clover.xml ]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover ./build/logs/clover.xml; fi"
+    ]
+  }
 }

@@ -1,0 +1,10 @@
+class: Project\Config
+properties:
+  a: string
+  b: string
+  c: string
+  d:
+    type: string
+    default: 'abcd'
+  e: string|null
+  f: string|DateTimeZone

@@ -1,44 +1,42 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
-namespace WyriHaximus\ApiClient\Tools;
+namespace ApiClients\Tools\ResourceGenerator;
 
-use Aura\Cli\Context;
-use Aura\Cli\Stdio;
-use Doctrine\Common\Inflector\Inflector;
 use Exception;
-use PhpCsFixer\Config;
-use PhpCsFixer\FixerFactory;
-use PhpCsFixer\Fixer;
-use PhpParser\Builder\Method;
-use PhpParser\Builder\Property;
-use PhpParser\BuilderFactory;
 use PhpParser\PrettyPrinter;
 use PhpParser\Node;
-use Symfony\Component\Yaml\Yaml;
-use WyriHaximus\ApiClient\Resource\ResourceInterface;
+use Symfony\CS\Config\Config;
+use Symfony\CS\ConfigAwareInterface;
+use Symfony\CS\ConfigInterface;
+use Symfony\CS\Fixer;
+use Symfony\CS\FixerInterface;
 
 class ResourceGenerator
 {
     /**
-     * @var Context
+     * @var callable
      */
-    protected $context;
-
-    /**
-     * @var Stdio
-     */
-    protected $stdio;
+    protected $out = 'ApiClients\Tools\ResourceGenerator\outln';
 
     /**
      * @var array
      */
-    protected $definitions = [];
+    protected $configuration;
+
+    /**
+     * @var FileGeneratorInterface[]
+     */
+    protected $generators = [];
 
     /**
      * @var string
      */
-    protected $path;
+    protected $pathSrc;
+
+    /**
+     * @var string
+     */
+    protected $pathTests;
 
     /**
      * @var Fixer
@@ -50,61 +48,49 @@ class ResourceGenerator
      */
     protected $fixers;
 
-    public function __construct(Context $context, Stdio $stdio)
+    public function __construct(array $configuration, callable $out = null)
     {
-        $this->context = $context;
-        $this->stdio = $stdio;
+        $this->configuration = $configuration;
+        $this->generators = $this->configuration['file_generators'];
 
-        $this->setUpArguments();
+        if (is_callable($out)) {
+            $this->out = $out;
+        }
+
         $this->setUpFixers();
-    }
-
-    protected function setUpArguments()
-    {
-        $getOpt = $this->context->getopt([]);
-        $i = 0;
-        do {
-            $i++;
-            $opt = $getOpt->get($i);
-            if ($opt === null) {
-                break;
-            }
-            $this->definitions[] = $opt;
-        } while (true);
-        $this->path = array_pop($this->definitions);
     }
 
     protected function setUpFixers()
     {
-        $this->fixer = FixerFactory::create();
+        $this->fixer = new Fixer();
         $this->fixer->registerCustomFixers([
-            //new ExtraEmptyLinesFixer(),
-            //new SingleBlankLineBeforeNamespaceFixer(),
-            new Fixer\Basic\Psr0Fixer(),
-            new Fixer\Basic\EncodingFixer(),
-            //new ShortTagFixer(),
-            new Fixer\Basic\BracesFixer(),
-            new Fixer\ControlStructure\ElseifFixer(),
-            //new EofEndingFixer(),
-            //new FunctionCallSpaceFixer(),
-            new Fixer\FunctionNotation\FunctionDeclarationFixer(),
-            new Fixer\Whitespace\NoTabIndentationFixer(),
-            new Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer(),
-            //new LinefeedFixer(),
-            new Fixer\Casing\LowercaseConstantsFixer(),
-            new Fixer\Casing\LowercaseKeywordsFixer(),
-            new Fixer\FunctionNotation\MethodArgumentSpaceFixer(),
-            //new MultipleUseFixer(),
-            new Fixer\Whitespace\NoSpacesInsideParenthesisFixer(),
-            //new PhpClosingTagFixer(),
-            new Fixer\Import\SingleLineAfterImportsFixer(),
-            //new TrailingSpacesFixer(),
-            new Fixer\ClassNotation\VisibilityRequiredFixer(),
-            //new NewlineAfterOpenTagFixer(),
-            //new EmptyLineAboveDocblocksFixer(),
+            new Fixer\Symfony\ExtraEmptyLinesFixer(),
+            new Fixer\Symfony\SingleBlankLineBeforeNamespaceFixer(),
+            new Fixer\PSR0\Psr0Fixer(),
+            new Fixer\PSR1\EncodingFixer(),
+            new Fixer\PSR1\ShortTagFixer(),
+            new Fixer\PSR2\BracesFixer(),
+            new Fixer\PSR2\ElseifFixer(),
+            new Fixer\PSR2\EofEndingFixer(),
+            new Fixer\PSR2\FunctionCallSpaceFixer(),
+            new Fixer\PSR2\FunctionDeclarationFixer(),
+            new Fixer\PSR2\IndentationFixer(),
+            new Fixer\PSR2\LineAfterNamespaceFixer(),
+            new Fixer\PSR2\LinefeedFixer(),
+            new Fixer\PSR2\LowercaseConstantsFixer(),
+            new Fixer\PSR2\LowercaseKeywordsFixer(),
+            new Fixer\PSR2\MethodArgumentSpaceFixer(),
+            new Fixer\PSR2\MultipleUseFixer(),
+            new Fixer\PSR2\ParenthesisFixer(),
+            new Fixer\PSR2\PhpClosingTagFixer(),
+            new Fixer\PSR2\SingleLineAfterImportsFixer(),
+            new Fixer\PSR2\TrailingSpacesFixer(),
+            new Fixer\PSR2\VisibilityFixer(),
+            new Fixer\Contrib\NewlineAfterOpenTagFixer(),
+            new EmptyLineAboveDocblocksFixer(),
         ]);
         $config = Config::create()->
-        fixers($this->fixer->getFixers())
+            fixers($this->fixer->getFixers())
         ;
         $this->fixer->addConfig($config);
         $this->fixers = $this->prepareFixers($config);
@@ -112,309 +98,126 @@ class ResourceGenerator
 
     public function run()
     {
-        $this->checkValidity();
-
-        foreach ($this->definitions as $definition) {
-            $this->stdio->outln('-----');
-            $this->stdio->outln('- Definition: ' . $definition);
-            $this->stdio->outln('-----');
+        foreach ($this->configuration['files'] as $definition) {
+            $this->out('-----');
+            $this->out('- Definition: ' . $definition['class']);
+            $definition = $this->applyAnnotationsToDefinition($definition);
             $this->generateFromDefinition($definition);
-            $this->stdio->outln('-----');
+            $this->out('-----');
         }
     }
 
-    public function checkValidity()
+    protected function applyAnnotationsToDefinition(array $definition): array
     {
-        if (count($this->definitions) < 1) {
-            throw new \InvalidArgumentException('Not enough arguments');
-        }
+        foreach ($definition['properties'] as $property => $properties) {
+            if (!isset($properties['annotations'])) {
+                continue;
+            }
 
-        if ($this->path === null) {
-            throw new \InvalidArgumentException('No path set');
-        }
+            foreach ($properties['annotations'] as $annotation => $input) {
+                if (!isset($this->configuration['annotation_handlers'][$annotation])) {
+                    continue;
+                }
 
-        if (!file_exists($this->path)) {
-            throw new \InvalidArgumentException('Path "' . $this->path . '" doesn\'t exist');
-        }
+                if (!is_subclass_of(
+                    $this->configuration['annotation_handlers'][$annotation],
+                    AnnotationHandlerInterface::class
+                )) {
+                    continue;
+                }
 
-        if (!is_dir($this->path)) {
-            throw new \InvalidArgumentException('Path "' . $this->path . '" isn\'t a directory');
-        }
-
-        foreach ($this->definitions as $definition) {
-            if (!file_exists($definition)) {
-                throw new \InvalidArgumentException('Definition "' . $definition . '" doesn\'t exist');
+                $definition = forward_static_call_array(
+                    [
+                        $this->configuration['annotation_handlers'][$annotation],
+                        'handle',
+                    ],
+                    [
+                        $property,
+                        $definition,
+                        $input,
+                    ]
+                );
             }
         }
+
+        return $definition;
     }
 
-    public function generateFromDefinition(string $definition)
+    /**
+     * @param array $file
+     * @throws Exception
+     */
+    protected function generateFromDefinition(array $file)
     {
-        $yaml = $this->readYaml($definition);
+        $config = $this->configuration + $file;
+        unset($config['files']);
 
-        $namespacePadding = explode('\\', $yaml['class']);
-        $namespace = explode('\\', $yaml['namespace']);
-
-        $yaml['class'] = array_pop($namespacePadding);
-        $yaml['namespace'] = implode('\\', array_merge($namespace, $namespacePadding));
-
-        $namespacePathPadding = implode(DIRECTORY_SEPARATOR, $namespacePadding);
-        $baseClass = implode(
-            '\\',
-            array_merge(
-                $namespace,
-                $namespacePadding,
-                [
-                    $yaml['class']
-                ]
-            )
-        );
-
-        $this->stdio->out('Interface: generating');
-        $this->save(
-            $this->path .
-                DIRECTORY_SEPARATOR .
-                $namespacePathPadding .
-                DIRECTORY_SEPARATOR,
-            $yaml['class'] .
-                'Interface.php',
-            $this->createInterface($yaml)
-        );
-
-        $this->stdio->out('Base class: generating');
-        $this->save(
-            $this->path .
-                DIRECTORY_SEPARATOR .
-                $namespacePathPadding .
-                DIRECTORY_SEPARATOR,
-            $yaml['class'] .
-                '.php',
-            $this->createBaseClass($yaml)
-        );
-
-        $this->stdio->out('Async class: generating');
-        $this->save(
-            $this->path .
-                DIRECTORY_SEPARATOR .
-                'Async' .
-                DIRECTORY_SEPARATOR .
-                $namespacePathPadding .
-                DIRECTORY_SEPARATOR,
-            $yaml['class'] .
-                '.php',
-            $this->createExtendingClass(
-                implode(
-                    '\\',
-                    array_merge(
-                        $namespace,
-                        [
-                            'Async',
-                        ],
-                        $namespacePadding
-                    )
-                ),
-                $yaml['class'],
-                $baseClass
-            )
-        );
-
-        $this->stdio->out('Sync class: generating');
-        $this->save(
-            $this->path .
-                DIRECTORY_SEPARATOR .
-                'Sync' .
-                DIRECTORY_SEPARATOR .
-                $namespacePathPadding .
-                DIRECTORY_SEPARATOR,
-            $yaml['class'] .
-                '.php',
-            $this->createExtendingClass(
-                implode(
-                    '\\',
-                    array_merge(
-                        $namespace,
-                        [
-                            'Sync',
-                        ],
-                        $namespacePadding
-                    )
-                ),
-                $yaml['class'],
-                $baseClass
-            )
-        );
-    }
-
-    protected function readYaml(string $filename): array
-    {
-        return Yaml::parse(file_get_contents($filename));
-    }
-
-    protected function createBaseClass(array $yaml): string
-    {
-        $factory = new BuilderFactory;
-
-        $class = $factory->class($yaml['class'])
-            ->implement($yaml['class'] . 'Interface')
-            ->makeAbstract();
-        $class->addStmt(
-            new Node\Stmt\TraitUse([
-                new Node\Name('TransportAwareTrait')
-            ])
-        );
-
-        foreach ($yaml['properties'] as $name => $details) {
-            $type = $details;
-            if (is_array($details)) {
-                $type = $details['type'];
+        foreach ($this->generators as $generatorClass) {
+            /** @var FileGeneratorInterface $generator */
+            $generator = new $generatorClass($config);
+            $fileName = $generator->getFilename();
+            $this->out('----');
+            $this->out('-- Generator: ' . $generatorClass);
+            $this->out('-- File: ' . $fileName);
+            $this->out('---');
+            $this->out('-- Generating');
+            $node = $generator->generate();
+            $this->out('-- Printing');
+            $code = $this->printCode($node);
+            $this->out('-- Saving file');
+            $continue = $this->save($fileName, $code);
+            if (!$continue) {
+                continue;
             }
-            $class->addStmt($this->createProperty($factory, $type, $name, $details));
-            $class->addStmt($this->createMethod($factory, $type, $name, $details));
+            $this->out('-- Applying code standards');
+            $this->applyPsr2($fileName);
+            $this->out('----');
         }
+    }
 
-        $node = $factory->namespace($yaml['namespace'])
-            ->addStmt($factory->use('WyriHaximus\ApiClient\Resource\TransportAwareTrait'))
-            ->addStmt($class)
-
-            ->getNode()
-        ;
-
+    /**
+     * @param Node $node
+     * @return string
+     */
+    protected function printCode(Node $node): string
+    {
         $prettyPrinter = new PrettyPrinter\Standard();
         return $prettyPrinter->prettyPrintFile([
             $node
         ]) . PHP_EOL;
     }
 
-    protected function createInterface(array $yaml): string
+    /**
+     * @param string $fileName
+     * @param string $fileContents
+     * @return bool
+     * @throws Exception
+     */
+    protected function save(string $fileName, string $fileContents)
     {
-        $factory = new BuilderFactory;
+        $fileName = $this->configuration['root'] . $fileName;
 
-        $class = $factory->interface($yaml['class'] . 'Interface')
-            ->extend('ResourceInterface');
-
-        foreach ($yaml['properties'] as $name => $details) {
-            $type = $details;
-            if (is_array($details)) {
-                $type = $details['type'];
-            }
-            $class->addStmt($this->createMethod($factory, $type, $name, $details));
+        if (file_exists($fileName)) {
+            $this->out('-- Exists');
+            return false;
         }
 
-        $node = $factory->namespace($yaml['namespace'])
-            ->addStmt($factory->use(ResourceInterface::class))
-            ->addStmt($class)
-            ->getNode()
-        ;
-
-        $prettyPrinter = new PrettyPrinter\Standard();
-        return $prettyPrinter->prettyPrintFile([
-            $node
-        ]) . PHP_EOL;
-    }
-
-    protected function createProperty(BuilderFactory $factory, string $type, string $name, $details): Property
-    {
-        $property = $factory->property($name)
-            ->makeProtected()
-            ->setDocComment('/**
-                              * @var ' . $type . '
-                              */');
-        if (isset($details['default'])) {
-            $property->setDefault($details['default']);
+        $directory = dirname($fileName);
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
         }
 
-        return $property;
-    }
-
-    protected function createMethod(BuilderFactory $factory, string $type, string $name, $details): Method
-    {
-        return $factory->method(Inflector::camelize($name))
-            ->makePublic()
-            ->setReturnType($type)
-            ->setDocComment('/**
-                              * @return ' . $type . '
-                              */')
-            ->addStmt(
-                new Node\Stmt\Return_(
-                    new Node\Expr\PropertyFetch(
-                        new Node\Expr\Variable('this'),
-                        $name
-                    )
-                )
-            );
-    }
-
-    protected function createExtendingClass(string $namespace, string $className, string $baseClass): string
-    {
-        $factory = new BuilderFactory;
-
-        $class = $factory->class($className)
-            ->extend('Base' . $className);
-
-        $class->addStmt($factory->method('refresh')
-            ->makePublic()
-            ->setReturnType($className)
-            ->addStmt(
-                new Node\Stmt\Return_(
-                    new Node\Expr\MethodCall(
-                        new Node\Expr\Variable('this'),
-                        'wait',
-                        [
-                            new Node\Expr\MethodCall(
-                                new Node\Expr\Variable('this'),
-                                'callAsync',
-                                [
-                                    new Node\Scalar\String_('refresh'),
-                                ]
-                            ),
-                        ]
-                    )
-                )
-            ));
-
-        $node = $factory->namespace($namespace)
-            ->addStmt($factory->use($baseClass)->as('Base' . $className))
-            ->addStmt($class)
-
-            ->getNode()
-        ;
-
-        $prettyPrinter = new PrettyPrinter\Standard();
-        return $prettyPrinter->prettyPrintFile([
-            $node
-        ]) . PHP_EOL;
-    }
-
-    protected function save(string $directory, string $fileName, string $fileContents)
-    {
-        $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $fileName);
-        if (file_exists($directory . $fileName)) {
-            $this->stdio->outln(', exists!');
-            return;
+        if (!file_exists($directory)) {
+            throw new Exception('Unable to create: ' . $directory);
         }
 
-        $path = $directory . $fileName;
-        $pathChunks = explode(DIRECTORY_SEPARATOR, $path);
-        array_pop($pathChunks);
-        $path = implode(DIRECTORY_SEPARATOR, $pathChunks);
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-
-        if (!file_exists($path)) {
-            throw new Exception('Unable to create: ' . $path);
-        }
-
-        $this->stdio->out(', writing');
-        file_put_contents($directory . $fileName, $fileContents);
+        file_put_contents($fileName, $fileContents);
 
         do {
             usleep(500);
-        } while (!file_exists($directory . $fileName));
+        } while (!file_exists($fileName));
 
-        $this->stdio->out(', applying PSR-2');
-        $this->applyPsr2($directory . $fileName);
-        $this->stdio->outln(', done!');
+        return true;
     }
 
     /**
@@ -422,20 +225,28 @@ class ResourceGenerator
      */
     protected function applyPsr2($fileName)
     {
+        $fileName = $this->configuration['root'] . $fileName;
+
         $file = new \SplFileInfo($fileName);
-        $this->fixer->fixFile(
-            $file,
-            $this->fixers,
-            false,
-            false,
-            new FileCacheManager(
-                false,
-                '',
-                $this->fixers
+        $new = file_get_contents($file->getRealPath());
+
+        foreach ($this->fixers as $fixer) {
+            if (!$fixer->supports($file)) {
+                continue;
+            }
+
+            $new = $fixer->fix($file, $new);
+        }
+
+        file_put_contents(
+            $fileName,
+            str_replace(
+                '<?php',
+                '<?php declare(strict_types=1);',
+                $new
             )
         );
     }
-
 
     /**
      * @param ConfigInterface $config
@@ -453,5 +264,11 @@ class ResourceGenerator
         }
 
         return $fixers;
+    }
+
+    private function out(string $message)
+    {
+        $out = $this->out;
+        $out($message);
     }
 }
