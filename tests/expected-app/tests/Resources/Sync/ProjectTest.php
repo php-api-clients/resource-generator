@@ -12,10 +12,12 @@ class ProjectTest extends AbstractResourceTest
     {
         return 'Sync';
     }
+
     public function getClass() : string
     {
         return Project::class;
     }
+
     public function getNamespace() : string
     {
         return ApiSettings::NAMESPACE;

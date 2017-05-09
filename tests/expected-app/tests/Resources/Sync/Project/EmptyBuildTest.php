@@ -11,6 +11,7 @@ final class EmptyBuildTest extends AbstractEmptyResourceTest
     {
         return 'Sync';
     }
+
     public function getClass() : string
     {
         return EmptyBuild::class;

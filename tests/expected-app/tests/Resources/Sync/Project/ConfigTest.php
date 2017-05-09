@@ -12,10 +12,12 @@ class ConfigTest extends AbstractResourceTest
     {
         return 'Sync';
     }
+
     public function getClass() : string
     {
         return Config::class;
     }
+
     public function getNamespace() : string
     {
         return ApiSettings::NAMESPACE;

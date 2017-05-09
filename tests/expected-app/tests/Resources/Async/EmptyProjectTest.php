@@ -11,6 +11,7 @@ final class EmptyProjectTest extends AbstractEmptyResourceTest
     {
         return 'Async';
     }
+
     public function getClass() : string
     {
         return EmptyProject::class;

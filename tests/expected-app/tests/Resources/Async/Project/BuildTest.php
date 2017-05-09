@@ -12,10 +12,12 @@ class BuildTest extends AbstractResourceTest
     {
         return 'Async';
     }
+
     public function getClass() : string
     {
         return Build::class;
     }
+
     public function getNamespace() : string
     {
         return ApiSettings::NAMESPACE;

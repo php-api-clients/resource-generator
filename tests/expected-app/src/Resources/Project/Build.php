@@ -35,7 +35,7 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * @var SplObjectStorage
