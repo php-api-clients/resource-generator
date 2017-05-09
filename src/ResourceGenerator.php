@@ -3,13 +3,8 @@
 namespace ApiClients\Tools\ResourceGenerator;
 
 use Exception;
-use PhpParser\PrettyPrinter;
 use PhpParser\Node;
-use Symfony\CS\Config\Config;
-use Symfony\CS\ConfigAwareInterface;
-use Symfony\CS\ConfigInterface;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerInterface;
+use PhpParser\PrettyPrinter;
 
 class ResourceGenerator
 {
@@ -56,44 +51,6 @@ class ResourceGenerator
         if (is_callable($out)) {
             $this->out = $out;
         }
-
-        $this->setUpFixers();
-    }
-
-    protected function setUpFixers()
-    {
-        $this->fixer = new Fixer();
-        $this->fixer->registerCustomFixers([
-            new Fixer\Symfony\ExtraEmptyLinesFixer(),
-            new Fixer\Symfony\SingleBlankLineBeforeNamespaceFixer(),
-            new Fixer\PSR0\Psr0Fixer(),
-            new Fixer\PSR1\EncodingFixer(),
-            new Fixer\PSR1\ShortTagFixer(),
-            new Fixer\PSR2\BracesFixer(),
-            new Fixer\PSR2\ElseifFixer(),
-            new Fixer\PSR2\EofEndingFixer(),
-            new Fixer\PSR2\FunctionCallSpaceFixer(),
-            new Fixer\PSR2\FunctionDeclarationFixer(),
-            new Fixer\PSR2\IndentationFixer(),
-            new Fixer\PSR2\LineAfterNamespaceFixer(),
-            new Fixer\PSR2\LinefeedFixer(),
-            new Fixer\PSR2\LowercaseConstantsFixer(),
-            new Fixer\PSR2\LowercaseKeywordsFixer(),
-            new Fixer\PSR2\MethodArgumentSpaceFixer(),
-            new Fixer\PSR2\MultipleUseFixer(),
-            new Fixer\PSR2\ParenthesisFixer(),
-            new Fixer\PSR2\PhpClosingTagFixer(),
-            new Fixer\PSR2\SingleLineAfterImportsFixer(),
-            new Fixer\PSR2\TrailingSpacesFixer(),
-            new Fixer\PSR2\VisibilityFixer(),
-            new Fixer\Contrib\NewlineAfterOpenTagFixer(),
-            new EmptyLineAboveDocblocksFixer(),
-        ]);
-        $config = Config::create()->
-            fixers($this->fixer->getFixers())
-        ;
-        $this->fixer->addConfig($config);
-        $this->fixers = $this->prepareFixers($config);
     }
 
     public function run()
@@ -227,43 +184,15 @@ class ResourceGenerator
     {
         $fileName = $this->configuration['root'] . $fileName;
 
-        $file = new \SplFileInfo($fileName);
-        $new = file_get_contents($file->getRealPath());
+        $command = 'vendor/bin/php-cs-fixer fix ' .
+            $fileName .
+            ' --config=' .
+            dirname(__DIR__) .
+            DIRECTORY_SEPARATOR .
+            '.php_cs ' .
+            ' --allow-risky=yes -q -v --stop-on-violation --using-cache=no';
 
-        foreach ($this->fixers as $fixer) {
-            if (!$fixer->supports($file)) {
-                continue;
-            }
-
-            $new = $fixer->fix($file, $new);
-        }
-
-        file_put_contents(
-            $fileName,
-            str_replace(
-                '<?php',
-                '<?php declare(strict_types=1);',
-                $new
-            )
-        );
-    }
-
-    /**
-     * @param ConfigInterface $config
-     *
-     * @return FixerInterface[]
-     */
-    private function prepareFixers(ConfigInterface $config): array
-    {
-        $fixers = $config->getFixers();
-
-        foreach ($fixers as $fixer) {
-            if ($fixer instanceof ConfigAwareInterface) {
-                $fixer->setConfig($config);
-            }
-        }
-
-        return $fixers;
+        system($command);
     }
 
     private function out(string $message)
