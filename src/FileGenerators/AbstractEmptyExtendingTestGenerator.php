@@ -66,7 +66,7 @@ abstract class AbstractEmptyExtendingTestGenerator implements FileGeneratorInter
 
         $classChunks = explode('\\', $this->yaml['class']);
         $baseClass = array_pop($classChunks);
-        $className = $baseClass . 'Test';
+        $className = 'Empty' . $baseClass . 'Test';
         $namespace = $this->yaml['tests']['namespace'] . '\\' . static::NAMESPACE;
         if (count($classChunks) > 0) {
             $namespace .= '\\' . implode('\\', $classChunks);
