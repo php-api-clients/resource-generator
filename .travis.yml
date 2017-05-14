@@ -5,10 +5,6 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
-# Environment variables
-env:
-  - PHP_CS_FIXER_IGNORE_ENV=1
-
 ## Build matrix for lowest and highest possible targets
 matrix:
   include:

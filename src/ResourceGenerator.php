@@ -186,7 +186,7 @@ class ResourceGenerator
     {
         $fileName = $this->configuration['root'] . $fileName;
 
-        $command = 'vendor/bin/php-cs-fixer fix ' .
+        $command = 'PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix ' .
             $fileName .
             ' --config=' .
             dirname(__DIR__) .
