@@ -70,7 +70,7 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @return int
      */
-    public function id() : int
+    public function id(): int
     {
         return $this->id;
     }
@@ -78,7 +78,7 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @return string
      */
-    public function name() : string
+    public function name(): string
     {
         return $this->name;
     }
@@ -86,7 +86,7 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @return string
      */
-    public function description() : string
+    public function description(): string
     {
         return $this->description;
     }
@@ -94,7 +94,7 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @return array
      */
-    public function config() : array
+    public function config(): array
     {
         return $this->config;
     }
@@ -102,7 +102,7 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @return SplObjectStorage
      */
-    public function plugins() : SplObjectStorage
+    public function plugins(): SplObjectStorage
     {
         return $this->plugins;
     }
@@ -110,31 +110,33 @@ abstract class Build extends AbstractResource implements BuildInterface
     /**
      * @return DateTimeInterface
      */
-    public function createdAt() : DateTimeInterface
+    public function createdAt(): DateTimeInterface
     {
         if ($this->created_wrapped instanceof DateTimeImmutable) {
             return $this->created_wrapped;
         }
         $this->created_wrapped = new DateTimeImmutable($this->created);
+
         return $this->created_wrapped;
     }
 
     /**
      * @return DateTimeInterface
      */
-    public function updatedAt() : DateTimeInterface
+    public function updatedAt(): DateTimeInterface
     {
         if ($this->updated_wrapped instanceof DateTimeImmutable) {
             return $this->updated_wrapped;
         }
         $this->updated_wrapped = new DateTimeImmutable($this->updated);
+
         return $this->updated_wrapped;
     }
 
     /**
      * @return int
      */
-    public function basicRate() : int
+    public function basicRate(): int
     {
         return $this->basic_rate;
     }

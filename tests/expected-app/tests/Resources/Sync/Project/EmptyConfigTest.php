@@ -7,12 +7,12 @@ use Example\Client\Resource\Sync\Project\EmptyConfig;
 
 final class EmptyConfigTest extends AbstractEmptyResourceTest
 {
-    public function getSyncAsync() : string
+    public function getSyncAsync(): string
     {
         return 'Sync';
     }
 
-    public function getClass() : string
+    public function getClass(): string
     {
         return EmptyConfig::class;
     }

@@ -12,22 +12,22 @@ interface ConfigInterface extends ResourceInterface
     /**
      * @return string
      */
-    public function a() : string;
+    public function a(): string;
 
     /**
      * @return string
      */
-    public function b() : string;
+    public function b(): string;
 
     /**
      * @return string
      */
-    public function c() : string;
+    public function c(): string;
 
     /**
      * @return string
      */
-    public function d() : string;
+    public function d(): string;
 
     /**
      * @return string|null

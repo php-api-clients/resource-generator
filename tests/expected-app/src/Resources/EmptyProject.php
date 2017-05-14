@@ -11,7 +11,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return int
      */
-    public function id() : int
+    public function id(): int
     {
         return null;
     }
@@ -19,7 +19,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return string
      */
-    public function name() : string
+    public function name(): string
     {
         return null;
     }
@@ -27,7 +27,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return string
      */
-    public function description() : string
+    public function description(): string
     {
         return null;
     }
@@ -35,7 +35,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return array
      */
-    public function builds() : array
+    public function builds(): array
     {
         return null;
     }
@@ -43,7 +43,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return Project\Build
      */
-    public function latestBuild() : Project\Build
+    public function latestBuild(): Project\Build
     {
         return null;
     }
@@ -51,7 +51,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return Project\Config
      */
-    public function config() : Project\Config
+    public function config(): Project\Config
     {
         return null;
     }
@@ -59,7 +59,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return SplObjectStorage
      */
-    public function plugins() : SplObjectStorage
+    public function plugins(): SplObjectStorage
     {
         return null;
     }
@@ -67,7 +67,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return DateTimeInterface
      */
-    public function createdAt() : DateTimeInterface
+    public function createdAt(): DateTimeInterface
     {
         return null;
     }
@@ -75,7 +75,7 @@ abstract class EmptyProject implements ProjectInterface, EmptyResourceInterface
     /**
      * @return DateTimeInterface
      */
-    public function updatedAt() : DateTimeInterface
+    public function updatedAt(): DateTimeInterface
     {
         return null;
     }

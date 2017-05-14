@@ -8,7 +8,7 @@ use Example\Client\Resource\Project\BuildInterface;
 
 class Build extends BaseBuild
 {
-    public function refresh() : Build
+    public function refresh(): Build
     {
         return $this->wait($this->handleCommand(new BuildAsyncFromSyncCommand(self::HYDRATE_CLASS, $this))->then(function (BuildInterface $build) {
             return $build->refresh();

@@ -13,45 +13,45 @@ interface ProjectInterface extends ResourceInterface
     /**
      * @return int
      */
-    public function id() : int;
+    public function id(): int;
 
     /**
      * @return string
      */
-    public function name() : string;
+    public function name(): string;
 
     /**
      * @return string
      */
-    public function description() : string;
+    public function description(): string;
 
     /**
      * @return array
      */
-    public function builds() : array;
+    public function builds(): array;
 
     /**
      * @return Project\Build
      */
-    public function latestBuild() : Project\Build;
+    public function latestBuild(): Project\Build;
 
     /**
      * @return Project\Config
      */
-    public function config() : Project\Config;
+    public function config(): Project\Config;
 
     /**
      * @return SplObjectStorage
      */
-    public function plugins() : SplObjectStorage;
+    public function plugins(): SplObjectStorage;
 
     /**
      * @return DateTimeInterface
      */
-    public function createdAt() : DateTimeInterface;
+    public function createdAt(): DateTimeInterface;
 
     /**
      * @return DateTimeInterface
      */
-    public function updatedAt() : DateTimeInterface;
+    public function updatedAt(): DateTimeInterface;
 }

@@ -8,17 +8,17 @@ use Example\Client\Resource\Project\Build;
 
 class BuildTest extends AbstractResourceTest
 {
-    public function getSyncAsync() : string
+    public function getSyncAsync(): string
     {
         return 'Async';
     }
 
-    public function getClass() : string
+    public function getClass(): string
     {
         return Build::class;
     }
 
-    public function getNamespace() : string
+    public function getNamespace(): string
     {
         return ApiSettings::NAMESPACE;
     }

@@ -80,7 +80,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return int
      */
-    public function id() : int
+    public function id(): int
     {
         return $this->id;
     }
@@ -88,7 +88,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return string
      */
-    public function name() : string
+    public function name(): string
     {
         return $this->name;
     }
@@ -96,7 +96,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return string
      */
-    public function description() : string
+    public function description(): string
     {
         return $this->description;
     }
@@ -104,7 +104,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return array
      */
-    public function builds() : array
+    public function builds(): array
     {
         return $this->builds;
     }
@@ -112,7 +112,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return Project\Build
      */
-    public function latestBuild() : Project\Build
+    public function latestBuild(): Project\Build
     {
         return $this->latestBuild;
     }
@@ -120,7 +120,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return Project\Config
      */
-    public function config() : Project\Config
+    public function config(): Project\Config
     {
         return $this->config;
     }
@@ -128,7 +128,7 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return SplObjectStorage
      */
-    public function plugins() : SplObjectStorage
+    public function plugins(): SplObjectStorage
     {
         return $this->plugins;
     }
@@ -136,24 +136,26 @@ abstract class Project extends AbstractResource implements ProjectInterface
     /**
      * @return DateTimeInterface
      */
-    public function createdAt() : DateTimeInterface
+    public function createdAt(): DateTimeInterface
     {
         if ($this->created_wrapped instanceof DateTimeImmutable) {
             return $this->created_wrapped;
         }
         $this->created_wrapped = new DateTimeImmutable($this->created);
+
         return $this->created_wrapped;
     }
 
     /**
      * @return DateTimeInterface
      */
-    public function updatedAt() : DateTimeInterface
+    public function updatedAt(): DateTimeInterface
     {
         if ($this->updated_wrapped instanceof DateTimeImmutable) {
             return $this->updated_wrapped;
         }
         $this->updated_wrapped = new DateTimeImmutable($this->updated);
+
         return $this->updated_wrapped;
     }
 }

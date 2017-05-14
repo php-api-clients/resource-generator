@@ -44,7 +44,7 @@ abstract class Config extends AbstractResource implements ConfigInterface
     /**
      * @return string
      */
-    public function a() : string
+    public function a(): string
     {
         return $this->a;
     }
@@ -52,7 +52,7 @@ abstract class Config extends AbstractResource implements ConfigInterface
     /**
      * @return string
      */
-    public function b() : string
+    public function b(): string
     {
         return $this->b;
     }
@@ -60,7 +60,7 @@ abstract class Config extends AbstractResource implements ConfigInterface
     /**
      * @return string
      */
-    public function c() : string
+    public function c(): string
     {
         return $this->c;
     }
@@ -68,7 +68,7 @@ abstract class Config extends AbstractResource implements ConfigInterface
     /**
      * @return string
      */
-    public function d() : string
+    public function d(): string
     {
         return $this->d;
     }
