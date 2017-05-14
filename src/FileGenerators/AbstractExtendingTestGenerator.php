@@ -52,7 +52,7 @@ abstract class AbstractExtendingTestGenerator implements FileGeneratorInterface
         }
         $baseClassFQCN = $this->yaml['src']['namespace'] . '\\' . $this->yaml['class'];
 
-        $factory = new BuilderFactory;
+        $factory = new BuilderFactory();
 
         $class = $factory->class($className)
             ->extend('AbstractResourceTest');

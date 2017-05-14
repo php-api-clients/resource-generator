@@ -71,7 +71,7 @@ final class InterfaceGenerator implements FileGeneratorInterface
                         new Node\Scalar\String_(
                             $this->yaml['class']
                         )
-                    )
+                    ),
                 ]
             )
         );

@@ -58,6 +58,7 @@ final class EmptyBaseClassGenerator implements FileGeneratorInterface
             $namespace .= '\\' . implode('\\', $classChunks);
             $namespace = str_replace('\\\\', '\\', $namespace);
         }
+
         return $this->yaml['src']['path'] .
             DIRECTORY_SEPARATOR .
             str_replace(
@@ -104,6 +105,9 @@ final class EmptyBaseClassGenerator implements FileGeneratorInterface
 
     /**
      * @param \PhpParser\Builder\Class_ $class
+     * @param mixed                     $stmt
+     * @param mixed                     $name
+     * @param mixed                     $details
      */
     protected function processProperty($class, $stmt, $name, $details)
     {
@@ -161,7 +165,7 @@ final class EmptyBaseClassGenerator implements FileGeneratorInterface
                 new Node\Expr\ConstFetch(
                     new Node\Name('null')
                 )
-            )
+            ),
         ];
 
         $method = $this->factory->method($methodName)
@@ -173,6 +177,7 @@ final class EmptyBaseClassGenerator implements FileGeneratorInterface
         if (count($types) === 1) {
             $method = $method->setReturnType($types[0]);
         }
+
         return $method;
     }
 }

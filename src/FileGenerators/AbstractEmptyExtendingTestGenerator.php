@@ -4,7 +4,6 @@ namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use ApiClients\Tools\ResourceTestUtilities\AbstractEmptyResourceTest;
-use ApiClients\Tools\ResourceTestUtilities\AbstractResourceTest;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
 
@@ -37,6 +36,7 @@ abstract class AbstractEmptyExtendingTestGenerator implements FileGeneratorInter
             $namespace .= '\\' . implode('\\', $classChunks);
             $namespace = str_replace('\\\\', '\\', $namespace);
         }
+
         return $this->yaml['tests']['path'] .
             DIRECTORY_SEPARATOR .
             static::NAMESPACE .
@@ -73,7 +73,7 @@ abstract class AbstractEmptyExtendingTestGenerator implements FileGeneratorInter
             $namespace = str_replace('\\\\', '\\', $namespace);
         }
 
-        $factory = new BuilderFactory;
+        $factory = new BuilderFactory();
 
         $class = $factory->class($className)
             ->makeFinal()

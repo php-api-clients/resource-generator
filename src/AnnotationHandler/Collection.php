@@ -8,7 +8,8 @@ use ApiClients\Tools\ResourceGenerator\AnnotationHandlerInterface;
 class Collection implements AnnotationHandlerInterface
 {
     /**
-     * @param array $yaml
+     * @param  array $yaml
+     * @param  mixed $input
      * @return array
      */
     public static function handle(string $property, array $yaml, $input): array

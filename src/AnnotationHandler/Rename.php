@@ -9,7 +9,7 @@ class Rename implements AnnotationHandlerInterface
 {
     /**
      * @param string $property
-     * @param array $yaml
+     * @param array  $yaml
      * @param $input
      * @return array
      */

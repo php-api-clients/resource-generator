@@ -2,12 +2,9 @@
 
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
-use ApiClients\Foundation\Resource\EmptyResourceInterface;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
-use Doctrine\Common\Inflector\Inflector;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
-use function ApiClients\Tools\ResourceGenerator\exists;
 
 abstract class AbstractEmptyExtendingClassGenerator implements FileGeneratorInterface
 {
@@ -38,6 +35,7 @@ abstract class AbstractEmptyExtendingClassGenerator implements FileGeneratorInte
             $namespace .= '\\' . implode('\\', $classChunks);
             $namespace = str_replace('\\\\', '\\', $namespace);
         }
+
         return $this->yaml['src']['path'] .
             DIRECTORY_SEPARATOR .
             static::NAMESPACE .
