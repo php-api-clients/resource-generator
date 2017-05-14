@@ -192,7 +192,8 @@ class ResourceGenerator
             dirname(__DIR__) .
             DIRECTORY_SEPARATOR .
             '.php_cs ' .
-            ' --allow-risky=yes -q -v --stop-on-violation --using-cache=no';
+            ' --allow-risky=yes -q -v --stop-on-violation --using-cache=no' .
+            ' 2>&1';
 
         exec($command);
     }
