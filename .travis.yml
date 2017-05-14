@@ -48,7 +48,7 @@ install:
 
 ## Run the actual test
 script:
-  - PHP_CS_FIXER_IGNORE_ENV=1 if [ -z "$qaExtended" ]; then make ci; fi;
+  - if [ -z "$qaExtended" ]; then make ci; fi;
   - if [ "$qaExtended" = "true" ]; then make ci-extended; fi;
 
 ## Gather coverage and set it to coverage servers
