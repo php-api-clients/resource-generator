@@ -17,12 +17,12 @@
     "api-clients/resource": "^3.0",
     "api-clients/resource-test-utilities": "dev-master",
     "doctrine/inflector": "^1.1",
-    "friendsofphp/php-cs-fixer": "^2.0",
+    "friendsofphp/php-cs-fixer": "^2.3",
     "nikic/php-parser": "^2.1",
     "symfony/yaml": "^2.8||^3.0"
   },
   "require-dev": {
-    "api-clients/test-utilities": "^3.0.1"
+    "api-clients/test-utilities": "dev-master "
   },
   "autoload": {
     "psr-4": {
@@ -45,7 +45,11 @@
     "ensure-installed": "composer install --ansi -n -q",
     "cs": [
       "@ensure-installed",
-      "phpcs --standard=PSR2 src/"
+      "php-cs-fixer fix --config=.php_cs --ansi --dry-run --diff --verbose --allow-risky=yes --show-progress=estimating"
+    ],
+    "cs-fix": [
+      "@ensure-installed",
+      "php-cs-fixer fix --config=.php_cs --ansi --verbose --allow-risky=yes --show-progress=estimating"
     ],
     "unit": [
       "@ensure-installed",

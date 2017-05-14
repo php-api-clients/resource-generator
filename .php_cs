@@ -1,22 +1,24 @@
 <?php declare(strict_types=1);
 
 use ApiClients\Tools\ResourceGenerator\EmptyLineAboveDocblocksFixer;
+use ApiClients\Tools\TestUtilities\PhpCsFixerConfig;
 
-return PhpCsFixer\Config::create()
-    ->setRules([
-        '@PSR2' => true,
-        'ordered_imports' => true,
-        'ordered_class_elements' => true,
-        'single_blank_line_before_namespace' => true,
-        'method_separation' => true,
-        'declare_strict_types' => true,
-        'strict_param' => true,
-        'single_class_element_per_statement' => true,
+return (function ()
+{
+    $path = __DIR__ . DIRECTORY_SEPARATOR . 'src';
+
+    return PhpCsFixerConfig::create([
         'ApiClients/empty_line_above_docblocks' => true,
-        'no_extra_consecutive_blank_lines' => true,
-        'array_syntax' => ['syntax' => 'short'],
     ])
-    ->registerCustomFixers([
-        new EmptyLineAboveDocblocksFixer(),
-    ])
-;
+        ->setFinder(
+            PhpCsFixer\Finder::create()
+                ->in($path)
+                ->append([$path])
+            )
+        ->setUsingCache(false)
+        ->registerCustomFixers([
+            new EmptyLineAboveDocblocksFixer(),
+        ])
+    ;
+})();
+

@@ -101,7 +101,7 @@ class ResourceGenerator
     }
 
     /**
-     * @param array $file
+     * @param  array     $file
      * @throws Exception
      */
     protected function generateFromDefinition(array $file)
@@ -133,22 +133,23 @@ class ResourceGenerator
     }
 
     /**
-     * @param Node $node
+     * @param  Node   $node
      * @return string
      */
     protected function printCode(Node $node): string
     {
         $prettyPrinter = new PrettyPrinter\Standard();
+
         return $prettyPrinter->prettyPrintFile([
-            $node
+            $node,
         ]) . PHP_EOL;
     }
 
     /**
-     * @param string $fileName
-     * @param string $fileContents
-     * @return bool
+     * @param  string    $fileName
+     * @param  string    $fileContents
      * @throws Exception
+     * @return bool
      */
     protected function save(string $fileName, string $fileContents)
     {
@@ -156,6 +157,7 @@ class ResourceGenerator
 
         if (file_exists($fileName)) {
             $this->out('-- Exists');
+
             return false;
         }
 

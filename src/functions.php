@@ -4,11 +4,10 @@ namespace ApiClients\Tools\ResourceGenerator;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @param string $filename
+ * @param  string $filename
  * @return array
  */
 function readYaml(string $filename): array
@@ -17,7 +16,7 @@ function readYaml(string $filename): array
 }
 
 /**
- * @param string $dir
+ * @param  string $dir
  * @return array
  */
 function readYamlDir(string $dir): array
@@ -32,6 +31,7 @@ function readYamlDir(string $dir): array
 
         $files[$file->getPathname()] = readYaml($file->getPathname());
     }
+
     return $files;
 }
 
@@ -52,7 +52,7 @@ function outln(string $line)
 }
 
 /**
- * @param string $ic
+ * @param  string $ic
  * @return bool
  */
 function exists(string $ic): bool
