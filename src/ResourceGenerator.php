@@ -194,7 +194,7 @@ class ResourceGenerator
             '.php_cs ' .
             ' --allow-risky=yes -q -v --stop-on-violation --using-cache=no';
 
-        system($command);
+        system($command, $null);
     }
 
     private function out(string $message)
