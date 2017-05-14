@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f47e235d8cf3f68371d421124f8949da",
+    "content-hash": "450547222575526c3978a0993efd1f97",
     "packages": [
         {
             "name": "api-clients/command-bus",
@@ -3512,16 +3512,16 @@
     "packages-dev": [
         {
             "name": "api-clients/test-utilities",
-            "version": "dev-master",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-api-clients/test-utilities.git",
-                "reference": "43fbbb7cf884581487feabf85a365703f6796988"
+                "reference": "bdf066b2396d60f5d575fd7a5caf51de634e8ca9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-api-clients/test-utilities/zipball/43fbbb7cf884581487feabf85a365703f6796988",
-                "reference": "43fbbb7cf884581487feabf85a365703f6796988",
+                "url": "https://api.github.com/repos/php-api-clients/test-utilities/zipball/bdf066b2396d60f5d575fd7a5caf51de634e8ca9",
+                "reference": "bdf066b2396d60f5d575fd7a5caf51de634e8ca9",
                 "shasum": ""
             },
             "require": {
@@ -3550,7 +3550,7 @@
                 }
             ],
             "description": "Test utilities for api-clients packages",
-            "time": "2017-05-13 13:57:28"
+            "time": "2017-05-14T15:00:49+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -4800,8 +4800,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "api-clients/foundation": 20,
-        "api-clients/resource-test-utilities": 20,
-        "api-clients/test-utilities": 20
+        "api-clients/resource-test-utilities": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
