@@ -8,7 +8,7 @@ use Example\Client\Resource\Project\ConfigInterface;
 
 class Config extends BaseConfig
 {
-    public function refresh() : Config
+    public function refresh(): Config
     {
         return $this->wait($this->handleCommand(new BuildAsyncFromSyncCommand(self::HYDRATE_CLASS, $this))->then(function (ConfigInterface $config) {
             return $config->refresh();

@@ -7,6 +7,10 @@ use PhpParser\Node;
 interface FileGeneratorInterface
 {
     /**
+     *
+     */
+
+    /**
      * FileGeneratorInterface constructor.
      * @param array $yaml
      */

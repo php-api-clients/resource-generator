@@ -40,7 +40,7 @@ final class AsyncClassGenerator extends AbstractExtendingClassGenerator implemen
                             [
                                 new Node\Scalar\String_(
                                     'TODO: create refresh method!'
-                                )
+                                ),
                             ]
                         )
                     )

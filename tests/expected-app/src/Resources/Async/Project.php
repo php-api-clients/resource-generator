@@ -6,7 +6,7 @@ use Example\Client\Resource\Project as BaseProject;
 
 class Project extends BaseProject
 {
-    public function refresh() : Project
+    public function refresh(): Project
     {
         throw new \Exception('TODO: create refresh method!');
     }

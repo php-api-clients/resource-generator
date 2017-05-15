@@ -6,7 +6,7 @@ use Example\Client\Resource\Project\Build as BaseBuild;
 
 class Build extends BaseBuild
 {
-    public function refresh() : Build
+    public function refresh(): Build
     {
         throw new \Exception('TODO: create refresh method!');
     }

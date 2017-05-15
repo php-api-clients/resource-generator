@@ -68,7 +68,7 @@ final class SyncClassGenerator extends AbstractExtendingClassGenerator implement
                                                     Inflector::camelize($className),
                                                     null,
                                                     $interfaceName
-                                                )
+                                                ),
                                             ],
                                             'stmts' => [
                                                 new Node\Stmt\Return_(
@@ -78,10 +78,10 @@ final class SyncClassGenerator extends AbstractExtendingClassGenerator implement
                                                         ),
                                                         'refresh'
                                                     )
-                                                )
+                                                ),
                                             ],
                                         ]
-                                    )
+                                    ),
                                 ]
                             ),
                         ]

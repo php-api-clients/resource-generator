@@ -3,7 +3,6 @@
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
-use PhpParser\Node;
 
 abstract class AbstractExtendingClassGenerator implements FileGeneratorInterface
 {
