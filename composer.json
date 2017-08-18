@@ -12,10 +12,10 @@
   ],
   "require": {
     "php": "^7.0",
-    "api-clients/foundation": "dev-master",
+    "api-clients/foundation": "^1.0",
     "api-clients/hydrator": "^1.0",
     "api-clients/resource": "^3.0",
-    "api-clients/resource-test-utilities": "dev-master",
+    "api-clients/resource-test-utilities": "^1.0",
     "doctrine/inflector": "^1.1",
     "friendsofphp/php-cs-fixer": "^2.3",
     "nikic/php-parser": "^2.1",
