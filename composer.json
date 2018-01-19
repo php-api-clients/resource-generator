@@ -16,7 +16,7 @@
     "api-clients/resource-test-utilities": "^1.0",
     "doctrine/inflector": "^1.1",
     "friendsofphp/php-cs-fixer": "^2.3",
-    "nikic/php-parser": "^2.1",
+    "nikic/php-parser": "^3.0 || ^2.1",
     "symfony/yaml": "^2.8||^3.0"
   },
   "require-dev": {
