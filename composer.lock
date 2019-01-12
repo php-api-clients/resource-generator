@@ -104,16 +104,16 @@
         },
         {
             "name": "api-clients/hydrator",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-api-clients/hydrator.git",
-                "reference": "1cde8c66c4d9d52f9f6a9db03334c2214d98342e"
+                "reference": "09a29c8a9cc1450aeb532c481741ced67d529a87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-api-clients/hydrator/zipball/1cde8c66c4d9d52f9f6a9db03334c2214d98342e",
-                "reference": "1cde8c66c4d9d52f9f6a9db03334c2214d98342e",
+                "url": "https://api.github.com/repos/php-api-clients/hydrator/zipball/09a29c8a9cc1450aeb532c481741ced67d529a87",
+                "reference": "09a29c8a9cc1450aeb532c481741ced67d529a87",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 }
             ],
             "description": "Hydrator wrapping ocramius/generated-hydrator specifically for api clients",
-            "time": "2017-11-30T01:34:35+00:00"
+            "time": "2018-03-19T20:11:13+00:00"
         },
         {
             "name": "api-clients/middleware",
