@@ -4,13 +4,13 @@ namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
 use ApiClients\Foundation\Hydrator\Annotation\EmptyResource;
 use ApiClients\Foundation\Resource\AbstractResource;
+use function ApiClients\Tools\ResourceGenerator\exists;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;
 use PhpParser\Builder\Method;
 use PhpParser\Builder\Property;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
-use function ApiClients\Tools\ResourceGenerator\exists;
 
 final class BaseClassGenerator implements FileGeneratorInterface
 {

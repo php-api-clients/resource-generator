@@ -3,11 +3,11 @@
 namespace ApiClients\Tools\ResourceGenerator\FileGenerators;
 
 use ApiClients\Foundation\Resource\ResourceInterface;
+use function ApiClients\Tools\ResourceGenerator\exists;
 use ApiClients\Tools\ResourceGenerator\FileGeneratorInterface;
 use Doctrine\Common\Inflector\Inflector;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
-use function ApiClients\Tools\ResourceGenerator\exists;
 
 final class InterfaceGenerator implements FileGeneratorInterface
 {
